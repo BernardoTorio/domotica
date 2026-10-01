@@ -50,7 +50,7 @@ h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 <header><a class="btn" href="index.html">← Índice</a><h1>Práctica 1 · Ejercicio 1.5 · Caldeo con termostato, presencia y relé</h1><button id="tema" class="btn" type="button">Claro / oscuro</button></header>
 <main><div class="lamina"><svg id="esq" role="img" aria-label="Esquema multifilar de Práctica 1 · Ejercicio 1.5 · Caldeo con termostato, presencia y relé"></svg></div>
 <p class="ayuda">Toca <b>Q1</b>, <b>S1</b>, el <b>detector S2</b> y el recuadro <b>t°</b> del termostato S3. Esc vuelve al índice.</p>
-<div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>Escribe la condición antes de dibujar: <b>KA1 = presencia Y frío</b>. Las «Y» son contactos <b>en serie</b> antes de la bobina: R2 del detector y 11-12 del termostato.</p></div><div class="caja ojo"><b class="t">¡OJO!</b><p>El contacto <b>R2</b> es libre de potencial: no tiene tensión propia, la toma del raíl de fase. Por eso H3 puede colgar directamente del cable entre R2 y S3.</p></div></div></main>
+<div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>Escribe la condición antes de dibujar: <b>KA1 = presencia Y frío</b>. Las «Y» son contactos <b>en serie</b> antes de la bobina: R2 del detector y 11-12 del termostato.</p></div><div class="caja ojo"><b class="t">¡OJO!</b><p>El contacto <b>R2</b> es libre de potencial: no tiene tensión propia, la toma del raíl de fase. Después de R2, el termostato reparte la fase: por <b>12</b> (frío) a la bobina de KA1 y por <b>14</b> (calor) a H3.</p></div></div></main>
 <script>// ===== Motor de dibujo de esquemas (mismos criterios que los apuntes) =====
 const U=46, NS='http://www.w3.org/2000/svg';
 let H=10, OX=1.5, G;
@@ -142,14 +142,16 @@ const on=v=>v?'<b>sí</b>':'no';setup({H:10.4,W:10.8,state:{q1:true,s1:true,pres
   DOT(x,yt,C.L);W([[x,yt],[x,yc+.2]],C.L,pw);PIRBOX(x,yc,st.pres);T(x+.08,yc+.33,'L');T(x+.08,yc-.33,'N');W([[x,yc-.2],[x,.5]],C.N,pw);DOT(x,.5,C.N);
   DOT(xc,yt,C.L);W([[xc,yt],[xc,y0+1]],C.L,r2);NA(xc,y0,['R2','R2'],null,r2);L([[x+.25,yc],[xc-.15,yc]],'sym',1);
   FRAME(x-.5,y0-.12,xc+.55,y0+1.12);NM(x-.6,yc,'S2');HIT(x-.45,yc-.3,x+.3,yc+.75,()=>st.pres=!st.pres,'Detector S2: pasar por delante o salir');
-  W([[xc,y0],[xc,yP]],C.L,r2);DOT(xc,yP,C.L);W([[xc,yP],[7.0,yP],[7.0,1.85]],C.L,r2);LAMP(7.0,.85,'H3',['X1','X2'],r2);W([[7.0,.85],[7.0,.5]],C.N,r2);DOT(7.0,.5,C.N);
-  W([[xc,yP],[xc,yP-.25]],C.L,ka);THERMO(xc,yP-1.25,st,st.frio?12:14,'S3');W([[xc-.3,yP-1.25],[xc-.3,1.85]],C.L,ka);COIL(xc-.3,.85,'KA1',ka);W([[xc-.3,.85],[xc-.3,.5]],C.N,ka);DOT(xc-.3,.5,C.N);
+  const h3=r2&&!st.frio,yt3=y0-1.25,yh=yt3-.3;
+  W([[xc,y0],[xc,y0-.25]],C.L,r2);THERMO(xc,yt3,st,st.frio?12:14,'S3');
+  W([[xc-.3,yt3],[xc-.3,1.85]],C.L,ka);COIL(xc-.3,.85,'KA1',ka);W([[xc-.3,.85],[xc-.3,.5]],C.N,ka);DOT(xc-.3,.5,C.N);
+  W([[xc+.3,yt3],[xc+.3,yh],[7.0,yh],[7.0,1.85]],C.L,h3);LAMP(7.0,.85,'H3',['X1','X2'],h3);W([[7.0,.85],[7.0,.5]],C.N,h3);DOT(7.0,.5,C.N);
   DOT(8.4,yt,C.L);W([[8.4,yt],[8.4,yt-.25]],C.L,ka);NA(8.4,yt-1.25,['11','14'],'KA1',ka);W([[8.4,yt-1.25],[8.4,4.45]],C.L,ka);DOT(8.4,4.45,C.L);
   W([[8.4,4.45],[10.1,4.45]],C.L,ka);W([[8.4,4.45],[8.4,1.85]],C.L,ka);TC(8.4,.85,'TC1',ka,['radiador apagado','radiador calentando']);W([[8.4,.85],[8.4,.5]],C.N,ka);DOT(8.4,.5,C.N);
   W([[10.1,4.45],[10.1,1.85]],C.L,ka);LAMP(10.1,.85,'H2',['X1','X2'],ka);W([[10.1,.85],[10.1,.5]],C.N,ka);DOT(10.1,.5,C.N);},
  explain(st){const pw=st.q1&&st.s1,r2=pw&&st.pres,ka=r2&&st.frio;let r;
   if(!st.q1)r='Q1 está bajado: no llega tensión a nada.';else if(!st.s1)r='S1 está abierto: instalación desconectada (H1 apagada).';
   else if(!st.pres)r='Instalación con tensión (H1). Nadie en la habitación: R2 abierto, no se calienta aunque haga frío.';
-  else if(!st.frio)r='Hay alguien (R2 cerrado, H3 encendida) pero hace calor: el termostato no deja pasar a la bobina de KA1.';
-  else r='Hay alguien <b>y</b> hace frío: R2 y S3 cerrados en serie, <b>KA1 entra</b> y su 11-14 enciende el radiador (TC1) y H2.';
-  return `<p>${r}</p><p>H1: ${on(pw)} · H3 (presencia): ${on(r2)} · KA1: ${on(ka)} · TC1 y H2: ${on(ka)}</p>`;}});</script></body></html>
+  else if(!st.frio)r='Hay alguien (R2 cerrado) pero hace calor: el termostato pasa a <b>11-14</b> y enciende <b>H3</b>; la bobina de KA1 no tiene tensión.';
+  else r='Hay alguien <b>y</b> hace frío: R2 y S3 (11-12) cerrados en serie, <b>KA1 entra</b> y su 11-14 enciende el radiador (TC1) y H2. H3 se apaga.';
+  return `<p>${r}</p><p>H1: ${on(pw)} · H3 (presencia sin demanda de calor): ${on(r2&&!st.frio)} · KA1: ${on(ka)} · TC1 y H2: ${on(ka)}</p>`;}});</script></body></html>
