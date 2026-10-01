@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Práctica 1 · Ejercicio 1.4 · Detector de presencia con crepuscular · Domótica 2MT</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet"><style>:root{--paper:#ffffff;--bg:#eef2ea;--ink:#141414;--muted:#4b5563;--fase:#7B3F00;--neutro:#1F5FD0;--pos:#D00000;--neg:#141414;--pe:#3A9A3A;
+--flow:#ffb800;--lamp:#ffd84d;--glow:rgba(255,216,77,.45);--coil:#9ed27a;--tc:#ff9a52;--accent:#4f7f2a;--head:#1F4E79;--hit:rgba(79,127,42,.13);
+--idea:#E2EFDA;--idea-b:#548235;--ojo:#FCE4D6;--ojo-b:#C00000;--taller:#EDE7F6;--taller-b:#6A4C93;--est:#FFF8DB;--est-b:#BF9000}
+html[data-theme=dark]{--paper:#1e252d;--bg:#141a20;--ink:#e9edf1;--muted:#a9b4bf;--fase:#c9864a;--neutro:#6fa8ff;--pos:#ff6b6b;--neg:#e9edf1;--pe:#6fcf6f;
+--flow:#ffd23f;--hit:rgba(158,210,122,.16);--accent:#9ed27a;--head:#8cc4ff;
+--idea:#22311c;--idea-b:#9ed27a;--ojo:#3a2320;--ojo-b:#ff8a7a;--taller:#2b2540;--taller-b:#c3a8ff;--est:#3a3216;--est-b:#ffd23f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',Verdana,sans-serif;font-size:17px;line-height:1.5}
+header{display:flex;align-items:center;gap:14px;padding:10px 18px;background:var(--paper);border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:2}
+header h1{font-size:1.15rem;margin:0;flex:1;color:var(--head);font-weight:700}
+.btn{font:inherit;font-size:.95rem;background:transparent;color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:5px 12px;cursor:pointer;text-decoration:none}
+.btn:hover,.btn:focus-visible{background:var(--hit);outline:none}
+main{max-width:1100px;margin:0 auto;padding:16px}
+.lamina{background:var(--paper);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.08);overflow-x:auto}
+.lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh}
+.ayuda{color:var(--muted);font-size:.95rem;margin:8px 4px 14px}
+.cajas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.caja{border-left:6px solid;border-radius:6px;padding:10px 14px}
+.caja b.t{display:block;margin-bottom:2px}
+.idea{background:var(--idea);border-color:var(--idea-b)}.idea b.t{color:var(--idea-b)}
+.ojo{background:var(--ojo);border-color:var(--ojo-b)}.ojo b.t{color:var(--ojo-b)}
+.taller{background:var(--taller);border-color:var(--taller-b)}.taller b.t{color:var(--taller-b)}
+.est{background:var(--est);border-color:var(--est-b);grid-column:1/-1}.est b.t{color:var(--est-b)}
+.caja p{margin:.2em 0}
+/* svg */
+.sym{stroke:var(--ink);stroke-width:2;fill:none;stroke-linecap:round}.thin{stroke-width:1.4}
+.box{stroke:var(--ink);stroke-width:2;fill:var(--paper)}
+.wire{stroke-width:3.2;fill:none;stroke-linejoin:round}
+.flow{stroke:var(--flow);stroke-width:3.2;fill:none;stroke-dasharray:5 11;animation:run .7s linear infinite;stroke-linejoin:round}
+.flow.rev{animation-direction:reverse}
+@keyframes run{to{stroke-dashoffset:-16}}
+@media (prefers-reduced-motion:reduce){.flow{animation:none;stroke-dasharray:none;opacity:.55}}
+.num{font-size:13px;fill:var(--ink)}.sm{font-size:11px}.nm{font-size:15px;font-weight:700;fill:var(--ink)}
+.rail{font-size:15px;font-weight:700;fill:var(--ink)}
+.pe{stroke:var(--pe);stroke-width:1.8;stroke-dasharray:4 3;fill:none}.pe-t{fill:var(--pe)}
+.lampon{fill:var(--lamp)}.glow{fill:var(--glow);stroke:none}.coilon{fill:var(--coil)}.tcon{fill:var(--tc)}
+.state{font-size:12px;fill:var(--muted)}.state.on{fill:var(--ojo-b);font-weight:700}.cold{fill:#2f7ad8}.hot{fill:#d9480f}
+.person{font-size:20px}.sm2{font-size:15px}
+.frame{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:7 5}
+.hit{fill:transparent;cursor:pointer;rx:8}
+.hit:hover,.hit:focus-visible{fill:var(--hit);outline:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
+/* índice */
+.lista{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.lista a{display:block;background:var(--paper);border-left:6px solid var(--accent);border-radius:8px;padding:12px 16px;color:var(--ink);text-decoration:none}
+.lista a:hover,.lista a:focus-visible{background:var(--hit);outline:none}
+.lista a b{display:block;color:var(--head)}
+h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
+</style></head><body>
+<header><a class="btn" href="index.html">← Índice</a><h1>Práctica 1 · Ejercicio 1.4 · Detector de presencia con crepuscular</h1><button id="tema" class="btn" type="button">Claro / oscuro</button></header>
+<main><div class="lamina"><svg id="esq" role="img" aria-label="Esquema multifilar de Práctica 1 · Ejercicio 1.4 · Detector de presencia con crepuscular"></svg></div>
+<p class="ayuda">Toca el <b>detector S1</b> para pasar por delante, el <b>sol/luna</b> para cambiar la luz ambiente y <b>Q1</b>. Esc vuelve al índice.</p>
+<div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>El detector es un solo aparato: se alimenta por <b>L</b> (arriba) y <b>N</b> (abajo) y saca la fase por <b>LS</b> cuando ve movimiento <b>y</b> hay poca luz. Aquí no hay preactuador: las tres lámparas cuelgan directamente de LS.</p></div><div class="caja taller"><b class="t">EN EL TALLER</b><p>Para probarlo en clase pon <b>R1 al mínimo</b> y <b>LUX en el sol</b>; si no, esperarás minutos o no se encenderá con la luz del aula.</p></div></div></main>
+<script>// ===== Motor de dibujo de esquemas (mismos criterios que los apuntes) =====
+const U=46, NS='http://www.w3.org/2000/svg';
+let H=10, OX=1.5, G;
+const C={L:'var(--fase)',N:'var(--neutro)',P:'var(--pos)',M:'var(--neg)'};
+function mk(tag,a,parent){const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);(parent||G).appendChild(e);return e;}
+const X=x=>(x+OX)*U, Y=y=>(H-y)*U;
+const pts=p=>p.map((q,i)=>(i?'L':'M')+X(q[0]).toFixed(1)+' '+Y(q[1]).toFixed(1)).join(' ');
+function L(p,cls='sym',dash){const e=mk('path',{d:pts(p),class:cls});if(dash)e.setAttribute('stroke-dasharray','5 4');return e;}
+function W(p,col,on,rev){mk('path',{d:pts(p),class:'wire',stroke:col});if(on)mk('path',{d:pts(p),class:'flow'+(rev?' rev':'')});}
+function T(x,y,s,anc='start',cls='num'){const e=mk('text',{x:X(x),y:Y(y),'text-anchor':anc,'dominant-baseline':'middle',class:cls});e.textContent=s;return e;}
+function NM(x,y,s){return T(x,y,s,'end','nm');}
+function DOT(x,y,col){mk('circle',{cx:X(x),cy:Y(y),r:3.6,fill:col||'var(--ink)'});}
+function RECT(x0,y0,w,h,cls='box'){return mk('rect',{x:X(x0),y:Y(y0+h),width:w*U,height:h*U,class:cls});}
+function CIRC(x,y,r,cls='box'){return mk('circle',{cx:X(x),cy:Y(y),r:r*U,class:cls});}
+function HIT(x0,y0,x1,y1,fn,tip){const r=mk('rect',{x:X(x0),y:Y(y1),width:(x1-x0)*U,height:(y1-y0)*U,class:'hit',tabindex:0,role:'button','aria-label':tip});
+  const t=mk('title',{},r);t.textContent=tip;r.addEventListener('click',()=>{fn();draw();});r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn();draw();}});}
+// contacto NA: borne superior n[0], inferior n[1]
+function NA(x,y,n,nm,closed,opt={}){
+  L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);
+  L(closed?[[x,y+.3],[x-.03,y+.72]]:[[x,y+.3],[x-.3,y+.76]]);
+  if(opt.cross){L([[x-.07,y+.63],[x+.07,y+.77]]);L([[x-.07,y+.77],[x+.07,y+.63]]);}
+  if(n[0])T(x+.08,y+.87,n[0]); if(n[1])T(x+.08,y+.13,n[1]);
+  let xl=x-.35;
+  if(opt.latch){const xa=x-.62,ym=y+.53;L([[x-.15,ym],[xa,ym]],'sym',1);L([[xa,ym-.13],[xa,ym+.13]]);L([[xa,ym-.13],[xa+.08,ym-.13]]);L([[xa,ym+.13],[xa+.08,ym+.13]]);
+    const m=(xa+x-.15)/2;L([[m-.07,ym],[m,ym-.09],[m+.07,ym]]);xl=xa-.1;}
+  if(nm)NM(xl-.05,y+.53,nm);
+}
+function NC(x,y,n,nm,open){
+  L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);L([[x,y+.7],[x+.2,y+.7]]);
+  L(open?[[x,y+.3],[x-.28,y+.74]]:[[x,y+.3],[x+.3,y+.78]]);
+  T(x+.08,y+.9,n[0]);T(x+.08,y+.13,n[1]); if(nm)NM(x-.38,y+.53,nm);
+}
+// conmutado: común arriba (11), 12 abajo-izquierda, 14 abajo-derecha. pos=12|14
+function CONM(x,y,pos,nm,abox){
+  L([[x,y+1],[x,y+.7]]);L([[x-.3,y],[x-.3,y+.3],[x-.1,y+.3]]);L([[x+.3,y],[x+.3,y+.3]]);
+  L(pos==14?[[x,y+.7],[x+.3,y+.3]]:[[x,y+.7],[x-.25,y+.22]]);
+  T(x+.08,y+.9,'11');T(x-.24,y+.1,'12','start','num sm');T(x+.38,y+.1,'14');
+  let xl=x-.45;
+  if(abox){L([[x-.13,y+.47],[x-.55,y+.47]],'sym',1);RECT(x-1.0,y+.3,.44,.34);T(x-.78,y+.47,abox,'middle','num');xl=x-1.02;}
+  if(nm)NM(xl-.05,y+.47,nm);
+}
+function COIL(x,y,nm,on){L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);RECT(x-.32,y+.3,.64,.4,on?'box coilon':'box');
+  T(x+.08,y+.86,'A1');T(x+.08,y+.14,'A2');if(nm)NM(x-.42,y+.5,nm);}
+function LAMP(x,y,nm,n,on){L([[x,y],[x,y+.28]]);L([[x,y+.72],[x,y+1]]);
+  if(on)CIRC(x,y+.5,.42,'glow');CIRC(x,y+.5,.22,on?'box lampon':'box');const d=.155;
+  L([[x-d,y+.5-d],[x+d,y+.5+d]]);L([[x-d,y+.5+d],[x+d,y+.5-d]]);
+  if(n){T(x+.08,y+.86,n[0]);T(x+.08,y+.14,n[1]);} if(nm)NM(x-.32,y+.5,nm);}
+function TC(x,y,nm,on,lab){L([[x,y],[x,y+.25]]);L([[x,y+.75],[x,y+1]]);CIRC(x,y+.5,.25,on?'box tcon':'box');
+  DOT(x-.09,y+.5);DOT(x+.09,y+.5);mk('path',{d:pts([[x+.25,y+.5],[x+.5,y+.5]]),class:'pe'});T(x+.52,y+.5,'PE','start','num sm pe-t');
+  T(x+.08,y+.88,'L');T(x+.08,y+.12,'N');if(nm)NM(x-.35,y+.5,nm);
+  }
+function MT2(xa,xb,ytop,closed){const y0=ytop-1;
+  for(const [x,n] of [[xa,['1','2']],[xb,['3','4']]]){NA(x,y0,[n[0],''],null,closed,{cross:true});
+    L([[x,y0],[x,y0-.1]]);RECT(x-.18,y0-.5,.36,.4);L([[x-.08,y0-.4],[x-.08,y0-.2],[x+.08,y0-.2],[x+.08,y0-.4]]);
+    L([[x,y0-.5],[x,y0-.6]]);RECT(x-.18,y0-1,.36,.4);T(x,y0-.8,'I>','middle','num sm');L([[x,y0-1],[x,y0-1.2]]);T(x+.08,y0-1.12,n[1]);}
+  const ym=y0+.53;L([[xb-.15,ym],[xa-.6,ym]],'sym',1);L([[xa-.6,ym-.13],[xa-.6,ym+.13]]);NM(xa-.7,ym,'Q1');return y0-1.2;}
+function PIRBOX(cx,cy,pres){RECT(cx-.25,cy-.2,.5,.4);
+  for(const r of [.09,.14,.19]){const a1=125*Math.PI/180,a2=235*Math.PI/180,c=cx+.06;
+    mk('path',{d:`M${X(c+r*Math.cos(a1))} ${Y(cy+r*.95*Math.sin(a1))} A${r*U} ${r*.95*U} 0 0 0 ${X(c+r*Math.cos(a2))} ${Y(cy+r*.95*Math.sin(a2))}`,class:'sym thin'});}
+  mk('rect',{x:X(cx+.01),y:Y(cy+.08),width:.05*U,height:.16*U,fill:'var(--ink)'});
+  if(pres){T(cx-.42,cy+.45,'🚶','middle','person sm2');}}
+function FRAME(x0,y0,x1,y1){mk('rect',{x:X(x0),y:Y(y1),width:(x1-x0)*U,height:(y1-y0)*U,class:'frame'});}
+// alimentación: Q1 + (S1 general)
+function SUPPLY(xl,ytop,yb,xend,st,gen,cur){const xL=xl,xN=xl+.8;
+  W([[xL,H-.1],[xL,H-.35]],C.L,cur);W([[xN,H-.1],[xN,H-.35]],C.N,cur,true);T(xL,H-.02,'L','middle','rail');T(xN,H-.02,'N','middle','rail');
+  let y=MT2(xL,xN,H-.35,st.q1);const yq=y;HIT(xl-1.45,H-2.6,xN+.25,H-.3,()=>st.q1=!st.q1,'Q1: subir o bajar el magnetotérmico');
+  if(gen){W([[xL,y],[xL,y-.25]],C.L,cur);NA(xL,y-1.25,['13','14'],'S1',st.s1,{latch:true});HIT(xL-.95,y-1.25,xL+.3,y-.25,()=>st.s1=!st.s1,'S1: interruptor general');y=y-1.25;}
+  W([[xL,y],[xL,ytop],[xend,ytop]],C.L,cur);W([[xN,yb],[xN,yq]],C.N,cur);W([[xend,yb],[xN,yb]],C.N,cur);
+  T(xend+.1,ytop,'L','start','rail');T(xend+.1,yb,'N','start','rail');}
+function THERMO(x,y,st,pos,nm){CONM(x,y,pos,nm,'t°');
+  T(x-.78,y+.95,st.frio?'❄ 18 °C':'☀ 25 °C','middle',st.frio?'state cold':'state hot');
+  HIT(x-1.25,y+.15,x-.5,y+.8,()=>st.frio=!st.frio,'Termostato: cambiar entre frío y calor');}
+// ===== página =====
+function setup(def){
+  const st=def.state;window.ST=st;
+  window.draw=function(){const svg=document.getElementById('esq');svg.innerHTML='';H=def.H;OX=1.5;
+    svg.setAttribute('viewBox',`0 ${-.45*U} ${(def.W+OX)*U} ${(H+.75)*U}`);G=mk('g',{},svg);def.draw(st);
+    document.getElementById('estado').innerHTML=def.explain(st);};
+  draw();
+  document.getElementById('tema').addEventListener('click',()=>{const r=document.documentElement;const d=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('tema',d)}catch(e){}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')location.href='index.html';});
+}
+try{const t=localStorage.getItem('tema');if(t)document.documentElement.dataset.theme=t;else if(matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.dataset.theme='dark';}catch(e){}
+
+const on=v=>v?'<b>sí</b>':'no';setup({H:8.0,W:8.6,state:{q1:true,pres:false,noche:true},
+ draw(st){const yt=5.0,pw=st.q1,ls=st.q1&&st.pres&&st.noche,x=3.4,xc=4.6,yc=3.33,y0=yc-.53;
+  SUPPLY(.8,yt,.5,8.0,st,false,pw);
+  DOT(x,yt,C.L);W([[x,yt],[x,yc+.2]],C.L,pw);PIRBOX(x,yc,st.pres);T(x+.08,yc+.33,'L');T(x+.08,yc-.33,'N');W([[x,yc-.2],[x,.5]],C.N,pw);DOT(x,.5,C.N);
+  DOT(x,4.3,C.L);W([[x,4.3],[xc,4.3],[xc,y0+1]],C.L,ls);NA(xc,y0,['','LS'],null,ls);L([[x+.25,yc],[xc-.15,yc]],'sym',1);
+  FRAME(x-.5,y0-.15,xc+.5,4.5);NM(x-.6,yc,'S1');HIT(x-.45,yc-.3,x+.3,yc+.8,()=>st.pres=!st.pres,'Detector S1: pasar por delante o salir');
+  W([[xc,y0],[xc,2.5]],C.L,ls);DOT(xc,2.5,C.L);W([[xc,2.5],[7.0,2.5]],C.L,ls);
+  for(const [xx,n] of [[4.6,'E1'],[5.8,'E2'],[7.0,'E3']]){W([[xx,2.5],[xx,1.85]],C.L,ls);LAMP(xx,.85,n,['X1','X2'],ls);W([[xx,.85],[xx,.5]],C.N,ls);DOT(xx,.5,C.N);}
+  T(6.7,4.15,st.noche?'🌙':'☀️','middle','person');T(6.7,3.7,st.noche?'de noche':'de día','middle','state');HIT(6.25,3.5,7.15,4.45,()=>st.noche=!st.noche,'Luz ambiente: cambiar entre día y noche');},
+ explain(st){let r;
+  if(!st.q1)r='Q1 está bajado: el detector no tiene alimentación y no funciona.';
+  else if(!st.pres)r='El detector está alimentado pero <b>no ve a nadie</b>: LS sin tensión, lámparas apagadas.';
+  else if(!st.noche)r='Ve a alguien, pero <b>hay mucha luz</b>: la célula del detector no deja encender (LUX).';
+  else r='Ve a alguien y es de noche: el detector cierra su contacto interno y <b>LS da fase</b> a E1, E2 y E3.';
+  return `<p>${r}</p><p>Alimentado: ${on(st.q1)} · Presencia: ${on(st.pres)} · Poca luz: ${on(st.noche)}</p>`;}});</script></body></html>
