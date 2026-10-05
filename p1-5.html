@@ -1,157 +1,282 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Práctica 1 · Ejercicio 1.5 · Caldeo con termostato, presencia y relé · Domótica 2MT</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet"><style>:root{--paper:#ffffff;--bg:#eef2ea;--ink:#141414;--muted:#4b5563;--fase:#7B3F00;--neutro:#1F5FD0;--pos:#D00000;--neg:#141414;--pe:#3A9A3A;
+<script>(function(){try{var t=localStorage.getItem('tema');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='light';}})();</script><title>1.5 Caldeo con presencia y relé · Domótica 2MT</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet"><style>:root{--paper:#ffffff;--bg:#eef2ea;--ink:#141414;--muted:#4b5563;--fase:#7B3F00;--neutro:#1F5FD0;--pos:#D00000;--neg:#141414;--pe:#3A9A3A;
+--vfase:#C8641E;--vfase-g:rgba(200,100,30,.55);--vpos:#FF1F1F;--vpos-g:rgba(255,31,31,.5);
 --flow:#ffb800;--lamp:#ffd84d;--glow:rgba(255,216,77,.45);--coil:#9ed27a;--tc:#ff9a52;--accent:#4f7f2a;--head:#1F4E79;--hit:rgba(79,127,42,.13);
---idea:#E2EFDA;--idea-b:#548235;--ojo:#FCE4D6;--ojo-b:#C00000;--taller:#EDE7F6;--taller-b:#6A4C93;--est:#FFF8DB;--est-b:#BF9000}
+--idea:#E2EFDA;--idea-b:#548235;--ojo:#FCE4D6;--ojo-b:#C00000;--taller:#EDE7F6;--taller-b:#6A4C93;--est:#FFF8DB;--est-b:#BF9000;--como:#DDEBF7;--como-b:#2E75B6}
 html[data-theme=dark]{--paper:#1e252d;--bg:#141a20;--ink:#e9edf1;--muted:#a9b4bf;--fase:#c9864a;--neutro:#6fa8ff;--pos:#ff6b6b;--neg:#e9edf1;--pe:#6fcf6f;
+--vfase:#F0974E;--vfase-g:rgba(240,151,78,.6);--vpos:#FF4040;
 --flow:#ffd23f;--hit:rgba(158,210,122,.16);--accent:#9ed27a;--head:#8cc4ff;
---idea:#22311c;--idea-b:#9ed27a;--ojo:#3a2320;--ojo-b:#ff8a7a;--taller:#2b2540;--taller-b:#c3a8ff;--est:#3a3216;--est-b:#ffd23f}
+--idea:#22311c;--idea-b:#9ed27a;--ojo:#3a2320;--ojo-b:#ff8a7a;--taller:#2b2540;--taller-b:#c3a8ff;--est:#3a3216;--est-b:#ffd23f;--como:#1c2c3d;--como-b:#7fb6ff}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',Verdana,sans-serif;font-size:17px;line-height:1.5}
-header{display:flex;align-items:center;gap:14px;padding:10px 18px;background:var(--paper);border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:2}
-header h1{font-size:1.15rem;margin:0;flex:1;color:var(--head);font-weight:700}
-.btn{font:inherit;font-size:.95rem;background:transparent;color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:5px 12px;cursor:pointer;text-decoration:none}
+.barra{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--paper);border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:2}
+.ico{font-size:1.15rem;line-height:1;min-width:42px;height:38px;display:inline-flex;align-items:center;justify-content:center}
+.btn{font:inherit;background:transparent;color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:4px 10px;cursor:pointer;text-decoration:none}
 .btn:hover,.btn:focus-visible{background:var(--hit);outline:none}
-main{max-width:1100px;margin:0 auto;padding:16px}
+.migas{flex:1;min-width:0;overflow:hidden;white-space:nowrap;direction:rtl;text-align:left;font-size:.98rem}
+.migas>span{direction:ltr;unicode-bidi:isolate}
+.migas a{color:var(--head);text-decoration:none}.migas a:hover{text-decoration:underline}
+.migas b{color:var(--ink)}.migas .sep{color:var(--muted);margin:0 .35em}
+main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
+.cab{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 8px}
+.cab h1{font-size:1.25rem;margin:0;color:var(--head)}
+.tag{background:var(--accent);color:var(--paper);font-weight:700;font-size:.8rem;letter-spacing:.06em;border-radius:6px;padding:2px 9px}
+.ejs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.ejs a{border:2px solid var(--accent);border-radius:8px;padding:3px 12px;color:var(--ink);text-decoration:none;font-weight:700;background:var(--paper)}
+.ejs a[aria-current=page]{background:var(--accent);color:var(--paper)}
+.ejs a:hover,.ejs a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
 .lamina{background:var(--paper);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.08);overflow-x:auto}
-.lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh}
+.lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh;touch-action:manipulation}
 .ayuda{color:var(--muted);font-size:.95rem;margin:8px 4px 14px}
 .cajas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
 .caja{border-left:6px solid;border-radius:6px;padding:10px 14px}
 .caja b.t{display:block;margin-bottom:2px}
+.caja ul{margin:.2em 0;padding-left:1.2em}
 .idea{background:var(--idea);border-color:var(--idea-b)}.idea b.t{color:var(--idea-b)}
 .ojo{background:var(--ojo);border-color:var(--ojo-b)}.ojo b.t{color:var(--ojo-b)}
 .taller{background:var(--taller);border-color:var(--taller-b)}.taller b.t{color:var(--taller-b)}
 .est{background:var(--est);border-color:var(--est-b);grid-column:1/-1}.est b.t{color:var(--est-b)}
-.caja p{margin:.2em 0}
+.como{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.como b.t{color:var(--como-b)}
+.caja p{margin:.2em 0}.alerta{color:var(--ojo-b);font-weight:700}
+.vivo{color:var(--vfase);font-weight:700}.vivo12{color:var(--vpos);font-weight:700}.amar{color:#d99a00;font-weight:700}
 /* svg */
 .sym{stroke:var(--ink);stroke-width:2;fill:none;stroke-linecap:round}.thin{stroke-width:1.4}
 .box{stroke:var(--ink);stroke-width:2;fill:var(--paper)}
-.wire{stroke-width:3.2;fill:none;stroke-linejoin:round}
-.flow{stroke:var(--flow);stroke-width:3.2;fill:none;stroke-dasharray:5 11;animation:run .7s linear infinite;stroke-linejoin:round}
-.flow.rev{animation-direction:reverse}
+.wire{stroke-width:3;fill:none;stroke-linejoin:round;stroke-linecap:round;transition:stroke-width .15s,opacity .15s}
+.wire.vL{stroke:var(--vfase);stroke-width:6;filter:drop-shadow(0 0 3px var(--vfase-g))}
+.wire.vP{stroke:var(--vpos);stroke-width:6;filter:drop-shadow(0 0 3px var(--vpos-g))}
+.wire.pale{opacity:.4}
+.flow{display:none;stroke:var(--flow);stroke-width:3;fill:none;stroke-dasharray:5 11;animation:run .7s linear infinite;stroke-linejoin:round}
+.flow.on{display:inline}
 @keyframes run{to{stroke-dashoffset:-16}}
-@media (prefers-reduced-motion:reduce){.flow{animation:none;stroke-dasharray:none;opacity:.55}}
+@media (prefers-reduced-motion:reduce){.flow{animation:none;stroke-dasharray:none;opacity:.6}}
 .num{font-size:13px;fill:var(--ink)}.sm{font-size:11px}.nm{font-size:15px;font-weight:700;fill:var(--ink)}
 .rail{font-size:15px;font-weight:700;fill:var(--ink)}
 .pe{stroke:var(--pe);stroke-width:1.8;stroke-dasharray:4 3;fill:none}.pe-t{fill:var(--pe)}
-.lampon{fill:var(--lamp)}.glow{fill:var(--glow);stroke:none}.coilon{fill:var(--coil)}.tcon{fill:var(--tc)}
+.glow{fill:var(--glow);stroke:none;display:none}.glow.show{display:inline}
+.lampon{fill:var(--lamp)}.coilon{fill:var(--coil)}.tcon{fill:var(--tc)}
 .state{font-size:12px;fill:var(--muted)}.state.on{fill:var(--ojo-b);font-weight:700}.cold{fill:#2f7ad8}.hot{fill:#d9480f}
 .person{font-size:20px}.sm2{font-size:15px}
 .frame{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:7 5}
 .hit{fill:transparent;cursor:pointer;rx:8}
 .hit:hover,.hit:focus-visible{fill:var(--hit);outline:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
+
 /* índice */
+.tabs{display:flex;gap:8px;margin:6px 0 4px;flex-wrap:wrap}
+.tab{font:inherit;font-weight:700;background:var(--paper);color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:6px 16px;cursor:pointer}
+.tab[aria-selected=true]{background:var(--accent);color:var(--paper)}
+.panel[hidden]{display:none}
 .lista{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-.lista a{display:block;background:var(--paper);border-left:6px solid var(--accent);border-radius:8px;padding:12px 16px;color:var(--ink);text-decoration:none}
+.lista a,.lista span.prox{display:block;background:var(--paper);border-left:6px solid var(--accent);border-radius:8px;padding:12px 16px;color:var(--ink);text-decoration:none}
 .lista a:hover,.lista a:focus-visible{background:var(--hit);outline:none}
 .lista a b{display:block;color:var(--head)}
+.lista span.prox{border-color:var(--muted);color:var(--muted);opacity:.7}.lista span.prox b{display:block}
 h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 </style></head><body>
-<header><a class="btn" href="index.html">← Índice</a><h1>Práctica 1 · Ejercicio 1.5 · Caldeo con termostato, presencia y relé</h1><button id="tema" class="btn" type="button">Claro / oscuro</button></header>
-<main><div class="lamina"><svg id="esq" role="img" aria-label="Esquema multifilar de Práctica 1 · Ejercicio 1.5 · Caldeo con termostato, presencia y relé"></svg></div>
+<header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Práctica 1</a><span class="sep">›</span><b aria-current="page">1.5 Caldeo con presencia y relé</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
+<main><div class="cab"><h1>Ejercicio 1.5 · Caldeo con termostato, presencia y relé</h1><span class="tag">SOLUCIÓN</span></div>
+<nav class="ejs" aria-label="Ejercicios de la práctica 1"><a href="p1-1.html">1.1</a><a href="p1-2.html">1.2</a><a href="p1-3.html">1.3</a><a href="p1-4.html">1.4</a><a href="p1-5.html" aria-current="page">1.5</a></nav>
+<div class="lamina"><svg id="esq" role="img" aria-label="Esquema multifilar del Ejercicio 1.5 · Caldeo con termostato, presencia y relé"></svg></div>
 <p class="ayuda">Toca <b>Q1</b>, <b>S1</b>, el <b>detector S2</b> y el recuadro <b>t°</b> del termostato S3. Esc vuelve al índice.</p>
 <div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>Escribe la condición antes de dibujar: <b>KA1 = presencia Y frío</b>. Las «Y» son contactos <b>en serie</b> antes de la bobina: R2 del detector y 11-12 del termostato.</p></div><div class="caja ojo"><b class="t">¡OJO!</b><p>El contacto <b>R2</b> es libre de potencial: no tiene tensión propia, la toma del raíl de fase. Después de R2, el termostato reparte la fase: por <b>12</b> (frío) a la bobina de KA1 y por <b>14</b> (calor) a H3.</p></div></div></main>
-<script>// ===== Motor de dibujo de esquemas (mismos criterios que los apuntes) =====
-const U=46, NS='http://www.w3.org/2000/svg';
-let H=10, OX=1.5, G;
-const C={L:'var(--fase)',N:'var(--neutro)',P:'var(--pos)',M:'var(--neg)'};
+<script>// ===== Motor de esquemas: nudos, tramos, contactos y cargas =====
+const U=46,NS='http://www.w3.org/2000/svg';
+let H=10,OX=1.5,G;
+const COL={L:'var(--fase)',N:'var(--neutro)',P:'var(--pos)',M:'var(--neg)'};
+const ST={},LATCH={};
+const M={wires:[],cont:[],loads:[],upd:[],short:false};
 function mk(tag,a,parent){const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);(parent||G).appendChild(e);return e;}
 const X=x=>(x+OX)*U, Y=y=>(H-y)*U;
 const pts=p=>p.map((q,i)=>(i?'L':'M')+X(q[0]).toFixed(1)+' '+Y(q[1]).toFixed(1)).join(' ');
 function L(p,cls='sym',dash){const e=mk('path',{d:pts(p),class:cls});if(dash)e.setAttribute('stroke-dasharray','5 4');return e;}
-function W(p,col,on,rev){mk('path',{d:pts(p),class:'wire',stroke:col});if(on)mk('path',{d:pts(p),class:'flow'+(rev?' rev':'')});}
 function T(x,y,s,anc='start',cls='num'){const e=mk('text',{x:X(x),y:Y(y),'text-anchor':anc,'dominant-baseline':'middle',class:cls});e.textContent=s;return e;}
 function NM(x,y,s){return T(x,y,s,'end','nm');}
-function DOT(x,y,col){mk('circle',{cx:X(x),cy:Y(y),r:3.6,fill:col||'var(--ink)'});}
+function DOT(x,y,t){mk('circle',{cx:X(x),cy:Y(y),r:3.8,fill:t?COL[t]:'var(--ink)',class:'dot'});}
 function RECT(x0,y0,w,h,cls='box'){return mk('rect',{x:X(x0),y:Y(y0+h),width:w*U,height:h*U,class:cls});}
 function CIRC(x,y,r,cls='box'){return mk('circle',{cx:X(x),cy:Y(y),r:r*U,class:cls});}
-function HIT(x0,y0,x1,y1,fn,tip){const r=mk('rect',{x:X(x0),y:Y(y1),width:(x1-x0)*U,height:(y1-y0)*U,class:'hit',tabindex:0,role:'button','aria-label':tip});
-  const t=mk('title',{},r);t.textContent=tip;r.addEventListener('click',()=>{fn();draw();});r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn();draw();}});}
-// contacto NA: borne superior n[0], inferior n[1]
-function NA(x,y,n,nm,closed,opt={}){
-  L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);
-  L(closed?[[x,y+.3],[x-.03,y+.72]]:[[x,y+.3],[x-.3,y+.76]]);
+// ---------- modelo eléctrico ----------
+// cable: tramo entre dos nudos (a = primer punto, b = último punto). t = L | N | P | M
+function wire(a,b,p,t){const base=mk('path',{d:pts(p),class:'wire',stroke:COL[t]});
+  const fw=mk('path',{d:pts(p),class:'flow'}),bw=mk('path',{d:pts(p.slice().reverse()),class:'flow'});
+  M.wires.push({a,b,t,base,fw,bw});}
+// contacto: tramo que se abre o se cierra. vis(closed) mueve la lámina
+function contact(a,b,fn,vis){M.cont.push({a,b,fn,vis:vis||(()=>{}),closed:false});}
+// carga: funciona si un extremo tiene fase (o +12 V) y el otro llega al neutro (o al −)
+function load(a,b,vis){const o={a,b,vis:vis||(()=>{}),on:false};M.loads.push(o);return o;}
+function reach(src,adj){const seen=new Map([[src,null]]),q=[src];
+  while(q.length){const n=q.shift();for(const {to,e} of (adj.get(n)||[]))if(!seen.has(to)){seen.set(to,{p:n,e});q.push(to);}}return seen;}
+function solve(){
+  let rL,rN,rP,rM;
+  for(let k=0;k<40;k++){
+    for(const c of M.cont)c.closed=!!c.fn();
+    const adj=new Map(),add=(a,b,e)=>{if(!adj.has(a))adj.set(a,[]);adj.get(a).push({to:b,e});};
+    for(const w of M.wires){add(w.a,w.b,w);add(w.b,w.a,w);}
+    for(const c of M.cont)if(c.closed){add(c.a,c.b,c);add(c.b,c.a,c);}
+    rL=reach('L',adj);rN=reach('N',adj);rP=reach('P',adj);rM=reach('M',adj);
+    let ch=false;
+    for(const o of M.loads){const on=(rL.has(o.a)&&rN.has(o.b))||(rL.has(o.b)&&rN.has(o.a))||(rP.has(o.a)&&rM.has(o.b))||(rP.has(o.b)&&rM.has(o.a));
+      if(on!==o.on){o.on=on;ch=true;}}
+    if(!ch)break;
+  }
+  M.short=rL.has('N')||rP.has('M');
+  // tensión
+  for(const w of M.wires){const hot=w.t==='L'||w.t==='P';w.base.classList.remove('vL','vP','pale');
+    if(hot){if(rL.has(w.a))w.base.classList.add('vL');else if(rP.has(w.a))w.base.classList.add('vP');else w.base.classList.add('pale');}
+    w.fw.classList.remove('on');w.bw.classList.remove('on');}
+  // corriente: camino desde la fuente hasta cada carga que funciona, y de la carga a la vuelta
+  const mark=(r,start,toSource)=>{let n=start;while(r.get(n)){const {p,e}=r.get(n);
+      if(e.base){const fwd=toSource?(e.a===p):(e.a===n);(fwd?e.fw:e.bw).classList.add('on');}n=p;}};
+  for(const o of M.loads)if(o.on){
+    if(rL.has(o.a)&&rN.has(o.b)){mark(rL,o.a,true);mark(rN,o.b,false);}
+    else if(rL.has(o.b)&&rN.has(o.a)){mark(rL,o.b,true);mark(rN,o.a,false);}
+    else if(rP.has(o.a)&&rM.has(o.b)){mark(rP,o.a,true);mark(rM,o.b,false);}
+    else {mark(rP,o.b,true);mark(rM,o.a,false);}}
+  for(const c of M.cont)c.vis(c.closed);
+  for(const o of M.loads)o.vis(o.on);
+  for(const f of M.upd)f();
+  const e=document.getElementById('estado');if(e&&window.EXPLAIN)e.innerHTML=(M.short?'<p class="alerta">¡Cortocircuito! Q1 dispararía.</p>':'')+EXPLAIN();
+  window.DBG={rL,rN,rP,rM};
+}
+// ---------- entradas ----------
+function HIT(x0,y0,x1,y1,key,tip,type='toggle'){
+  const r=mk('rect',{x:X(x0),y:Y(y1),width:(x1-x0)*U,height:(y1-y0)*U,class:'hit',tabindex:0,role:'button','aria-label':tip,'data-key':key});
+  mk('title',{},r).textContent=tip;
+  const sync=()=>r.setAttribute('aria-pressed',!!ST[key]);M.upd.push(sync);
+  if(type==='toggle'){
+    r.addEventListener('click',()=>{ST[key]=!ST[key];solve();});
+    r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();ST[key]=!ST[key];solve();}});
+  }else{ // pulsador: mantener; doble clic fija; otro clic lo suelta
+    r.addEventListener('pointerdown',e=>{e.preventDefault();r.setPointerCapture(e.pointerId);
+      if(LATCH[key]){LATCH[key]=false;ST[key]=false;}else ST[key]=true;solve();});
+    const up=()=>{if(!LATCH[key]&&ST[key]){ST[key]=false;solve();}};
+    r.addEventListener('pointerup',up);r.addEventListener('pointercancel',up);
+    r.addEventListener('dblclick',()=>{LATCH[key]=true;ST[key]=true;solve();});
+    r.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&!e.repeat){e.preventDefault();ST[key]=true;solve();}});
+    r.addEventListener('keyup',e=>{if(e.key==='Enter'||e.key===' '){if(!LATCH[key]){ST[key]=false;solve();}}});
+  }
+  return r;}
+// ---------- símbolos (se dibujan una vez; devuelven una función que los actualiza) ----------
+function NA(x,y,n,nm,opt={}){L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);const b=L([[x,y+.3],[x-.3,y+.76]]);
   if(opt.cross){L([[x-.07,y+.63],[x+.07,y+.77]]);L([[x-.07,y+.77],[x+.07,y+.63]]);}
-  if(n[0])T(x+.08,y+.87,n[0]); if(n[1])T(x+.08,y+.13,n[1]);
+  if(n[0])T(x+.08,y+.87,n[0]);if(n[1])T(x+.08,y+.13,n[1]);
   let xl=x-.35;
   if(opt.latch){const xa=x-.62,ym=y+.53;L([[x-.15,ym],[xa,ym]],'sym',1);L([[xa,ym-.13],[xa,ym+.13]]);L([[xa,ym-.13],[xa+.08,ym-.13]]);L([[xa,ym+.13],[xa+.08,ym+.13]]);
     const m=(xa+x-.15)/2;L([[m-.07,ym],[m,ym-.09],[m+.07,ym]]);xl=xa-.1;}
+  if(opt.push){const xa=x-.62,ym=y+.53;L([[x-.15,ym],[xa,ym]],'sym',1);L([[xa,ym-.13],[xa,ym+.13]]);L([[xa,ym-.13],[xa+.08,ym-.13]]);L([[xa,ym+.13],[xa+.08,ym+.13]]);xl=xa-.1;}
   if(nm)NM(xl-.05,y+.53,nm);
-}
-function NC(x,y,n,nm,open){
-  L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);L([[x,y+.7],[x+.2,y+.7]]);
-  L(open?[[x,y+.3],[x-.28,y+.74]]:[[x,y+.3],[x+.3,y+.78]]);
-  T(x+.08,y+.9,n[0]);T(x+.08,y+.13,n[1]); if(nm)NM(x-.38,y+.53,nm);
-}
-// conmutado: común arriba (11), 12 abajo-izquierda, 14 abajo-derecha. pos=12|14
-function CONM(x,y,pos,nm,abox){
-  L([[x,y+1],[x,y+.7]]);L([[x-.3,y],[x-.3,y+.3],[x-.1,y+.3]]);L([[x+.3,y],[x+.3,y+.3]]);
-  L(pos==14?[[x,y+.7],[x+.3,y+.3]]:[[x,y+.7],[x-.25,y+.22]]);
-  T(x+.08,y+.9,'11');T(x-.24,y+.1,'12','start','num sm');T(x+.38,y+.1,'14');
-  let xl=x-.45;
+  return c=>b.setAttribute('d',pts(c?[[x,y+.3],[x-.03,y+.72]]:[[x,y+.3],[x-.3,y+.76]]));}
+function NC(x,y,n,nm){L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);L([[x,y+.7],[x+.2,y+.7]]);const b=L([[x,y+.3],[x+.3,y+.78]]);
+  T(x+.08,y+.9,n[0]);T(x+.08,y+.13,n[1]);if(nm)NM(x-.38,y+.53,nm);
+  return c=>b.setAttribute('d',pts(c?[[x,y+.3],[x+.3,y+.78]]:[[x,y+.3],[x-.28,y+.74]]));}
+// conmutado: común arriba (11), 12 abajo-izquierda, 14 abajo-derecha
+function CONM(x,y,nm,abox){L([[x,y+1],[x,y+.7]]);L([[x-.3,y],[x-.3,y+.3],[x-.1,y+.3]]);L([[x+.3,y],[x+.3,y+.3]]);const b=L([[x,y+.7],[x-.25,y+.22]]);
+  T(x+.08,y+.9,'11');T(x-.24,y+.1,'12','start','num sm');T(x+.38,y+.1,'14');let xl=x-.45;
   if(abox){L([[x-.13,y+.47],[x-.55,y+.47]],'sym',1);RECT(x-1.0,y+.3,.44,.34);T(x-.78,y+.47,abox,'middle','num');xl=x-1.02;}
   if(nm)NM(xl-.05,y+.47,nm);
-}
-function COIL(x,y,nm,on){L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);RECT(x-.32,y+.3,.64,.4,on?'box coilon':'box');
-  T(x+.08,y+.86,'A1');T(x+.08,y+.14,'A2');if(nm)NM(x-.42,y+.5,nm);}
-function LAMP(x,y,nm,n,on){L([[x,y],[x,y+.28]]);L([[x,y+.72],[x,y+1]]);
-  if(on)CIRC(x,y+.5,.42,'glow');CIRC(x,y+.5,.22,on?'box lampon':'box');const d=.155;
-  L([[x-d,y+.5-d],[x+d,y+.5+d]]);L([[x-d,y+.5+d],[x+d,y+.5-d]]);
-  if(n){T(x+.08,y+.86,n[0]);T(x+.08,y+.14,n[1]);} if(nm)NM(x-.32,y+.5,nm);}
-function TC(x,y,nm,on,lab){L([[x,y],[x,y+.25]]);L([[x,y+.75],[x,y+1]]);CIRC(x,y+.5,.25,on?'box tcon':'box');
-  DOT(x-.09,y+.5);DOT(x+.09,y+.5);mk('path',{d:pts([[x+.25,y+.5],[x+.5,y+.5]]),class:'pe'});T(x+.52,y+.5,'PE','start','num sm pe-t');
-  T(x+.08,y+.88,'L');T(x+.08,y+.12,'N');if(nm)NM(x-.35,y+.5,nm);
-  }
-function MT2(xa,xb,ytop,closed){const y0=ytop-1;
-  for(const [x,n] of [[xa,['1','2']],[xb,['3','4']]]){NA(x,y0,[n[0],''],null,closed,{cross:true});
+  return pos=>b.setAttribute('d',pts(pos==14?[[x,y+.7],[x+.3,y+.3]]:[[x,y+.7],[x-.25,y+.22]]));}
+function COIL(x,y,nm){L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);const r=RECT(x-.32,y+.3,.64,.4);T(x+.08,y+.86,'A1');T(x+.08,y+.14,'A2');if(nm)NM(x-.42,y+.5,nm);
+  return on=>r.classList.toggle('coilon',on);}
+function LAMP(x,y,nm,n){L([[x,y],[x,y+.28]]);L([[x,y+.72],[x,y+1]]);const g=CIRC(x,y+.5,.42,'glow');const c=CIRC(x,y+.5,.22);const d=.155;
+  L([[x-d,y+.5-d],[x+d,y+.5+d]]);L([[x-d,y+.5+d],[x+d,y+.5-d]]);if(n){T(x+.08,y+.86,n[0]);T(x+.08,y+.14,n[1]);}if(nm)NM(x-.32,y+.5,nm);
+  return on=>{c.classList.toggle('lampon',on);g.classList.toggle('show',on);};}
+function TC(x,y,nm){L([[x,y],[x,y+.25]]);L([[x,y+.75],[x,y+1]]);const c=CIRC(x,y+.5,.25);
+  mk('circle',{cx:X(x-.09),cy:Y(y+.5),r:3.2,fill:'var(--ink)'});mk('circle',{cx:X(x+.09),cy:Y(y+.5),r:3.2,fill:'var(--ink)'});
+  mk('path',{d:pts([[x+.25,y+.5],[x+.5,y+.5]]),class:'pe'});T(x+.52,y+.5,'PE','start','num sm pe-t');T(x+.08,y+.88,'L');T(x+.08,y+.12,'N');if(nm)NM(x-.35,y+.5,nm);
+  return on=>c.classList.toggle('tcon',on);}
+function MT2(xa,xb,ytop){const y0=ytop-1,s=[];
+  for(const [x,n] of [[xa,['1','2']],[xb,['3','4']]]){s.push(NA(x,y0,[n[0],''],null,{cross:true}));
     L([[x,y0],[x,y0-.1]]);RECT(x-.18,y0-.5,.36,.4);L([[x-.08,y0-.4],[x-.08,y0-.2],[x+.08,y0-.2],[x+.08,y0-.4]]);
     L([[x,y0-.5],[x,y0-.6]]);RECT(x-.18,y0-1,.36,.4);T(x,y0-.8,'I>','middle','num sm');L([[x,y0-1],[x,y0-1.2]]);T(x+.08,y0-1.12,n[1]);}
-  const ym=y0+.53;L([[xb-.15,ym],[xa-.6,ym]],'sym',1);L([[xa-.6,ym-.13],[xa-.6,ym+.13]]);NM(xa-.7,ym,'Q1');return y0-1.2;}
-function PIRBOX(cx,cy,pres){RECT(cx-.25,cy-.2,.5,.4);
+  const ym=y0+.53;L([[xb-.15,ym],[xa-.6,ym]],'sym',1);L([[xa-.6,ym-.13],[xa-.6,ym+.13]]);NM(xa-.7,ym,'Q1');
+  return c=>s.forEach(f=>f(c));}
+function PIRBOX(cx,cy){RECT(cx-.25,cy-.2,.5,.4);
   for(const r of [.09,.14,.19]){const a1=125*Math.PI/180,a2=235*Math.PI/180,c=cx+.06;
     mk('path',{d:`M${X(c+r*Math.cos(a1))} ${Y(cy+r*.95*Math.sin(a1))} A${r*U} ${r*.95*U} 0 0 0 ${X(c+r*Math.cos(a2))} ${Y(cy+r*.95*Math.sin(a2))}`,class:'sym thin'});}
   mk('rect',{x:X(cx+.01),y:Y(cy+.08),width:.05*U,height:.16*U,fill:'var(--ink)'});
-  if(pres){T(cx-.42,cy+.45,'🚶','middle','person sm2');}}
+  const p=T(cx-.42,cy+.45,'🚶','middle','person sm2');return v=>p.style.display=v?'':'none';}
 function FRAME(x0,y0,x1,y1){mk('rect',{x:X(x0),y:Y(y1),width:(x1-x0)*U,height:(y1-y0)*U,class:'frame'});}
-// alimentación: Q1 + (S1 general)
-function SUPPLY(xl,ytop,yb,xend,st,gen,cur){const xL=xl,xN=xl+.8;
-  W([[xL,H-.1],[xL,H-.35]],C.L,cur);W([[xN,H-.1],[xN,H-.35]],C.N,cur,true);T(xL,H-.02,'L','middle','rail');T(xN,H-.02,'N','middle','rail');
-  let y=MT2(xL,xN,H-.35,st.q1);const yq=y;HIT(xl-1.45,H-2.6,xN+.25,H-.3,()=>st.q1=!st.q1,'Q1: subir o bajar el magnetotérmico');
-  if(gen){W([[xL,y],[xL,y-.25]],C.L,cur);NA(xL,y-1.25,['13','14'],'S1',st.s1,{latch:true});HIT(xL-.95,y-1.25,xL+.3,y-.25,()=>st.s1=!st.s1,'S1: interruptor general');y=y-1.25;}
-  W([[xL,y],[xL,ytop],[xend,ytop]],C.L,cur);W([[xN,yb],[xN,yq]],C.N,cur);W([[xend,yb],[xN,yb]],C.N,cur);
+// motor de persiana (A1A sube, A1B baja, A2 neutro) y válvula A1-A2, para la práctica 2
+function MOTORP(x,y,nm){CIRC(x,y,.4);T(x,y+.08,'M','middle','num');T(x,y-.14,'1~','middle','num sm');if(nm)NM(x-.47,y,nm);
+  T(x-.28,y+.5,'A1A','start','num sm');T(x+.42,y+.5,'A1B','start','num sm');T(x+.07,y-.52,'A2','start','num sm');
+  const st=T(x,y-.75,'','middle','state');
+  return (u,d)=>{st.textContent=u&&d?'¡subir y bajar a la vez!':u?'▲ subiendo':d?'▼ bajando':'';st.classList.toggle('on',u||d);};}
+function VALV(x,y,nm,sol){L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);const r=RECT(x-.32,y+.3,.64,.4);
+  if(sol)L([[x-.32,y+.3],[x+.32,y+.7]]);L([[x-.32,y+.5],[x-.62,y+.5]],'sym',1);const vx=x-.85,vy=y+.5;
+  mk('path',{d:pts([[vx-.22,vy+.13],[vx-.22,vy-.13],[vx+.22,vy+.13],[vx+.22,vy-.13],[vx-.22,vy+.13]]),class:'sym'});L([[vx,vy],[vx+.23,vy]]);
+  T(x+.08,y+.86,'A1');T(x+.08,y+.14,'A2');if(nm)NM(x-1.15,y+.5,nm);return on=>r.classList.toggle('coilon',on);}
+// ---------- piezas compuestas ----------
+function cNA(a,b,x,y,n,nm,fn,opt){contact(a,b,fn,NA(x,y,n,nm,opt));}
+function cNC(a,b,x,y,n,nm,fn){contact(a,b,fn,NC(x,y,n,nm));}
+function lamp(a,b,x,y,nm){return load(a,b,LAMP(x,y,nm,['X1','X2']));}
+function coil(a,b,x,y,nm){return load(a,b,COIL(x,y,nm));}
+function toma(a,b,x,y,nm){return load(a,b,TC(x,y,nm));}
+// termostato: 11-12 cerrado con frío, 11-14 con calor (clave ST[key] = frío)
+function THERMO(c,n12,n14,x,y,nm,key){const s=CONM(x,y,nm,'t°');contact(c,n12,()=>ST[key],v=>s(v?12:14));contact(c,n14,()=>!ST[key]);
+  const t=T(x-.78,y+.95,'','middle','state');M.upd.push(()=>{t.textContent=ST[key]?'❄ 18 °C':'☀ 25 °C';t.setAttribute('class',ST[key]?'state cold':'state hot');});
+  HIT(x-1.25,y+.15,x-.5,y+.8,key,`Termostato ${nm}: cambiar entre frío y calor`);}
+// alimentación con Q1 (y S1 general). Raíles con tomas: rL(x) y rN(x) dan el nudo del raíl en x
+function SUPPLY(xl,ytop,yb,xend,gen,tapsL,tapsN){const xL=xl,xN=xl+.8;
+  wire('L','q1',[[xL,H-.1],[xL,H-.35]],'L');wire('N','q3',[[xN,H-.1],[xN,H-.35]],'N');
+  T(xL,H-.02,'L','middle','rail');T(xN,H-.02,'N','middle','rail');
+  const s=MT2(xL,xN,H-.35);contact('q1','q2',()=>ST.q1,s);contact('q3','q4',()=>ST.q1);const yq=H-2.55;
+  HIT(xl-1.45,yq-.05,xN+.25,H-.3,'q1','Q1: subir o bajar el magnetotérmico');
+  let top='q2',y=yq;
+  if(gen){wire('q2','s13',[[xL,y],[xL,y-.25]],'L');cNA('s13','s14',xL,y-1.25,['13','14'],'S1',()=>ST.s1,{latch:true});
+    HIT(xL-.95,y-1.25,xL+.3,y-.25,'s1','S1: interruptor general');top='s14';y=y-1.25;}
+  let prev='rL0',px=xL;wire(top,'rL0',[[xL,y],[xL,ytop]],'L');
+  for(const x of [...tapsL].sort((a,b)=>a-b)){wire(prev,'rL'+x,[[px,ytop],[x,ytop]],'L');DOT(x,ytop,'L');prev='rL'+x;px=x;}
+  wire(prev,'rLfin',[[px,ytop],[xend,ytop]],'L');
+  wire('q4','rN0',[[xN,yq],[xN,yb]],'N');prev='rN0';px=xN;
+  for(const x of [...tapsN].sort((a,b)=>a-b)){wire(prev,'rN'+x,[[px,yb],[x,yb]],'N');DOT(x,yb,'N');prev='rN'+x;px=x;}
+  wire(prev,'rNfin',[[px,yb],[xend,yb]],'N');
   T(xend+.1,ytop,'L','start','rail');T(xend+.1,yb,'N','start','rail');}
-function THERMO(x,y,st,pos,nm){CONM(x,y,pos,nm,'t°');
-  T(x-.78,y+.95,st.frio?'❄ 18 °C':'☀ 25 °C','middle',st.frio?'state cold':'state hot');
-  HIT(x-1.25,y+.15,x-.5,y+.8,()=>st.frio=!st.frio,'Termostato: cambiar entre frío y calor');}
-// ===== página =====
-function setup(def){
-  const st=def.state;window.ST=st;
-  window.draw=function(){const svg=document.getElementById('esq');svg.innerHTML='';H=def.H;OX=1.5;
-    svg.setAttribute('viewBox',`0 ${-.45*U} ${(def.W+OX)*U} ${(H+.75)*U}`);G=mk('g',{},svg);def.draw(st);
-    document.getElementById('estado').innerHTML=def.explain(st);};
-  draw();
-  document.getElementById('tema').addEventListener('click',()=>{const r=document.documentElement;const d=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('tema',d)}catch(e){}});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')location.href='index.html';});
-}
-try{const t=localStorage.getItem('tema');if(t)document.documentElement.dataset.theme=t;else if(matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.dataset.theme='dark';}catch(e){}
+const rL=x=>'rL'+x, rN=x=>'rN'+x;
+// detector Niessen: carga L-N + contacto interno (LS) o libre de potencial (R2)
+function DETECTOR(a,b,x,yc,nm){const s=PIRBOX(x,yc);T(x+.08,yc+.33,'L');T(x+.08,yc-.33,'N');const o=load(a,b);
+  M.upd.push(()=>s(ST.pres));return o;}
+// ---------- página ----------
+function setup(def){Object.assign(ST,def.state);H=def.H;OX=1.5;
+  const svg=document.getElementById('esq');svg.setAttribute('viewBox',`0 ${-.45*U} ${(def.W+OX)*U} ${(H+.75)*U}`);G=mk('g',{},svg);
+  def.draw();window.EXPLAIN=def.explain;solve();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')location.href='index.html#animaciones';});
+// ---------- práctica 2: pulsador doble (11-14-24), motor de persiana, válvulas ----------
+function PD(x,ytop,nm){const yj=ytop-.25;L([[x,ytop],[x,yj]]);T(x+.07,ytop-.1,'11');mk('circle',{cx:X(x),cy:Y(yj),r:3.4,fill:'var(--ink)'});L([[x-.6,yj],[x+.6,yj]]);const s=[];
+  for(const [xx,nn,ar] of [[x-.6,'14','▲'],[x+.6,'24','▼']]){L([[xx,yj],[xx,yj-.25]]);L([[xx,yj-.65],[xx,yj-.95]]);const b=L([[xx,yj-.65],[xx-.3,yj-.22]]);
+    T(xx+.07,yj-.82,nn);const xa=xx-.5,ym=yj-.44;L([[xx-.15,ym],[xa,ym]],'sym',1);L([[xa,ym-.13],[xa,ym+.13]]);L([[xa,ym-.13],[xa+.08,ym-.13]]);L([[xa,ym+.13],[xa+.08,ym+.13]]);
+    T(xa+.03,ym+.27,ar,'middle','num sm');s.push(c=>b.setAttribute('d',pts(c?[[xx,yj-.65],[xx-.03,yj-.23]]:[[xx,yj-.65],[xx-.3,yj-.22]])));}
+  NM(x-1.2,yj-.44,nm);return s;}
+// com = nudo del común (arriba); o14/o24 = nudos de salida (abajo). Teclas con ST[k14] y ST[k24]
+function cPD(com,o14,o24,x,ytop,nm,k14,k24){const s=PD(x,ytop,nm),yj=ytop-.25;
+  contact(com,o14,()=>ST[k14],s[0]);contact(com,o24,()=>ST[k24],s[1]);
+  HIT(x-1.2,yj-.75,x-.5,yj-.1,k14,`${nm}: tecla subir (mantén pulsado; doble clic la fija)`,'push');
+  HIT(x,yj-.75,x+.6,yj-.1,k24,`${nm}: tecla bajar (mantén pulsado; doble clic la fija)`,'push');
+  return {o14:[x-.6,yj-.95],o24:[x+.6,yj-.95]};}
+function motorP(a1a,a1b,a2,x,y,nm){const v=MOTORP(x,y,nm),up=load(a1a,a2),dn=load(a1b,a2);M.upd.push(()=>v(up.on,dn.on));return {up,dn};}
+function valv(a,b,x,y,nm,sol){return load(a,b,VALV(x,y,nm,sol));}
+function pulsador(a,b,x,y,n,nm,key){cNA(a,b,x,y,n,nm,()=>ST[key],{push:true});HIT(x-.75,y+.3,x+.1,y+.8,key,`${nm}: pulsador (mantén pulsado; doble clic lo fija)`,'push');}
 
-const on=v=>v?'<b>sí</b>':'no';setup({H:10.4,W:10.8,state:{q1:true,s1:true,pres:false,frio:true},
- draw(st){const yt=6.0,pw=st.q1&&st.s1,r2=pw&&st.pres,ka=r2&&st.frio,x=4.3,xc=5.6,y0=4.75,yc=5.28,yP=4.4;
-  SUPPLY(.8,yt,.5,10.3,st,true,pw);
-  DOT(3.0,yt,C.L);W([[3.0,yt],[3.0,1.85]],C.L,pw);LAMP(3.0,.85,'H1',['X1','X2'],pw);W([[3.0,.85],[3.0,.5]],C.N,pw);DOT(3.0,.5,C.N);
-  DOT(x,yt,C.L);W([[x,yt],[x,yc+.2]],C.L,pw);PIRBOX(x,yc,st.pres);T(x+.08,yc+.33,'L');T(x+.08,yc-.33,'N');W([[x,yc-.2],[x,.5]],C.N,pw);DOT(x,.5,C.N);
-  DOT(xc,yt,C.L);W([[xc,yt],[xc,y0+1]],C.L,r2);NA(xc,y0,['R2','R2'],null,r2);L([[x+.25,yc],[xc-.15,yc]],'sym',1);
-  FRAME(x-.5,y0-.12,xc+.55,y0+1.12);NM(x-.6,yc,'S2');HIT(x-.45,yc-.3,x+.3,yc+.75,()=>st.pres=!st.pres,'Detector S2: pasar por delante o salir');
-  const h3=r2&&!st.frio,yt3=y0-1.25,yh=yt3-.3;
-  W([[xc,y0],[xc,y0-.25]],C.L,r2);THERMO(xc,yt3,st,st.frio?12:14,'S3');
-  W([[xc-.3,yt3],[xc-.3,1.85]],C.L,ka);COIL(xc-.3,.85,'KA1',ka);W([[xc-.3,.85],[xc-.3,.5]],C.N,ka);DOT(xc-.3,.5,C.N);
-  W([[xc+.3,yt3],[xc+.3,yh],[7.0,yh],[7.0,1.85]],C.L,h3);LAMP(7.0,.85,'H3',['X1','X2'],h3);W([[7.0,.85],[7.0,.5]],C.N,h3);DOT(7.0,.5,C.N);
-  DOT(8.4,yt,C.L);W([[8.4,yt],[8.4,yt-.25]],C.L,ka);NA(8.4,yt-1.25,['11','14'],'KA1',ka);W([[8.4,yt-1.25],[8.4,4.45]],C.L,ka);DOT(8.4,4.45,C.L);
-  W([[8.4,4.45],[10.1,4.45]],C.L,ka);W([[8.4,4.45],[8.4,1.85]],C.L,ka);TC(8.4,.85,'TC1',ka,['radiador apagado','radiador calentando']);W([[8.4,.85],[8.4,.5]],C.N,ka);DOT(8.4,.5,C.N);
-  W([[10.1,4.45],[10.1,1.85]],C.L,ka);LAMP(10.1,.85,'H2',['X1','X2'],ka);W([[10.1,.85],[10.1,.5]],C.N,ka);DOT(10.1,.5,C.N);},
- explain(st){const pw=st.q1&&st.s1,r2=pw&&st.pres,ka=r2&&st.frio;let r;
-  if(!st.q1)r='Q1 está bajado: no llega tensión a nada.';else if(!st.s1)r='S1 está abierto: instalación desconectada (H1 apagada).';
-  else if(!st.pres)r='Instalación con tensión (H1). Nadie en la habitación: R2 abierto, no se calienta aunque haga frío.';
-  else if(!st.frio)r='Hay alguien (R2 cerrado) pero hace calor: el termostato pasa a <b>11-14</b> y enciende <b>H3</b>; la bobina de KA1 no tiene tensión.';
+(function(){const b=document.getElementById('tema'),r=document.documentElement;
+const ico=()=>{const d=r.dataset.theme==='dark';b.textContent=d?'☀️':'🌙';b.setAttribute('aria-label',d?'Cambiar a modo claro':'Cambiar a modo oscuro');b.title=b.getAttribute('aria-label');};ico();
+b.addEventListener('click',()=>{const d=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('tema',d)}catch(e){}ico();});})();
+const O={};const si=v=>v?'<b>sí</b>':'no';
+setup({H:10.4,W:10.8,state:{q1:true,s1:true,pres:false,frio:true},
+ draw(){const yt=6.0,yb=.5,x=4.3,xc=5.6,y0=4.75,yc=5.28,yt3=y0-1.25,yh=yt3-.3;
+  SUPPLY(.8,yt,yb,10.3,true,[3.0,4.3,5.6,8.4],[3.0,4.3,5.3,7.0,8.4,10.1]);
+  wire(rL(3.0),'h1',[[3.0,yt],[3.0,1.85]],'L');O.h1=lamp('h1','hn1',3.0,.85,'H1');wire('hn1',rN(3.0),[[3.0,.85],[3.0,.5]],'N');
+  wire(rL(4.3),'d2',[[x,yt],[x,yc+.2]],'L');O.det=DETECTOR('d2','d3',x,yc);wire('d3',rN(4.3),[[x,yc-.2],[x,.5]],'N');
+  wire(rL(5.6),'r1',[[xc,yt],[xc,y0+1]],'L');cNA('r1','r2',xc,y0,['R2','R2'],null,()=>O.det.on&&ST.pres);
+  L([[x+.25,yc],[xc-.15,yc]],'sym',1);FRAME(x-.5,y0-.12,xc+.55,y0+1.12);NM(x-.6,yc,'S2');
+  HIT(x-.45,yc-.3,x+.3,yc+.75,'pres','Detector S2: pasar por delante o salir');
+  wire('r2','t1',[[xc,y0],[xc,y0-.25]],'L');THERMO('t1','t12','t14',xc,yt3,'S3','frio');
+  wire('t12','k1',[[5.3,yt3],[5.3,1.85]],'L');O.ka=coil('k1','kn',5.3,.85,'KA1');wire('kn',rN(5.3),[[5.3,.85],[5.3,.5]],'N');
+  wire('t14','h3',[[5.9,yt3],[5.9,yh],[7.0,yh],[7.0,1.85]],'L');O.h3=lamp('h3','hn3',7.0,.85,'H3');wire('hn3',rN(7.0),[[7.0,.85],[7.0,.5]],'N');
+  wire(rL(8.4),'m1',[[8.4,yt],[8.4,yt-.25]],'L');cNA('m1','m2',8.4,yt-1.25,['11','14'],'KA1',()=>O.ka.on);
+  wire('m2','m',[[8.4,yt-1.25],[8.4,4.45]],'L');DOT(8.4,4.45,'L');
+  wire('m','tc',[[8.4,4.45],[8.4,1.85]],'L');O.tc=toma('tc','tcn',8.4,.85,'TC1');wire('tcn',rN(8.4),[[8.4,.85],[8.4,.5]],'N');
+  wire('m','h2',[[8.4,4.45],[10.1,4.45],[10.1,1.85]],'L');O.h2=lamp('h2','hn2',10.1,.85,'H2');wire('hn2',rN(10.1),[[10.1,.85],[10.1,.5]],'N');},
+ explain(){let r;const pw=ST.q1&&ST.s1;
+  if(!ST.q1)r='Q1 está bajado: no llega tensión a nada.';else if(!ST.s1)r='S1 está abierto: instalación desconectada (H1 apagada).';
+  else if(!ST.pres)r='Instalación con tensión (H1). Nadie en la habitación: R2 abierto, así que del termostato hacia abajo <b>no hay tensión</b> aunque haga frío.';
+  else if(!ST.frio)r='Hay alguien (R2 cerrado) pero hace calor: el termostato pasa a <b>11-14</b> y enciende <b>H3</b>; la bobina de KA1 no tiene tensión.';
   else r='Hay alguien <b>y</b> hace frío: R2 y S3 (11-12) cerrados en serie, <b>KA1 entra</b> y su 11-14 enciende el radiador (TC1) y H2. H3 se apaga.';
-  return `<p>${r}</p><p>H1: ${on(pw)} · H3 (presencia sin demanda de calor): ${on(r2&&!st.frio)} · KA1: ${on(ka)} · TC1 y H2: ${on(ka)}</p>`;}});</script></body></html>
+  return `<p>${r}</p><p>H1: ${si(O.h1.on)} · H3: ${si(O.h3.on)} · KA1: ${si(O.ka.on)} · TC1 y H2: ${si(O.tc.on)}</p>`;}});</script></body></html>
