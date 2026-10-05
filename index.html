@@ -53,6 +53,16 @@ h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 .panel[hidden]{display:none}
 .lista span.prox{display:block;background:var(--paper);border-left:6px solid var(--muted);border-radius:8px;padding:12px 16px;color:var(--muted);opacity:.7}
 .lista span.prox b{display:block}
+/* rúbrica de las prácticas */
+.rub{background:var(--paper);border-left:6px solid var(--accent);border-radius:8px;padding:6px 16px 12px}
+.rub table{border-collapse:collapse;width:100%}
+.rub th,.rub td{border-bottom:1px solid rgba(128,128,128,.35);padding:9px 6px;text-align:left;vertical-align:top}
+.rub thead th{color:var(--muted);font-size:.85rem}
+.rub td b{display:block;color:var(--ink)}
+.rub td{color:var(--muted)}
+.rub .p{text-align:right;white-space:nowrap;font-weight:700;color:var(--head)}
+.rub tr.blq th,.rub tr.blq td{background:var(--bg);color:var(--accent);font-weight:700;letter-spacing:.03em;text-transform:uppercase;font-size:.9rem}
+.rubnota{margin:10px 0 0;color:var(--muted);font-size:.92rem}
 </style></head><body>
 <header><h1>Instalaciones Domóticas · 2MT · I.E.S. Trinidad Arroyo</h1><button id="tema" class="btn" type="button">Claro / oscuro</button></header>
 <main>
@@ -66,7 +76,24 @@ h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 <a href="temas/tema1-sensores-actuadores.pdf"><b>Tema 1 · Sensores y actuadores (PDF)</b>Símbolos, sensores, relés y actuadores del aula.</a></div></section>
 <section class="panel" id="pp" role="tabpanel" hidden><h2>Enunciados de las prácticas</h2><div class="lista">
 <a href="practicas/2MT-P1.pdf"><b>Práctica 1 · Sensores y actuadores (PDF)</b>Termostatos, detector de presencia y relé auxiliar.</a>
-<span class="prox"><b>Práctica 2 · Persianas, electroválvulas y relés</b>Próximamente.</span></div></section>
+<span class="prox"><b>Práctica 2 · Persianas, electroválvulas y relés</b>Próximamente.</span></div>
+<h2>Cómo se valoran las prácticas</h2>
+<div class="rub">
+<table>
+<thead><tr><th scope="col">Qué se mira</th><th scope="col" class="p">Peso</th></tr></thead>
+<tbody>
+<tr class="blq"><th scope="rowgroup">Memoria</th><td class="p">50 %</td></tr>
+<tr><td><b>Presentación</b>Limpieza, orden, esquemas bien dibujados, letra clara.</td><td class="p">20 %</td></tr>
+<tr><td><b>Contenido</b>Está todo lo que se pide y está bien respondido.</td><td class="p">30 %</td></tr>
+<tr class="blq"><th scope="rowgroup">Práctica</th><td class="p">50 %</td></tr>
+<tr><td><b>Acabados</b>Cables de la longitud correcta (ni cortos ni sobrantes), bien metidos en la canaleta y en los bornes (tornillos), sin pisar el aislante y sin cobre a la vista; recorridos ordenados y montaje limpio.</td><td class="p">30 %</td></tr>
+<tr><td><b>Funcionamiento</b>El circuito hace lo que pide el enunciado la primera vez que se enseña al profesor.</td><td class="p">10 %</td></tr>
+<tr><td><b>Medidas</b>Comprobaciones y medidas con el polímetro.</td><td class="p">10 %</td></tr>
+</tbody>
+</table>
+<p class="rubnota">Cada apartado se puntúa de 0 a 10. La nota de la práctica es la suma de cada apartado por su peso.</p>
+</div>
+</section>
 </main>
 <script>try{const t=localStorage.getItem('tema');if(t)document.documentElement.dataset.theme=t;else if(matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.dataset.theme='dark';}catch(e){}
 document.getElementById('tema').addEventListener('click',()=>{const r=document.documentElement;const d=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('tema',d)}catch(e){}});
