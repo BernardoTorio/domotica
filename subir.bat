@@ -69,6 +69,8 @@ echo Archivos que cambian:
 git diff --cached --name-status
 echo.
 git commit -q -m "Actualizacion %date% %time:~0,5%"
+rem Traer lo subido a mano en la web (si gana lo de esta carpeta)
+git pull --no-rebase --no-edit -X ours origin main
 git push -u origin main
 if errorlevel 1 (
   echo.

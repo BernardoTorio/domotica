@@ -78,14 +78,18 @@ h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 <div class="tabs" role="tablist">
 <button class="tab" role="tab" aria-selected="true" aria-controls="animaciones" id="t-animaciones">Animaciones</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="temas" id="t-temas">Temas</button>
-<button class="tab" role="tab" aria-selected="false" aria-controls="practicas" id="t-practicas">Prácticas</button></div>
-<section class="panel" id="animaciones" role="tabpanel"><h2>Práctica 1 · Sensores y actuadores</h2><p class="ayuda">Esquemas animados de las soluciones. Toca los aparatos del esquema para accionarlos y mira qué cables tienen tensión y por dónde circula la corriente.</p>
-<div class="lista"><a href="p1-1.html"><b>1.1 Termostato para calefacción</b>Circuito simple sin relé: el termostato da tensión al radiador.</a><a href="p1-2.html"><b>1.2 Ventilador con señalización</b>Contacto de calor y lámpara en paralelo con el ventilador.</a><a href="p1-3.html"><b>1.3 Calefacción con relé</b>Cómo cambian a la vez el NA y el NC del relé.</a><a href="p1-4.html"><b>1.4 Detector de presencia</b>Detector con crepuscular que enciende tres lámparas sin preactuador.</a><a href="p1-5.html"><b>1.5 Caldeo con presencia y relé</b>Termostato y detector en serie sobre la bobina del relé.</a></div></section>
+<button class="tab" role="tab" aria-selected="false" aria-controls="practicas" id="t-practicas">Prácticas</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="tests" id="t-tests">Tests</button></div>
+<section class="panel" id="animaciones" role="tabpanel"><p class="ayuda">Esquemas animados de las soluciones. Toca los aparatos del esquema para accionarlos y mira qué cables tienen tensión y por dónde circula la corriente.</p>
+<h2>Práctica 1 · Sensores y actuadores</h2><div class="lista"><a href="p1-1.html"><b>1.1 Termostato para calefacción</b>Circuito simple sin relé: el termostato da tensión al radiador.</a><a href="p1-2.html"><b>1.2 Ventilador con señalización</b>Contacto de calor y lámpara en paralelo con el ventilador.</a><a href="p1-3.html"><b>1.3 Calefacción con relé</b>Cómo cambian a la vez el NA y el NC del relé.</a><a href="p1-4.html"><b>1.4 Detector de presencia</b>Detector con crepuscular que enciende tres lámparas sin preactuador.</a><a href="p1-5.html"><b>1.5 Caldeo con presencia y relé</b>Termostato y detector en serie sobre la bobina del relé.</a></div>
+<h2>Práctica 2 · Persianas, electroválvulas y relés</h2><div class="lista"><a href="p2-1.html"><b>2.1 Persiana con permiso nocturno</b>De noche se mueve con el pulsador; de día sube sola. Un relé evita subir y bajar a la vez.</a></div></section>
 <section class="panel" id="temas" role="tabpanel" hidden><h2>Apuntes</h2><div class="lista">
 <a href="temas/tema1-sensores-actuadores.pdf"><b>Tema 1 · Sensores y actuadores (PDF)</b>Símbolos, sensores, relés y actuadores del aula.</a></div></section>
 <section class="panel" id="practicas" role="tabpanel" hidden><h2>Enunciados de las prácticas</h2><div class="lista">
 <a href="practicas/2MT-P1.pdf"><b>Práctica 1 · Sensores y actuadores (PDF)</b>Termostatos, detector de presencia y relé auxiliar.</a>
-<span class="prox"><b>Práctica 2 · Persianas, electroválvulas y relés</b>Próximamente.</span></div></section>
+<a href="practicas/2MT-P2.pdf"><b>Práctica 2 · Persianas, electroválvulas y relés (PDF)</b>Persiana, riego, alarma con memoria, lavadero y búsqueda de averías.</a></div></section>
+<section class="panel" id="tests" role="tabpanel" hidden><p class="ayuda">Tests de repaso con corrección al momento. Cada respuesta te explica por qué.</p><h2>Tests</h2><div class="lista">
+<a href="test_bloque1.html"><b>Test Bloque 1 · Sensores y actuadores</b>90 preguntas del Tema 1 y las Prácticas 1 y 2: medidas con el polímetro, tablas de funcionamiento y averías.</a></div></section>
 </main>
 <script>(function(){const b=document.getElementById('tema'),r=document.documentElement;
 const ico=()=>{const d=r.dataset.theme==='dark';b.textContent=d?'☀️':'🌙';b.setAttribute('aria-label',d?'Cambiar a modo claro':'Cambiar a modo oscuro');b.title=b.getAttribute('aria-label');};ico();

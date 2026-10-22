@@ -1,0 +1,350 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var t=localStorage.getItem('tema');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='light';}})();</script><title>2.1 Persiana nocturna · Domótica 2MT</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet"><style>:root{--paper:#ffffff;--bg:#eef2ea;--ink:#141414;--muted:#4b5563;--fase:#7B3F00;--neutro:#1F5FD0;--pos:#D00000;--neg:#141414;--pe:#3A9A3A;
+--vfase:#C8641E;--vfase-g:rgba(200,100,30,.55);--vpos:#FF1F1F;--vpos-g:rgba(255,31,31,.5);
+--flow:#ffb800;--lamp:#ffd84d;--glow:rgba(255,216,77,.45);--coil:#9ed27a;--tc:#ff9a52;--accent:#4f7f2a;--head:#1F4E79;--hit:rgba(79,127,42,.13);
+--idea:#E2EFDA;--idea-b:#548235;--ojo:#FCE4D6;--ojo-b:#C00000;--taller:#EDE7F6;--taller-b:#6A4C93;--est:#FFF8DB;--est-b:#BF9000;--como:#DDEBF7;--como-b:#2E75B6}
+html[data-theme=dark]{--paper:#1e252d;--bg:#141a20;--ink:#e9edf1;--muted:#a9b4bf;--fase:#c9864a;--neutro:#6fa8ff;--pos:#ff6b6b;--neg:#e9edf1;--pe:#6fcf6f;
+--vfase:#F0974E;--vfase-g:rgba(240,151,78,.6);--vpos:#FF4040;
+--flow:#ffd23f;--hit:rgba(158,210,122,.16);--accent:#9ed27a;--head:#8cc4ff;
+--idea:#22311c;--idea-b:#9ed27a;--ojo:#3a2320;--ojo-b:#ff8a7a;--taller:#2b2540;--taller-b:#c3a8ff;--est:#3a3216;--est-b:#ffd23f;--como:#1c2c3d;--como-b:#7fb6ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',Verdana,sans-serif;font-size:17px;line-height:1.5}
+.barra{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--paper);border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:2}
+.ico{font-size:1.15rem;line-height:1;min-width:42px;height:38px;display:inline-flex;align-items:center;justify-content:center}
+.btn{font:inherit;background:transparent;color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:4px 10px;cursor:pointer;text-decoration:none}
+.btn:hover,.btn:focus-visible{background:var(--hit);outline:none}
+.migas{flex:1;min-width:0;overflow:hidden;white-space:nowrap;direction:rtl;text-align:left;font-size:.98rem}
+.migas>span{direction:ltr;unicode-bidi:isolate}
+.migas a{color:var(--head);text-decoration:none}.migas a:hover{text-decoration:underline}
+.migas b{color:var(--ink)}.migas .sep{color:var(--muted);margin:0 .35em}
+main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
+.cab{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 8px}
+.cab h1{font-size:1.25rem;margin:0;color:var(--head)}
+.tag{background:var(--accent);color:var(--paper);font-weight:700;font-size:.8rem;letter-spacing:.06em;border-radius:6px;padding:2px 9px}
+.ejs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.ejs a{border:2px solid var(--accent);border-radius:8px;padding:3px 12px;color:var(--ink);text-decoration:none;font-weight:700;background:var(--paper)}
+.ejs a[aria-current=page]{background:var(--accent);color:var(--paper)}
+.ejs a:hover,.ejs a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
+.lamina{background:var(--paper);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.08);overflow-x:auto}
+.lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh;touch-action:manipulation}
+.ayuda{color:var(--muted);font-size:.95rem;margin:8px 4px 14px}
+.cajas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.caja{border-left:6px solid;border-radius:6px;padding:10px 14px}
+.caja b.t{display:block;margin-bottom:2px}
+.caja ul{margin:.2em 0;padding-left:1.2em}
+.idea{background:var(--idea);border-color:var(--idea-b)}.idea b.t{color:var(--idea-b)}
+.ojo{background:var(--ojo);border-color:var(--ojo-b)}.ojo b.t{color:var(--ojo-b)}
+.taller{background:var(--taller);border-color:var(--taller-b)}.taller b.t{color:var(--taller-b)}
+.est{background:var(--est);border-color:var(--est-b);grid-column:1/-1}.est b.t{color:var(--est-b)}
+.como{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.como b.t{color:var(--como-b)}
+.caja p{margin:.2em 0}.alerta{color:var(--ojo-b);font-weight:700}
+.vivo{color:var(--vfase);font-weight:700}.vivo12{color:var(--vpos);font-weight:700}.amar{color:#d99a00;font-weight:700}
+/* svg */
+.sym{stroke:var(--ink);stroke-width:2;fill:none;stroke-linecap:round}.thin{stroke-width:1.4}
+.box{stroke:var(--ink);stroke-width:2;fill:var(--paper)}
+.wire{stroke-width:3;fill:none;stroke-linejoin:round;stroke-linecap:round;transition:stroke-width .15s,opacity .15s}
+.wire.vL{stroke:var(--vfase);stroke-width:6;filter:drop-shadow(0 0 3px var(--vfase-g))}
+.wire.vP{stroke:var(--vpos);stroke-width:6;filter:drop-shadow(0 0 3px var(--vpos-g))}
+.wire.pale{opacity:.4}
+.flow{display:none;stroke:var(--flow);stroke-width:3;fill:none;stroke-dasharray:5 11;animation:run .7s linear infinite;stroke-linejoin:round}
+.flow.on{display:inline}
+@keyframes run{to{stroke-dashoffset:-16}}
+@media (prefers-reduced-motion:reduce){.flow{animation:none;stroke-dasharray:none;opacity:.6}}
+.num{font-size:13px;fill:var(--ink)}.sm{font-size:11px}.nm{font-size:15px;font-weight:700;fill:var(--ink)}
+.rail{font-size:15px;font-weight:700;fill:var(--ink)}
+.pe{stroke:var(--pe);stroke-width:1.8;stroke-dasharray:4 3;fill:none}.pe-t{fill:var(--pe)}
+.glow{fill:var(--glow);stroke:none;display:none}.glow.show{display:inline}
+.lampon{fill:var(--lamp)}.coilon{fill:var(--coil)}.tcon{fill:var(--tc)}
+.state{font-size:12px;fill:var(--muted)}.state.on{fill:var(--ojo-b);font-weight:700}.cold{fill:#2f7ad8}.hot{fill:#d9480f}
+.person{font-size:20px}.sm2{font-size:15px}
+.frame{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:7 5}
+.hit{fill:transparent;cursor:pointer;rx:8}
+.hit:hover,.hit:focus-visible{fill:var(--hit);outline:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
+
+/* índice */
+.tabs{display:flex;gap:8px;margin:6px 0 4px;flex-wrap:wrap}
+.tab{font:inherit;font-weight:700;background:var(--paper);color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:6px 16px;cursor:pointer}
+.tab[aria-selected=true]{background:var(--accent);color:var(--paper)}
+.panel[hidden]{display:none}
+.lista{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.lista a,.lista span.prox{display:block;background:var(--paper);border-left:6px solid var(--accent);border-radius:8px;padding:12px 16px;color:var(--ink);text-decoration:none}
+.lista a:hover,.lista a:focus-visible{background:var(--hit);outline:none}
+.lista a b{display:block;color:var(--head)}
+.lista span.prox{border-color:var(--muted);color:var(--muted);opacity:.7}.lista span.prox b{display:block}
+h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
+
+.slat{fill:var(--muted);opacity:.75}.thinb{stroke-width:1.2}
+</style></head><body>
+<header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Práctica 2</a><span class="sep">›</span><b aria-current="page">2.1 Persiana nocturna</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
+<main><div class="cab"><h1>Ejercicio 2.1 · Persiana con permiso nocturno y subida automática de día</h1><span class="tag">SOLUCIÓN</span></div>
+<nav class="ejs" aria-label="Ejercicios de la práctica 2"><a href="p2-1.html" aria-current="page">2.1</a></nav>
+<div class="lamina"><svg id="esq" role="img" aria-label="Esquema multifilar del Ejercicio 2.1 · Persiana con permiso nocturno y subida automática de día"></svg></div>
+<p class="ayuda">Toca <b>Q1</b>, <b>Q2</b>, el sol/luna del crepuscular <b>S2</b> y las teclas ▲ ▼ de <b>S1</b>. Los <b>pulsadores</b> se mantienen pulsados con el ratón o el dedo; con <b>doble clic</b> se quedan fijados y otro clic los suelta. Se pueden pulsar varios a la vez. Esc vuelve al índice.</p>
+<div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>El contacto <b>conmutado</b> del crepuscular reparte la fase: de noche su <b>14</b> da fase al pulsador y a H1; de día su <b>12</b> da fase directamente a la subida (A1A) y a H2. De día el pulsador se queda sin tensión y no hace nada.</p></div><div class="caja ojo"><b class="t">¡OJO!</b><p>Pulsa las <b>dos teclas a la vez</b> de noche: la bobina de <b>KA1</b> entra con la bajada y su <b>NC 11-12</b> corta la subida. Así el motor nunca recibe las dos órdenes a la vez.</p></div><div class="caja taller"><b class="t">EN EL TALLER</b><p>La persiana se para sola arriba y abajo: son sus <b>finales de carrera internos</b>. Fíjate en que el cable de A1A sigue con tensión arriba del todo, pero ya no pasa corriente.</p></div></div></main>
+<script>// ===== Motor de esquemas: nudos, tramos, contactos y cargas =====
+const U=46,NS='http://www.w3.org/2000/svg';
+let H=10,OX=1.5,G;
+const COL={L:'var(--fase)',N:'var(--neutro)',P:'var(--pos)',M:'var(--neg)'};
+const ST={},LATCH={};
+const M={wires:[],cont:[],loads:[],upd:[],short:false};
+function mk(tag,a,parent){const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);(parent||G).appendChild(e);return e;}
+const X=x=>(x+OX)*U, Y=y=>(H-y)*U;
+const pts=p=>p.map((q,i)=>(i?'L':'M')+X(q[0]).toFixed(1)+' '+Y(q[1]).toFixed(1)).join(' ');
+function L(p,cls='sym',dash){const e=mk('path',{d:pts(p),class:cls});if(dash)e.setAttribute('stroke-dasharray','5 4');return e;}
+function T(x,y,s,anc='start',cls='num'){const e=mk('text',{x:X(x),y:Y(y),'text-anchor':anc,'dominant-baseline':'middle',class:cls});e.textContent=s;return e;}
+function NM(x,y,s){return T(x,y,s,'end','nm');}
+function DOT(x,y,t){mk('circle',{cx:X(x),cy:Y(y),r:3.8,fill:t?COL[t]:'var(--ink)',class:'dot'});}
+function RECT(x0,y0,w,h,cls='box'){return mk('rect',{x:X(x0),y:Y(y0+h),width:w*U,height:h*U,class:cls});}
+function CIRC(x,y,r,cls='box'){return mk('circle',{cx:X(x),cy:Y(y),r:r*U,class:cls});}
+// ---------- modelo eléctrico ----------
+// cable: tramo entre dos nudos (a = primer punto, b = último punto). t = L | N | P | M
+function wire(a,b,p,t){const base=mk('path',{d:pts(p),class:'wire',stroke:COL[t]});
+  const fw=mk('path',{d:pts(p),class:'flow'}),bw=mk('path',{d:pts(p.slice().reverse()),class:'flow'});
+  M.wires.push({a,b,t,base,fw,bw});}
+// contacto: tramo que se abre o se cierra. vis(closed) mueve la lámina
+function contact(a,b,fn,vis){M.cont.push({a,b,fn,vis:vis||(()=>{}),closed:false});}
+// carga: funciona si un extremo tiene fase (o +12 V) y el otro llega al neutro (o al −)
+function load(a,b,vis){const o={a,b,vis:vis||(()=>{}),on:false};M.loads.push(o);return o;}
+function reach(src,adj){const seen=new Map([[src,null]]),q=[src];
+  while(q.length){const n=q.shift();for(const {to,e} of (adj.get(n)||[]))if(!seen.has(to)){seen.set(to,{p:n,e});q.push(to);}}return seen;}
+function solve(){
+  let rL,rN,rP,rM;
+  for(let k=0;k<40;k++){
+    for(const c of M.cont)c.closed=!!c.fn();
+    const adj=new Map(),add=(a,b,e)=>{if(!adj.has(a))adj.set(a,[]);adj.get(a).push({to:b,e});};
+    for(const w of M.wires){add(w.a,w.b,w);add(w.b,w.a,w);}
+    for(const c of M.cont)if(c.closed){add(c.a,c.b,c);add(c.b,c.a,c);}
+    rL=reach('L',adj);rN=reach('N',adj);rP=reach('P',adj);rM=reach('M',adj);
+    let ch=false;
+    for(const o of M.loads){const on=(rL.has(o.a)&&rN.has(o.b))||(rL.has(o.b)&&rN.has(o.a))||(rP.has(o.a)&&rM.has(o.b))||(rP.has(o.b)&&rM.has(o.a));
+      if(on!==o.on){o.on=on;ch=true;}}
+    if(!ch)break;
+  }
+  M.short=rL.has('N')||rP.has('M');
+  // tensión
+  for(const w of M.wires){const hot=w.t==='L'||w.t==='P';w.base.classList.remove('vL','vP','pale');
+    if(hot){if(rL.has(w.a))w.base.classList.add('vL');else if(rP.has(w.a))w.base.classList.add('vP');else w.base.classList.add('pale');}
+    w.fw.classList.remove('on');w.bw.classList.remove('on');}
+  // corriente: camino desde la fuente hasta cada carga que funciona, y de la carga a la vuelta
+  const mark=(r,start,toSource)=>{let n=start;while(r.get(n)){const {p,e}=r.get(n);
+      if(e.base){const fwd=toSource?(e.a===p):(e.a===n);(fwd?e.fw:e.bw).classList.add('on');}n=p;}};
+  for(const o of M.loads)if(o.on){
+    if(rL.has(o.a)&&rN.has(o.b)){mark(rL,o.a,true);mark(rN,o.b,false);}
+    else if(rL.has(o.b)&&rN.has(o.a)){mark(rL,o.b,true);mark(rN,o.a,false);}
+    else if(rP.has(o.a)&&rM.has(o.b)){mark(rP,o.a,true);mark(rM,o.b,false);}
+    else {mark(rP,o.b,true);mark(rM,o.a,false);}}
+  for(const c of M.cont)c.vis(c.closed);
+  for(const o of M.loads)o.vis(o.on);
+  for(const f of M.upd)f();
+  const e=document.getElementById('estado');if(e&&window.EXPLAIN)e.innerHTML=(M.short?'<p class="alerta">¡Cortocircuito! Q1 dispararía.</p>':'')+EXPLAIN();
+  window.DBG={rL,rN,rP,rM};
+}
+// ---------- entradas ----------
+function HIT(x0,y0,x1,y1,key,tip,type='toggle'){
+  const r=mk('rect',{x:X(x0),y:Y(y1),width:(x1-x0)*U,height:(y1-y0)*U,class:'hit',tabindex:0,role:'button','aria-label':tip,'data-key':key});
+  mk('title',{},r).textContent=tip;
+  const sync=()=>r.setAttribute('aria-pressed',!!ST[key]);M.upd.push(sync);
+  if(type==='toggle'){
+    r.addEventListener('click',()=>{ST[key]=!ST[key];solve();});
+    r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();ST[key]=!ST[key];solve();}});
+  }else{ // pulsador: mantener; doble clic fija; otro clic lo suelta
+    r.addEventListener('pointerdown',e=>{e.preventDefault();r.setPointerCapture(e.pointerId);
+      if(LATCH[key]){LATCH[key]=false;ST[key]=false;}else ST[key]=true;solve();});
+    const up=()=>{if(!LATCH[key]&&ST[key]){ST[key]=false;solve();}};
+    r.addEventListener('pointerup',up);r.addEventListener('pointercancel',up);
+    r.addEventListener('dblclick',()=>{LATCH[key]=true;ST[key]=true;solve();});
+    r.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&!e.repeat){e.preventDefault();ST[key]=true;solve();}});
+    r.addEventListener('keyup',e=>{if(e.key==='Enter'||e.key===' '){if(!LATCH[key]){ST[key]=false;solve();}}});
+  }
+  return r;}
+// ---------- símbolos (se dibujan una vez; devuelven una función que los actualiza) ----------
+function NA(x,y,n,nm,opt={}){L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);const b=L([[x,y+.3],[x-.3,y+.76]]);
+  if(opt.cross){L([[x-.07,y+.63],[x+.07,y+.77]]);L([[x-.07,y+.77],[x+.07,y+.63]]);}
+  if(n[0])T(x+.08,y+.87,n[0]);if(n[1])T(x+.08,y+.13,n[1]);
+  let xl=x-.35;
+  if(opt.latch){const xa=x-.62,ym=y+.53;L([[x-.15,ym],[xa,ym]],'sym',1);L([[xa,ym-.13],[xa,ym+.13]]);L([[xa,ym-.13],[xa+.08,ym-.13]]);L([[xa,ym+.13],[xa+.08,ym+.13]]);
+    const m=(xa+x-.15)/2;L([[m-.07,ym],[m,ym-.09],[m+.07,ym]]);xl=xa-.1;}
+  if(opt.push){const xa=x-.62,ym=y+.53;L([[x-.15,ym],[xa,ym]],'sym',1);L([[xa,ym-.13],[xa,ym+.13]]);L([[xa,ym-.13],[xa+.08,ym-.13]]);L([[xa,ym+.13],[xa+.08,ym+.13]]);xl=xa-.1;}
+  if(nm)NM(xl-.05,y+.53,nm);
+  return c=>b.setAttribute('d',pts(c?[[x,y+.3],[x-.03,y+.72]]:[[x,y+.3],[x-.3,y+.76]]));}
+function NC(x,y,n,nm){L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);L([[x,y+.7],[x+.2,y+.7]]);const b=L([[x,y+.3],[x+.3,y+.78]]);
+  T(x+.08,y+.9,n[0]);T(x+.08,y+.13,n[1]);if(nm)NM(x-.38,y+.53,nm);
+  return c=>b.setAttribute('d',pts(c?[[x,y+.3],[x+.3,y+.78]]:[[x,y+.3],[x-.28,y+.74]]));}
+// conmutado: común arriba (11), 12 abajo-izquierda, 14 abajo-derecha
+function CONM(x,y,nm,abox){L([[x,y+1],[x,y+.7]]);L([[x-.3,y],[x-.3,y+.3],[x-.1,y+.3]]);L([[x+.3,y],[x+.3,y+.3]]);const b=L([[x,y+.7],[x-.25,y+.22]]);
+  T(x+.08,y+.9,'11');T(x-.24,y+.1,'12','start','num sm');T(x+.38,y+.1,'14');let xl=x-.45;
+  if(abox){L([[x-.13,y+.47],[x-.55,y+.47]],'sym',1);RECT(x-1.0,y+.3,.44,.34);T(x-.78,y+.47,abox,'middle','num');xl=x-1.02;}
+  if(nm)NM(xl-.05,y+.47,nm);
+  return pos=>b.setAttribute('d',pts(pos==14?[[x,y+.7],[x+.3,y+.3]]:[[x,y+.7],[x-.25,y+.22]]));}
+function COIL(x,y,nm){L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);const r=RECT(x-.32,y+.3,.64,.4);T(x+.08,y+.86,'A1');T(x+.08,y+.14,'A2');if(nm)NM(x-.42,y+.5,nm);
+  return on=>r.classList.toggle('coilon',on);}
+function LAMP(x,y,nm,n){L([[x,y],[x,y+.28]]);L([[x,y+.72],[x,y+1]]);const g=CIRC(x,y+.5,.42,'glow');const c=CIRC(x,y+.5,.22);const d=.155;
+  L([[x-d,y+.5-d],[x+d,y+.5+d]]);L([[x-d,y+.5+d],[x+d,y+.5-d]]);if(n){T(x+.08,y+.86,n[0]);T(x+.08,y+.14,n[1]);}if(nm)NM(x-.32,y+.5,nm);
+  return on=>{c.classList.toggle('lampon',on);g.classList.toggle('show',on);};}
+function TC(x,y,nm){L([[x,y],[x,y+.25]]);L([[x,y+.75],[x,y+1]]);const c=CIRC(x,y+.5,.25);
+  mk('circle',{cx:X(x-.09),cy:Y(y+.5),r:3.2,fill:'var(--ink)'});mk('circle',{cx:X(x+.09),cy:Y(y+.5),r:3.2,fill:'var(--ink)'});
+  mk('path',{d:pts([[x+.25,y+.5],[x+.5,y+.5]]),class:'pe'});T(x+.52,y+.5,'PE','start','num sm pe-t');T(x+.08,y+.88,'L');T(x+.08,y+.12,'N');if(nm)NM(x-.35,y+.5,nm);
+  return on=>c.classList.toggle('tcon',on);}
+function MT2(xa,xb,ytop){const y0=ytop-1,s=[];
+  for(const [x,n] of [[xa,['1','2']],[xb,['3','4']]]){s.push(NA(x,y0,[n[0],''],null,{cross:true}));
+    L([[x,y0],[x,y0-.1]]);RECT(x-.18,y0-.5,.36,.4);L([[x-.08,y0-.4],[x-.08,y0-.2],[x+.08,y0-.2],[x+.08,y0-.4]]);
+    L([[x,y0-.5],[x,y0-.6]]);RECT(x-.18,y0-1,.36,.4);T(x,y0-.8,'I>','middle','num sm');L([[x,y0-1],[x,y0-1.2]]);T(x+.08,y0-1.12,n[1]);}
+  const ym=y0+.53;L([[xb-.15,ym],[xa-.6,ym]],'sym',1);L([[xa-.6,ym-.13],[xa-.6,ym+.13]]);NM(xa-.7,ym,'Q1');
+  return c=>s.forEach(f=>f(c));}
+function PIRBOX(cx,cy){RECT(cx-.25,cy-.2,.5,.4);
+  for(const r of [.09,.14,.19]){const a1=125*Math.PI/180,a2=235*Math.PI/180,c=cx+.06;
+    mk('path',{d:`M${X(c+r*Math.cos(a1))} ${Y(cy+r*.95*Math.sin(a1))} A${r*U} ${r*.95*U} 0 0 0 ${X(c+r*Math.cos(a2))} ${Y(cy+r*.95*Math.sin(a2))}`,class:'sym thin'});}
+  mk('rect',{x:X(cx+.01),y:Y(cy+.08),width:.05*U,height:.16*U,fill:'var(--ink)'});
+  const p=T(cx-.42,cy+.45,'🚶','middle','person sm2');return v=>p.style.display=v?'':'none';}
+function FRAME(x0,y0,x1,y1){mk('rect',{x:X(x0),y:Y(y1),width:(x1-x0)*U,height:(y1-y0)*U,class:'frame'});}
+// motor de persiana (A1A sube, A1B baja, A2 neutro) y válvula A1-A2, para la práctica 2
+function MOTORP(x,y,nm){CIRC(x,y,.4);T(x,y+.08,'M','middle','num');T(x,y-.14,'1~','middle','num sm');if(nm)NM(x-.47,y,nm);
+  T(x-.28,y+.5,'A1A','start','num sm');T(x+.42,y+.5,'A1B','start','num sm');T(x+.07,y-.52,'A2','start','num sm');
+  const st=T(x,y-.75,'','middle','state');
+  return (u,d)=>{st.textContent=u&&d?'¡subir y bajar a la vez!':u?'▲ subiendo':d?'▼ bajando':'';st.classList.toggle('on',u||d);};}
+function VALV(x,y,nm,sol){L([[x,y],[x,y+.3]]);L([[x,y+.7],[x,y+1]]);const r=RECT(x-.32,y+.3,.64,.4);
+  if(sol)L([[x-.32,y+.3],[x+.32,y+.7]]);L([[x-.32,y+.5],[x-.62,y+.5]],'sym',1);const vx=x-.85,vy=y+.5;
+  mk('path',{d:pts([[vx-.22,vy+.13],[vx-.22,vy-.13],[vx+.22,vy+.13],[vx+.22,vy-.13],[vx-.22,vy+.13]]),class:'sym'});L([[vx,vy],[vx+.23,vy]]);
+  T(x+.08,y+.86,'A1');T(x+.08,y+.14,'A2');if(nm)NM(x-1.15,y+.5,nm);return on=>r.classList.toggle('coilon',on);}
+// ---------- piezas compuestas ----------
+function cNA(a,b,x,y,n,nm,fn,opt){contact(a,b,fn,NA(x,y,n,nm,opt));}
+function cNC(a,b,x,y,n,nm,fn){contact(a,b,fn,NC(x,y,n,nm));}
+function lamp(a,b,x,y,nm){return load(a,b,LAMP(x,y,nm,['X1','X2']));}
+function coil(a,b,x,y,nm){return load(a,b,COIL(x,y,nm));}
+function toma(a,b,x,y,nm){return load(a,b,TC(x,y,nm));}
+// termostato: 11-12 cerrado con frío, 11-14 con calor (clave ST[key] = frío)
+function THERMO(c,n12,n14,x,y,nm,key){const s=CONM(x,y,nm,'t°');contact(c,n12,()=>ST[key],v=>s(v?12:14));contact(c,n14,()=>!ST[key]);
+  const t=T(x-.78,y+.95,'','middle','state');M.upd.push(()=>{t.textContent=ST[key]?'❄ 18 °C':'☀ 25 °C';t.setAttribute('class',ST[key]?'state cold':'state hot');});
+  HIT(x-1.25,y+.15,x-.5,y+.8,key,`Termostato ${nm}: cambiar entre frío y calor`);}
+// alimentación con Q1 (y S1 general). Raíles con tomas: rL(x) y rN(x) dan el nudo del raíl en x
+function SUPPLY(xl,ytop,yb,xend,gen,tapsL,tapsN){const xL=xl,xN=xl+.8;
+  wire('L','q1',[[xL,H-.1],[xL,H-.35]],'L');wire('N','q3',[[xN,H-.1],[xN,H-.35]],'N');
+  T(xL,H-.02,'L','middle','rail');T(xN,H-.02,'N','middle','rail');
+  const s=MT2(xL,xN,H-.35);contact('q1','q2',()=>ST.q1,s);contact('q3','q4',()=>ST.q1);const yq=H-2.55;
+  HIT(xl-1.45,yq-.05,xN+.25,H-.3,'q1','Q1: subir o bajar el magnetotérmico');
+  let top='q2',y=yq;
+  if(gen){wire('q2','s13',[[xL,y],[xL,y-.25]],'L');cNA('s13','s14',xL,y-1.25,['13','14'],'S1',()=>ST.s1,{latch:true});
+    HIT(xL-.95,y-1.25,xL+.3,y-.25,'s1','S1: interruptor general');top='s14';y=y-1.25;}
+  let prev='rL0',px=xL;wire(top,'rL0',[[xL,y],[xL,ytop]],'L');
+  for(const x of [...tapsL].sort((a,b)=>a-b)){wire(prev,'rL'+x,[[px,ytop],[x,ytop]],'L');DOT(x,ytop,'L');prev='rL'+x;px=x;}
+  wire(prev,'rLfin',[[px,ytop],[xend,ytop]],'L');
+  wire('q4','rN0',[[xN,yq],[xN,yb]],'N');prev='rN0';px=xN;
+  for(const x of [...tapsN].sort((a,b)=>a-b)){wire(prev,'rN'+x,[[px,yb],[x,yb]],'N');DOT(x,yb,'N');prev='rN'+x;px=x;}
+  wire(prev,'rNfin',[[px,yb],[xend,yb]],'N');
+  T(xend+.1,ytop,'L','start','rail');T(xend+.1,yb,'N','start','rail');}
+const rL=x=>'rL'+x, rN=x=>'rN'+x;
+// detector Niessen: carga L-N + contacto interno (LS) o libre de potencial (R2)
+function DETECTOR(a,b,x,yc,nm){const s=PIRBOX(x,yc);T(x+.08,yc+.33,'L');T(x+.08,yc-.33,'N');const o=load(a,b);
+  M.upd.push(()=>s(ST.pres));return o;}
+// ---------- página ----------
+function setup(def){Object.assign(ST,def.state);H=def.H;OX=1.5;
+  const svg=document.getElementById('esq');svg.setAttribute('viewBox',`0 ${-.45*U} ${(def.W+OX)*U} ${(H+.75)*U}`);G=mk('g',{},svg);
+  def.draw();window.EXPLAIN=def.explain;solve();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')location.href='index.html#animaciones';});
+// ---------- práctica 2: pulsador doble (11-14-24), motor de persiana, válvulas ----------
+function PD(x,ytop,nm){const yj=ytop-.25;L([[x,ytop],[x,yj]]);T(x+.07,ytop-.1,'11');mk('circle',{cx:X(x),cy:Y(yj),r:3.4,fill:'var(--ink)'});L([[x-.6,yj],[x+.6,yj]]);const s=[];
+  for(const [xx,nn,ar] of [[x-.6,'14','▲'],[x+.6,'24','▼']]){L([[xx,yj],[xx,yj-.25]]);L([[xx,yj-.65],[xx,yj-.95]]);const b=L([[xx,yj-.65],[xx-.3,yj-.22]]);
+    T(xx+.07,yj-.82,nn);const xa=xx-.5,ym=yj-.44;L([[xx-.15,ym],[xa,ym]],'sym',1);L([[xa,ym-.13],[xa,ym+.13]]);L([[xa,ym-.13],[xa+.08,ym-.13]]);L([[xa,ym+.13],[xa+.08,ym+.13]]);
+    T(xa+.03,ym+.27,ar,'middle','num sm');s.push(c=>b.setAttribute('d',pts(c?[[xx,yj-.65],[xx-.03,yj-.23]]:[[xx,yj-.65],[xx-.3,yj-.22]])));}
+  NM(x-1.2,yj-.44,nm);return s;}
+// com = nudo del común (arriba); o14/o24 = nudos de salida (abajo). Teclas con ST[k14] y ST[k24]
+function cPD(com,o14,o24,x,ytop,nm,k14,k24){const s=PD(x,ytop,nm),yj=ytop-.25;
+  contact(com,o14,()=>ST[k14],s[0]);contact(com,o24,()=>ST[k24],s[1]);
+  HIT(x-1.2,yj-.75,x-.5,yj-.1,k14,`${nm}: tecla subir (mantén pulsado; doble clic la fija)`,'push');
+  HIT(x,yj-.75,x+.6,yj-.1,k24,`${nm}: tecla bajar (mantén pulsado; doble clic la fija)`,'push');
+  return {o14:[x-.6,yj-.95],o24:[x+.6,yj-.95]};}
+function motorP(a1a,a1b,a2,x,y,nm){const v=MOTORP(x,y,nm),up=load(a1a,a2),dn=load(a1b,a2);M.upd.push(()=>v(up.on,dn.on));return {up,dn};}
+function valv(a,b,x,y,nm,sol){return load(a,b,VALV(x,y,nm,sol));}
+function pulsador(a,b,x,y,n,nm,key){cNA(a,b,x,y,n,nm,()=>ST[key],{push:true});HIT(x-.75,y+.3,x+.1,y+.8,key,`${nm}: pulsador (mantén pulsado; doble clic lo fija)`,'push');}
+
+
+// ===== Ampliación práctica 2: 12 V, sensores de 5 hilos, detector, motor con finales de carrera =====
+let YP=0,YM=0,YT=0,YB=0;const TAPS=[];
+function MTn(xa,xb,ytop,nm){const y0=ytop-1,s=[];
+  for(const [x,n] of [[xa,['1','2']],[xb,['3','4']]]){s.push(NA(x,y0,[n[0],''],null,{cross:true}));
+    L([[x,y0],[x,y0-.1]]);RECT(x-.18,y0-.5,.36,.4);L([[x-.08,y0-.4],[x-.08,y0-.2],[x+.08,y0-.2],[x+.08,y0-.4]]);
+    L([[x,y0-.5],[x,y0-.6]]);RECT(x-.18,y0-1,.36,.4);T(x,y0-.8,'I>','middle','num sm');L([[x,y0-1],[x,y0-1.2]]);T(x+.08,y0-1.12,n[1]);}
+  const ym=y0+.53;L([[xb-.15,ym],[xa-.6,ym]],'sym',1);L([[xa-.6,ym-.13],[xa-.6,ym+.13]]);NM(xa-.7,ym,nm);
+  return c=>s.forEach(f=>f(c));}
+// alimentación de 12 Vcc (fuente común del aula) con Q2 y barras +12 V / 0 V hacia la izquierda
+function DC(xq){const xa=xq-.35,xb=xq+.35;
+  wire('P','dp1',[[xa,H-.1],[xa,H-.35]],'P');wire('M','dm1',[[xb,H-.1],[xb,H-.35]],'M');
+  T(xa,H-.02,'+12 V','middle','rail');T(xb+.2,H-.02,'0 V','middle','rail');
+  const s=MTn(xa,xb,H-.35,'Q2');contact('dp1','dp2',()=>ST.q2,s);contact('dm1','dm2',()=>ST.q2);
+  HIT(xa-1.45,H-2.6,xb+.25,H-.3,'q2','Q2: subir o bajar el magnetotérmico de 12 V');
+  const yq=H-2.55,tp=[...TAPS].sort((a,b)=>b-a);
+  wire('dp2','pB0',[[xa,yq],[xa,YP]],'P');wire('dm2','mB0',[[xb,yq],[xb,YM]],'M');
+  let pp='pB0',px=xa,pm='mB0',mx=xb;
+  tp.forEach((x,i)=>{const last=i==tp.length-1;
+    wire(pp,'pB'+x,[[px,YP],[x,YP]],'P');if(!last)DOT(x,YP,'P');pp='pB'+x;px=x;
+    wire(pm,'mB'+x,[[mx,YM],[x+.24,YM]],'M');if(!last)DOT(x+.24,YM,'M');pm='mB'+x;mx=x+.24;});}
+// pictogramas del libro: gota y sol/luna, sin letras
+function ICO(cx,cy,kind,w){RECT(cx-w/2,cy-.2,w,.4);
+  if(kind==='drop'){const s=.13,r=.5*s,c=[cx,cy-.25*s];let p=[[cx,cy+.75*s]];
+    for(let k=0;k<=40;k++){const a=(30-240*k/40)*Math.PI/180;p.push([c[0]+r*Math.cos(a),c[1]+r*Math.sin(a)]);}
+    mk('path',{d:pts(p)+'Z',class:'sym thin'});}
+  else{const sx=cx-.12,r=.045;CIRC(sx,cy,r,'box thinb');for(let k=0;k<8;k++){const a=k*Math.PI/4;L([[sx+1.6*r*Math.cos(a),cy+1.6*r*Math.sin(a)],[sx+2.5*r*Math.cos(a),cy+2.5*r*Math.sin(a)]],'sym thin');}
+    const mx=cx+.13,mr=.075;mk('circle',{cx:X(mx),cy:Y(cy),r:mr*U,fill:'var(--ink)'});mk('circle',{cx:X(mx+.45*mr),cy:Y(cy+.2*mr),r:.85*mr*U,fill:'var(--paper)'});}}
+// sensor de 5 hilos (crepuscular o inundación): + y − a 12 V, contacto seco conmutado 11-12-14.
+// key: ST[key]=true → es de noche / hay agua. Sin alimentación el relé está en reposo (11-12).
+function SENS5(c,n12,n14,x,y,kind,nm,key){const s=CONM(x,y),w=kind==='crep'?.62:.5,cx=x-.55-w/2,yc=y+.47;
+  L([[x-.13,yc],[x-.55,yc]],'sym',1);ICO(cx,yc,kind,w);
+  const xp=cx-.12,xm=cx+.12;TAPS.push(xp);
+  wire('pB'+xp,nm+'p',[[xp,YP],[xp,yc+.2]],'P');wire('mB'+xp,nm+'m',[[xm,YM],[xm,yc+.2]],'M');
+  T(xp-.05,yc+.33,'+','end','num');T(xm+.05,yc+.33,'−','start','num');
+  const o=load(nm+'p',nm+'m');const act=()=>o.on&&ST[key];
+  contact(c,n14,act,v=>s(v?14:12));contact(c,n12,()=>!act());
+  FRAME(cx-w/2-.12,y-.05,x+.5,y+1.05);NM(cx-w/2-.2,yc,nm);
+  const st=T(cx,y-.22,'','middle','state');
+  M.upd.push(()=>{st.textContent=kind==='crep'?(ST[key]?'🌙 noche':'☀️ día'):(ST[key]?'💧 agua':'seco');st.setAttribute('class','state'+(ST[key]?' on':''));});
+  HIT(cx-w/2-.05,yc-.28,cx+w/2+.05,yc+.28,key,kind==='crep'?`${nm}: cambiar entre día y noche`:`${nm}: poner o quitar agua en la sonda`);
+  return o;}
+// detector de presencia Niessen como un solo aparato: L arriba al raíl, N abajo, contacto R2 libre de potencial
+function DET(a,b,x,y,nm){const bx=x-.85,yc=y+.53;const sR=NA(x,y,['R2','R2']);
+  const ps=PIRBOX(bx,yc);T(bx+.08,yc+.33,'L');T(bx+.08,yc-.33,'N');L([[bx+.25,yc],[x-.15,yc]],'sym',1);
+  wire(rL(bx),nm+'L',[[bx,YT],[bx,yc+.2]],'L');wire(nm+'N',rN(bx),[[bx,yc-.2],[bx,YB]],'N');const o=load(nm+'L',nm+'N');
+  contact(a,b,()=>o.on&&ST.pres,sR);
+  FRAME(bx-.4,y-.05,x+.55,y+1.05);NM(bx-.45,yc,nm);
+  HIT(bx-.38,yc-.3,bx+.3,yc+.75,'pres',`Detector ${nm}: pasar por delante o salir`);
+  M.upd.push(()=>ps(ST.pres));return o;}
+// motor de persiana con finales de carrera internos y posición animada
+function MOTORX(a1a,a1b,a2,x,y,nm,xw){const v=MOTORP(x,y,nm);G.lastChild.style.display='none';
+  contact(a1a,nm+'iu',()=>ST.pos<100);contact(a1b,nm+'id',()=>ST.pos>0);
+  const up=load(nm+'iu',a2),dn=load(nm+'id',a2);
+  const w0=xw,y0=y-.45;RECT(w0,y0,.75,.95,'box');const sl=[];for(let k=0;k<7;k++)sl.push(mk('rect',{x:X(w0+.04),y:Y(y0+.9-k*.13),width:.67*U,height:.1*U,class:'slat'}));
+  T(w0+.375,y0+1.12,'persiana','middle','state');const pt=T(w0+.375,y0+1.34,'','middle','state');
+  M.upd.push(()=>{v(up.on,dn.on);const n=Math.round((100-ST.pos)/100*7);sl.forEach((r,i)=>r.style.display=i<n?'':'none');
+    const mv=up.on&&dn.on?'¡subir y bajar a la vez! ':up.on?'▲ subiendo · ':dn.on?'▼ bajando · ':'';pt.textContent=mv+(ST.pos>=100?'arriba del todo':ST.pos<=0?'abajo del todo':ST.pos+' %');pt.setAttribute('class','state'+(up.on||dn.on?' on':''));});
+  setInterval(()=>{const u=up.on,d=dn.on;if(u===d)return;const p=Math.max(0,Math.min(100,ST.pos+(u?5:-5)));if(p!==ST.pos){ST.pos=p;solve();}},150);
+  return {up,dn};}
+
+(function(){const b=document.getElementById('tema'),r=document.documentElement;
+const ico=()=>{const d=r.dataset.theme==='dark';b.textContent=d?'☀️':'🌙';b.setAttribute('aria-label',d?'Cambiar a modo claro':'Cambiar a modo oscuro');b.title=b.getAttribute('aria-label');};ico();
+b.addEventListener('click',()=>{const d=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('tema',d)}catch(e){}ico();});})();
+
+const O={};const si=v=>v?'<b>sí</b>':'no';
+setup({H:10.2,W:14.2,state:{q1:true,q2:true,noche:false,s14:false,s24:false,pos:50},
+ draw(){const yt=7.2,yb=.5;YT=yt;YB=yb;YP=yt+.38;YM=yt+.2;
+  SUPPLY(.8,yt,yb,13.7,false,[5.0],[4.7,7.5,9.3,10.6]);
+  const x=5.0,y0=yt-1.45,yN=y0-.35,yD=2.65;
+  wire(rL(5),'c',[[x,yt],[x,y0+1]],'L');O.s2=SENS5('c','c12','c14',x,y0,'crep','S2','noche');
+  wire('c14','j1',[[5.3,y0],[5.3,yN],[7.5,yN]],'L');DOT(7.5,yN,'L');
+  wire('j1','h1',[[7.5,yN],[10.6,yN],[10.6,1.85]],'L');O.h1=lamp('h1','h1n',10.6,.85,'H1');wire('h1n',rN(10.6),[[10.6,.85],[10.6,.5]],'N');
+  const o=cPD('j1','p14','p24',7.5,yN,'S1','s14','s24');
+  wire('p14','k11',[[6.9,o.o14[1]],[6.9,4.0]],'L');cNC('k11','k12',6.9,3.0,['11','12'],'KA1',()=>!O.ka.on);
+  wire('c12','d1',[[4.7,y0],[4.7,yD]],'L');DOT(4.7,yD,'L');wire('d1','dA',[[4.7,yD],[6.9,yD]],'L');DOT(6.9,yD,'L');wire('k12','dA',[[6.9,3.0],[6.9,yD]],'L');
+  wire('d1','h2',[[4.7,yD],[4.7,1.85]],'L');O.h2=lamp('h2','h2n',4.7,.85,'H2');wire('h2n',rN(4.7),[[4.7,.85],[4.7,.5]],'N');
+  wire('dA','mA',[[6.9,yD],[6.9,2.1],[7.15,1.85],[7.15,1.58]],'L');
+  wire('p24','b1',[[8.1,o.o24[1]],[8.1,3.6]],'L');DOT(8.1,3.6,'L');wire('b1','mB',[[8.1,3.6],[8.1,2.1],[7.85,1.85],[7.85,1.58]],'L');
+  wire('b1','kc',[[8.1,3.6],[9.3,3.6],[9.3,1.85]],'L');O.ka=coil('kc','kn',9.3,.85,'KA1');wire('kn',rN(9.3),[[9.3,.85],[9.3,.5]],'N');
+  O.m=MOTORX('mA','mB','mN',7.5,1.25,'M1',5.5);wire('mN',rN(7.5),[[7.5,.85],[7.5,.5]],'N');
+  DC(12.8);},
+ explain(){let r;const up=O.m.up.on,dn=O.m.dn.on;
+  if(!ST.q1)r='Q1 está bajado: no hay 230 V en el panel.';
+  else if(!ST.q2)r='Q2 está bajado: el crepuscular no tiene 12 V, su relé está en reposo (<b>11-12</b> cerrado) y la instalación funciona como si fuera de día.';
+  else if(!ST.noche)r='Es de <b>día</b>: S2 cierra 11-12, H2 se enciende y la fase llega directamente a <b>A1A</b>. '+(up?'La persiana <b>sube</b>.':'La persiana ya está <b>arriba del todo</b>: su final de carrera ha cortado el motor.')+' El pulsador no tiene tensión.';
+  else if(ST.s14&&ST.s24)r='De noche con <b>las dos teclas</b>: KA1 entra con la bajada y su NC 11-12 corta la subida. La persiana '+(dn?'<b>baja</b>.':'está abajo del todo.');
+  else if(ST.s24)r='De noche, tecla ▼: llega fase a <b>A1B</b> y a la bobina de KA1. '+(dn?'La persiana <b>baja</b>.':'La persiana ya está abajo del todo.');
+  else if(ST.s14)r='De noche, tecla ▲: la fase pasa por el NC de KA1 hasta <b>A1A</b>. '+(up?'La persiana <b>sube</b>.':'La persiana ya está arriba del todo.');
+  else r='Es de <b>noche</b>: S2 cierra 11-14, H1 indica que el mando manual está permitido. Pulsa ▲ o ▼.';
+  return `<p>${r}</p><p>Noche: ${si(ST.noche)} · H1: ${si(O.h1.on)} · H2: ${si(O.h2.on)} · KA1: ${si(O.ka.on)} · Sube: ${si(up)} · Baja: ${si(dn)}</p>`;}});</script></body></html>
