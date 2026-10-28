@@ -96,6 +96,13 @@ h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 .sensor{fill:var(--paper);stroke:var(--ink);stroke-width:2.5}
 .inner{fill:none;stroke:var(--muted);stroke-width:1.4;stroke-dasharray:6 4}
 .pieza{fill:#9aa7b4;stroke:var(--ink);stroke-width:2;cursor:pointer;transition:transform .35s}
+.est svg text{}
+.sol{fill:#ffcc33;stroke:#c98a00;stroke-width:2}.luna{fill:#c9d3e0;stroke:var(--ink);stroke-width:1.5}.cielo{stroke:none}
+.mando{fill:var(--paper);stroke:var(--ink);stroke-width:2;cursor:pointer}.btnm{fill:#d33;stroke:var(--ink);stroke-width:1.5}
+.onda{fill:none;stroke:#2e75b6;stroke-width:2.2}
+.agua{fill:#5aa9ff;opacity:.75}.deposito{fill:none;stroke:var(--ink);stroke-width:2.5}
+.estim{cursor:pointer}
+#bEst{display:grid;grid-template-columns:1fr 1fr}
 .campo{fill:none;stroke:var(--accent);stroke-width:1.6;opacity:.55}
 .ledS{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}.ledS.on{fill:var(--lamp)}
 .corto{stroke:var(--ojo-b);stroke-width:3;stroke-dasharray:6 4;fill:none}
@@ -110,24 +117,30 @@ h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 <div class="panelc">
  <h3>Tipo de sensor</h3><div class="seg" id="bTipo"><button data-v="P">PNP</button><button data-v="N">NPN</button></div>
  <h3>¿Dónde va la carga?</h3><div class="seg" id="bCarga"><button data-v="M">Entre negro y 0 V<br><small>(entrada del LOGO!)</small></button><button data-v="P">Entre +24 V y negro</button></div>
- <h3>Pieza</h3><div class="seg" id="bPieza"><button data-v="1">Acercar</button><button data-v="0">Alejar</button></div>
+ <h3>Qué detecta el sensor</h3><div class="seg" id="bEst"><button data-v="ind">Metal</button><button data-v="luz">Luz</button><button data-v="radio">Radio</button><button data-v="cap">Nivel</button></div>
+ <h3 id="hEst">Estímulo</h3><div class="seg" id="bPieza"><button data-v="1">Acercar</button><button data-v="0">Alejar</button></div>
  <h3>Avería</h3><div class="seg" id="bCorto"><button data-v="0">Sin avería</button><button data-v="1" class="mal">Negro a masa</button></div>
  <div class="medida">Polímetro V⎓ entre el <b>negro</b> y el <b>0 V</b>:<div class="v" id="vm">0 V</div></div>
  <div class="leds"><span><span class="led" id="ledS"></span>Detecta</span><span><span class="led" id="ledC"></span>Carga</span></div>
 </div></div>
-<p class="ayuda">Toca la <b>pieza</b> de metal para acercarla o alejarla del sensor (tecla <b>espacio</b>). Cambia el tipo de sensor (<b>P</b>), dónde va la carga (<b>C</b>) y prueba la avería (<b>A</b>). Esc vuelve al índice.</p>
+<p class="ayuda">Elige <b>qué detecta</b> el sensor: metal, luz (crepuscular), una señal de radio o el nivel de un depósito (tecla <b>E</b>). Toca el <b>estímulo</b> en el dibujo o pulsa <b>espacio</b> para activarlo. Cambia el tipo de sensor (<b>P</b>), dónde va la carga (<b>C</b>) y prueba la avería (<b>A</b>). Esc vuelve al índice.</p>
 <div class="cajas">
 <div class="caja como"><b class="t">Cómo funciona esta animación</b><p>Un sensor de 3 hilos <b>no tiene contacto</b>: dentro lleva un <b>transistor</b> que hace de interruptor. Lo dibujamos como un interruptor dentro del sensor. Los cables tienen siempre los mismos colores: <b>BN marrón</b> al +, <b>BU azul</b> al 0 V y <b>BK negro</b> es la salida. Los cables con tensión se ven más gruesos y la corriente es la línea amarilla que se mueve.</p></div>
 <div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div>
-<div class="caja idea"><b class="t">IDEA CLAVE</b><p><b>PNP</b>: al detectar <b>da +24 V</b> por el negro → la carga va entre el negro y el <b>0 V</b>.</p><p><b>NPN</b>: al detectar <b>une el negro con el 0 V</b> → la carga va entre el <b>+24 V</b> y el negro.</p><p>La entrada del LOGO! es una carga hacia M (0 V): por eso solo funciona con <b>PNP</b>.</p></div>
-<div class="caja ojo"><b class="t">¿POR QUÉ CASI SIEMPRE PNP?</b><ul><li><b>Seguridad</b>: en las máquinas el 0 V va unido al chasis (a tierra). Si el cable negro roza el chasis, con un <b>PNP</b> la entrada se queda a <b>0</b> (no pasa nada); con un <b>NPN</b> la entrada se <b>activa sola</b>, como si hubiera pieza. Pruébalo con «Negro a masa».</li><li><b>Se entiende mejor</b>: «hay 24 V» = detecta. Con el polímetro se ve a la primera.</li><li>Los <b>autómatas europeos</b> (como el LOGO!) tienen entradas pensadas para PNP. En Asia y América se ve más NPN.</li></ul></div>
-<div class="caja taller"><b class="t">EN EL TALLER</b><p>Mira la <b>pegatina</b> del sensor: pone <b>PNP</b> o <b>NPN</b> y si es <b>NO</b> (NA) o <b>NC</b>. Casi todos llevan un <b>led</b> que se enciende al detectar: si el led se enciende pero la entrada no cambia, mide con el polímetro entre el negro y el 0 V.</p></div>
+<div class="caja idea"><b class="t">IDEA CLAVE</b><p><b>PNP</b>: al detectar <b>da +24 V</b> por el negro → la carga va entre el negro y el <b>0 V</b>.</p><p><b>NPN</b>: al detectar <b>une el negro con el 0 V</b> → la carga va entre el <b>+24 V</b> y el negro.</p><p>La entrada del LOGO! es una carga hacia M (0 V): por eso solo funciona con <b>PNP</b>.</p><p><b>Da igual qué detecte el sensor</b> (metal, luz, radio, agua…): la salida PNP o NPN funciona exactamente igual. Lo que cambia es solo la «cara» del sensor.</p></div>
+<div class="caja ojo"><b class="t">¿POR QUÉ CASI SIEMPRE PNP?</b><ul><li><b>Seguridad</b>: en las máquinas el 0 V va unido al chasis (a tierra). Si el cable negro roza el chasis, con un <b>PNP</b> la entrada se queda a <b>0</b> (no pasa nada); con un <b>NPN</b> la entrada se <b>activa sola</b>, como si detectara. Pruébalo con «Negro a masa».</li><li><b>Se entiende mejor</b>: «hay 24 V» = detecta. Con el polímetro se ve a la primera.</li><li>Los <b>autómatas europeos</b> (como el LOGO!) tienen entradas pensadas para PNP. En Asia y América se ve más NPN.</li></ul></div>
+<div class="caja taller"><b class="t">EN EL TALLER</b><p>Los crepusculares y de inundación del aula son de <b>5 hilos con contacto seco</b> (relé), no de transistor: por eso valen para 230 V y para 12 V. Los de 3 hilos PNP/NPN solo sirven en <b>continua</b>.</p><p>Mira la <b>pegatina</b> del sensor: pone <b>PNP</b> o <b>NPN</b> y si es <b>NO</b> (NA) o <b>NC</b>. Casi todos llevan un <b>led</b> que se enciende al detectar: si el led se enciende pero la entrada no cambia, mide con el polímetro entre el negro y el 0 V.</p></div>
 </div></main>
 <script>
 const NS='http://www.w3.org/2000/svg',svg=document.getElementById('esq');
 function mk(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;}
 function tx(x,y,s,cls,anc){const e=mk('text',{x,y,class:cls||'num','text-anchor':anc||'start','dominant-baseline':'middle'});e.textContent=s;return e;}
-const ST={tipo:'P',carga:'M',pieza:false,corto:false};
+const ST={tipo:'P',carga:'M',pieza:false,corto:false,est:'ind'};
+const EST={
+ ind:{nom:'Sensor inductivo',si:'Acercar',no:'Alejar',h:'Pieza de metal',hay:'detecta la pieza',sin:'sin pieza',act:'Acerca la pieza'},
+ luz:{nom:'Sensor crepuscular',si:'Noche',no:'Día',h:'Luz ambiente',hay:'es de noche',sin:'de día',act:'Haz que sea de noche'},
+ radio:{nom:'Receptor de radio',si:'Pulsar mando',no:'Soltar',h:'Mando a distancia',hay:'recibe la señal del mando',sin:'sin señal del mando',act:'Pulsa el mando'},
+ cap:{nom:'Sensor capacitivo de nivel',si:'Llenar',no:'Vaciar',h:'Depósito de agua',hay:'detecta el agua',sin:'con el depósito vacío',act:'Llena el depósito'}};
 try{const t=new URLSearchParams(location.search).get('tipo');if(t==='N')ST.tipo='N';}catch(e){}
 const YP=60,YM=460;
 function draw(){
@@ -145,17 +158,37 @@ function draw(){
   if(ST.corto){mk('path',{d:`M820 ${YM} v14 M806 ${YM+14} h28 M811 ${YM+20} h18 M816 ${YM+26} h8`,class:'sym'});tx(842,YM+18,'chasis','cable');}
   // ---- sensor
   mk('rect',{x:120,y:160,width:200,height:200,rx:14,class:'sensor'});
-  tx(220,147,'Sensor '+(P?'PNP':'NPN'),'nm','middle');
+  tx(220,147,EST[ST.est].nom+' '+(P?'PNP':'NPN'),'nm','middle');
   mk('circle',{cx:300,cy:180,r:7,class:'ledS'+(det?' on':'')});tx(290,180,'led','cable','end');
-  // cara activa y campo
+  const E=EST[ST.est];
   mk('rect',{x:112,y:200,width:10,height:120,fill:'var(--ink)'});
-  for(const r of [26,46,66])mk('path',{d:`M112 ${260-r} A ${r} ${r} 0 0 0 112 ${260+r}`,class:'campo'});
-  // pieza
-  const g=mk('g',{class:'pieza',tabindex:0,role:'button','aria-label':'Pieza de metal: acercar o alejar'});
-  mk('rect',{x:det?72:8,y:225,width:34,height:70,rx:4,class:'pieza'},g);
-  tx(det?89:25,310,'pieza','cable','middle');
-  g.addEventListener('click',()=>{ST.pieza=!ST.pieza;draw();});
-  g.addEventListener('keydown',e=>{if(e.key==='Enter'){ST.pieza=!ST.pieza;draw();}});
+  const g=mk('g',{class:'estim',tabindex:0,role:'button','aria-label':E.h+': '+(det?E.no:E.si)});
+  const tog=()=>{ST.pieza=!ST.pieza;draw();};
+  g.addEventListener('click',tog);g.addEventListener('keydown',e=>{if(e.key==='Enter')tog();});
+  if(ST.est==='ind'){
+    for(const r of [26,46,66])mk('path',{d:`M112 ${260-r} A ${r} ${r} 0 0 0 112 ${260+r}`,class:'campo'});
+    mk('rect',{x:det?72:8,y:225,width:34,height:70,rx:4,class:'pieza'},g);
+    const t=tx(det?89:25,310,'pieza','cable','middle');g.appendChild(t);
+  }else if(ST.est==='luz'){
+    mk('rect',{x:10,y:170,width:96,height:180,rx:10,class:'cielo',fill:det?'#1d2a4a':'#cfe8ff'},g);
+    if(det){mk('path',{d:'M70 215 a28 28 0 1 0 22 46 a22 22 0 1 1 -22 -46 z',class:'luna'},g);
+      for(const [x,y] of [[28,190],[40,300],[85,320],[22,250]])mk('circle',{cx:x,cy:y,r:2,fill:'#fff'},g);}
+    else{mk('circle',{cx:58,cy:255,r:20,class:'sol'},g);for(let k=0;k<8;k++){const an=k*Math.PI/4;mk('path',{d:`M${58+27*Math.cos(an)} ${255+27*Math.sin(an)} L${58+38*Math.cos(an)} ${255+38*Math.sin(an)}`,stroke:'#c98a00','stroke-width':3},g);}}
+    const t=tx(58,340,det?'noche':'día','cable','middle');t.setAttribute('fill',det?'#fff':'var(--ink)');g.appendChild(t);
+    mk('circle',{cx:117,cy:260,r:9,fill:'var(--paper)',stroke:'var(--ink)','stroke-width':2});
+  }else if(ST.est==='radio'){
+    mk('path',{d:'M290 160 V118',class:'sym'});mk('circle',{cx:290,cy:114,r:4,fill:'var(--ink)'});tx(298,124,'antena','cable');
+    mk('rect',{x:20,y:200,width:50,height:110,rx:10,class:'mando'},g);
+    mk('circle',{cx:45,cy:235,r:10,class:'btnm',opacity:det?1:.7},g);mk('rect',{x:32,y:262,width:26,height:8,rx:3,fill:'var(--muted)'},g);mk('rect',{x:32,y:278,width:26,height:8,rx:3,fill:'var(--muted)'},g);
+    const t=tx(45,325,'mando','cable','middle');g.appendChild(t);
+    if(det)for(const r of [12,22,32]){const cx=72,cy=255,c=Math.cos(.6),sn=Math.sin(.6);mk('path',{d:`M${cx+r*c} ${cy-r*sn} A ${r} ${r} 0 0 1 ${cx+r*c} ${cy+r*sn}`,class:'onda',opacity:1-r/45});}
+  }else{
+    mk('rect',{x:14,y:180,width:86,height:170,class:'deposito'},g);
+    const lv=det?250:330;mk('rect',{x:16,y:lv,width:82,height:348-lv,class:'agua'},g);
+    for(const r of [26,46])mk('path',{d:`M112 ${260-r} A ${r} ${r} 0 0 0 112 ${260+r}`,class:'campo'});
+    const t=tx(57,195,det?'lleno':'vacío','cable','middle');g.appendChild(t);
+    mk('path',{d:'M100 260 h12',class:'sym thin'});
+  }
   // electrónica
   mk('rect',{x:140,y:215,width:80,height:90,rx:6,class:'box'});tx(180,252,'detector','cable','middle');tx(180,268,'(electrónica)','cable','middle');
   // nudos internos y salidas: BN y=200, BK y=260, BU y=330 en x=320
@@ -207,6 +240,8 @@ function draw(){
   // ---- panel
   for(const [id,k] of [['bTipo','tipo'],['bCarga','carga'],['bPieza','pieza'],['bCorto','corto']])
     document.querySelectorAll('#'+id+' button').forEach(b=>{const v=b.dataset.v;const cur=k==='pieza'||k==='corto'?(ST[k]?'1':'0'):ST[k];b.setAttribute('aria-pressed',v===cur);});
+  document.querySelectorAll('#bEst button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===ST.est));
+  {const E=EST[ST.est];document.getElementById('hEst').textContent=E.h;const bs=document.querySelectorAll('#bPieza button');bs[0].textContent=E.si;bs[1].textContent=E.no;}
   document.getElementById('vm').textContent=vbk+' V';
   document.getElementById('ledS').className='led'+(det?' on':'');
   document.getElementById('ledC').className='led'+(cargaOn?(!det?' red on':' on'):'');
@@ -216,14 +251,15 @@ function draw(){
   if(ST.corto){
     if(P&&det)r='<b>PNP con el negro a masa</b>: el sensor intenta dar +24 V, pero el cable está unido al 0 V. Es un <b>cortocircuito</b> de su salida: el sensor se protege y corta. La entrada se queda a <b>0</b>: la máquina <b>no hace nada raro</b>.';
     else if(P)r='<b>PNP con el negro a masa</b>: el negro está a 0 V, igual que sin pieza. La entrada se queda a <b>0</b>: la avería <b>no pone nada en marcha</b>. Es lo seguro.';
-    else if(!CM)r='<b class="alerta">¡Peligro!</b> NPN con el negro a masa: el roce une el negro con el 0 V, que es justo lo que hace el sensor al detectar. La carga se <b>activa sola</b>, '+(det?'y seguirá activa aunque quites la pieza.':'<b>sin ninguna pieza</b>. En una máquina, algo arrancaría sin motivo.');
+    else if(!CM)r='<b class="alerta">¡Peligro!</b> NPN con el negro a masa: el roce une el negro con el 0 V, que es justo lo que hace el sensor al detectar. La carga se <b>activa sola</b>, '+(det?'y seguirá activa aunque el sensor deje de detectar.':'<b>'+EST[ST.est].sin+'</b>. En una máquina, algo arrancaría sin motivo.');
     else r='NPN con la carga hacia el 0 V: el negro está a 0 V con o sin avería; la carga no funciona nunca (mira el caso sin avería).';
-  }else if(P&&CM)r=det?'<b>PNP detecta</b>: el transistor une el <b>marrón (+24 V)</b> con el <b>negro</b>. Sale <b>24 V</b> por el negro y la corriente pasa por la carga hasta el 0 V. <b>La entrada I1 se activa.</b>':'PNP sin pieza: el transistor está abierto. El negro no recibe nada y la carga lo deja a <b>0 V</b>. La entrada I1 está a 0.';
-  else if(P&&!CM)r=det?'PNP con la carga hacia el +24 V: al detectar, el negro se pone a +24 V… pero el otro lado de la carga <b>también</b> está a +24 V. Sin diferencia de tensión <b>no pasa corriente</b>: la carga no funciona. <b>Así no se conecta un PNP.</b>':'PNP con la carga hacia el +24 V: la carga ya está a +24 V por los dos lados. Acerca la pieza y verás que tampoco funciona.';
-  else if(!P&&!CM)r=det?'<b>NPN detecta</b>: el transistor une el <b>negro</b> con el <b>azul (0 V)</b>. La corriente baja del +24 V, pasa por la carga, entra por el negro y sale por el azul. <b>La carga funciona.</b> Fíjate: el polímetro marca <b>0 V</b> cuando detecta.':'NPN sin pieza: el transistor está abierto. El negro queda a +24 V a través de la carga, que tiene +24 V por los dos lados: no funciona.';
-  else r=det?'NPN con la carga hacia el 0 V (como la entrada del LOGO!): al detectar, el negro se une al 0 V… y el otro lado de la carga <b>ya está a 0 V</b>. No pasa corriente: <b>el LOGO! no se entera nunca</b>. Por eso al LOGO! se le pone un sensor <b>PNP</b>.':'NPN con la carga hacia el 0 V: el negro está a 0 V con o sin pieza. Acerca la pieza: la entrada del LOGO! seguirá sin enterarse.';
+  }else if(P&&CM)r=det?'<b>PNP</b>: el sensor '+EST[ST.est].hay+' y el transistor une el <b>marrón (+24 V)</b> con el <b>negro</b>. Sale <b>24 V</b> por el negro y la corriente pasa por la carga hasta el 0 V. <b>La entrada I1 se activa.</b>':'PNP '+EST[ST.est].sin+': el transistor está abierto. El negro no recibe nada y la carga lo deja a <b>0 V</b>. La entrada I1 está a 0.';
+  else if(P&&!CM)r=det?'PNP con la carga hacia el +24 V: al detectar, el negro se pone a +24 V… pero el otro lado de la carga <b>también</b> está a +24 V. Sin diferencia de tensión <b>no pasa corriente</b>: la carga no funciona. <b>Así no se conecta un PNP.</b>':'PNP con la carga hacia el +24 V: la carga ya está a +24 V por los dos lados. '+EST[ST.est].act+' y verás que tampoco funciona.';
+  else if(!P&&!CM)r=det?'<b>NPN</b>: el sensor '+EST[ST.est].hay+' y el transistor une el <b>negro</b> con el <b>azul (0 V)</b>. La corriente baja del +24 V, pasa por la carga, entra por el negro y sale por el azul. <b>La carga funciona.</b> Fíjate: el polímetro marca <b>0 V</b> cuando detecta.':'NPN '+EST[ST.est].sin+': el transistor está abierto. El negro queda a +24 V a través de la carga, que tiene +24 V por los dos lados: no funciona.';
+  else r=det?'NPN con la carga hacia el 0 V (como la entrada del LOGO!): al detectar, el negro se une al 0 V… y el otro lado de la carga <b>ya está a 0 V</b>. No pasa corriente: <b>el LOGO! no se entera nunca</b>. Por eso al LOGO! se le pone un sensor <b>PNP</b>.':'NPN con la carga hacia el 0 V: el negro está a 0 V detecte o no. '+EST[ST.est].act+': la entrada del LOGO! seguirá sin enterarse.';
   document.getElementById('estado').innerHTML=`<p>${r}</p><p>Sensor: ${tipo} · Detecta: ${det?'<b>sí</b>':'no'} · Negro: <b>${vbk} V</b> · Carga: ${cargaOn?'<b>funciona</b>':'no'}</p>`;
 }
+document.querySelectorAll('#bEst button').forEach(b=>b.addEventListener('click',()=>{ST.est=b.dataset.v;ST.pieza=false;draw();}));
 for(const [id,k] of [['bTipo','tipo'],['bCarga','carga'],['bPieza','pieza'],['bCorto','corto']])
   document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.v;ST[k]=(k==='pieza'||k==='corto')?v==='1':v;draw();}));
 document.addEventListener('keydown',e=>{
@@ -234,6 +270,7 @@ document.addEventListener('keydown',e=>{
   else if(k==='p')ST.tipo=ST.tipo==='P'?'N':'P';
   else if(k==='c')ST.carga=ST.carga==='M'?'P':'M';
   else if(k==='a')ST.corto=!ST.corto;
+  else if(k==='e'){const o=['ind','luz','radio','cap'];ST.est=o[(o.indexOf(ST.est)+1)%4];ST.pieza=false;}
   else return;
   draw();});
 draw();
