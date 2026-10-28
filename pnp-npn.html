@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var t=localStorage.getItem('tema');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='light';}})();</script><title>Sensores PNP y NPN · Domótica 2MT</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet"><style>:root{--paper:#ffffff;--bg:#eef2ea;--ink:#141414;--muted:#4b5563;--fase:#7B3F00;--neutro:#1F5FD0;--pos:#D00000;--neg:#141414;--pe:#3A9A3A;
+--vfase:#C8641E;--vfase-g:rgba(200,100,30,.55);--vpos:#FF1F1F;--vpos-g:rgba(255,31,31,.5);
+--flow:#ffb800;--lamp:#ffd84d;--glow:rgba(255,216,77,.45);--coil:#9ed27a;--tc:#ff9a52;--accent:#4f7f2a;--head:#1F4E79;--hit:rgba(79,127,42,.13);
+--idea:#E2EFDA;--idea-b:#548235;--ojo:#FCE4D6;--ojo-b:#C00000;--taller:#EDE7F6;--taller-b:#6A4C93;--est:#FFF8DB;--est-b:#BF9000;--como:#DDEBF7;--como-b:#2E75B6}
+html[data-theme=dark]{--paper:#1e252d;--bg:#141a20;--ink:#e9edf1;--muted:#a9b4bf;--fase:#c9864a;--neutro:#6fa8ff;--pos:#ff6b6b;--neg:#e9edf1;--pe:#6fcf6f;
+--vfase:#F0974E;--vfase-g:rgba(240,151,78,.6);--vpos:#FF4040;
+--flow:#ffd23f;--hit:rgba(158,210,122,.16);--accent:#9ed27a;--head:#8cc4ff;
+--idea:#22311c;--idea-b:#9ed27a;--ojo:#3a2320;--ojo-b:#ff8a7a;--taller:#2b2540;--taller-b:#c3a8ff;--est:#3a3216;--est-b:#ffd23f;--como:#1c2c3d;--como-b:#7fb6ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',Verdana,sans-serif;font-size:17px;line-height:1.5}
+.barra{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--paper);border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:2}
+.ico{font-size:1.15rem;line-height:1;min-width:42px;height:38px;display:inline-flex;align-items:center;justify-content:center}
+.btn{font:inherit;background:transparent;color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:4px 10px;cursor:pointer;text-decoration:none}
+.btn:hover,.btn:focus-visible{background:var(--hit);outline:none}
+.migas{flex:1;min-width:0;overflow:hidden;white-space:nowrap;direction:rtl;text-align:left;font-size:.98rem}
+.migas>span{direction:ltr;unicode-bidi:isolate}
+.migas a{color:var(--head);text-decoration:none}.migas a:hover{text-decoration:underline}
+.migas b{color:var(--ink)}.migas .sep{color:var(--muted);margin:0 .35em}
+main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
+.cab{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 8px}
+.cab h1{font-size:1.25rem;margin:0;color:var(--head)}
+.tag{background:var(--accent);color:var(--paper);font-weight:700;font-size:.8rem;letter-spacing:.06em;border-radius:6px;padding:2px 9px}
+.ejs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.ejs a{border:2px solid var(--accent);border-radius:8px;padding:3px 12px;color:var(--ink);text-decoration:none;font-weight:700;background:var(--paper)}
+.ejs a[aria-current=page]{background:var(--accent);color:var(--paper)}
+.ejs a:hover,.ejs a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
+.lamina{background:var(--paper);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.08);overflow-x:auto}
+.lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh;touch-action:manipulation}
+.ayuda{color:var(--muted);font-size:.95rem;margin:8px 4px 14px}
+.cajas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.caja{border-left:6px solid;border-radius:6px;padding:10px 14px}
+.caja b.t{display:block;margin-bottom:2px}
+.caja ul{margin:.2em 0;padding-left:1.2em}
+.idea{background:var(--idea);border-color:var(--idea-b)}.idea b.t{color:var(--idea-b)}
+.ojo{background:var(--ojo);border-color:var(--ojo-b)}.ojo b.t{color:var(--ojo-b)}
+.taller{background:var(--taller);border-color:var(--taller-b)}.taller b.t{color:var(--taller-b)}
+.est{background:var(--est);border-color:var(--est-b);grid-column:1/-1}.est b.t{color:var(--est-b)}
+.como{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.como b.t{color:var(--como-b)}
+.caja p{margin:.2em 0}.alerta{color:var(--ojo-b);font-weight:700}
+.vivo{color:var(--vfase);font-weight:700}.vivo12{color:var(--vpos);font-weight:700}.amar{color:#d99a00;font-weight:700}
+/* svg */
+.sym{stroke:var(--ink);stroke-width:2;fill:none;stroke-linecap:round}.thin{stroke-width:1.4}
+.box{stroke:var(--ink);stroke-width:2;fill:var(--paper)}
+.wire{stroke-width:3;fill:none;stroke-linejoin:round;stroke-linecap:round;transition:stroke-width .15s,opacity .15s}
+.wire.vL{stroke:var(--vfase);stroke-width:6;filter:drop-shadow(0 0 3px var(--vfase-g))}
+.wire.vP{stroke:var(--vpos);stroke-width:6;filter:drop-shadow(0 0 3px var(--vpos-g))}
+.wire.pale{opacity:.4}
+.flow{display:none;stroke:var(--flow);stroke-width:3;fill:none;stroke-dasharray:5 11;animation:run .7s linear infinite;stroke-linejoin:round}
+.flow.on{display:inline}
+@keyframes run{to{stroke-dashoffset:-16}}
+@media (prefers-reduced-motion:reduce){.flow{animation:none;stroke-dasharray:none;opacity:.6}}
+.num{font-size:13px;fill:var(--ink)}.sm{font-size:11px}.nm{font-size:15px;font-weight:700;fill:var(--ink)}
+.rail{font-size:15px;font-weight:700;fill:var(--ink)}
+.pe{stroke:var(--pe);stroke-width:1.8;stroke-dasharray:4 3;fill:none}.pe-t{fill:var(--pe)}
+.glow{fill:var(--glow);stroke:none;display:none}.glow.show{display:inline}
+.lampon{fill:var(--lamp)}.coilon{fill:var(--coil)}.tcon{fill:var(--tc)}
+.state{font-size:12px;fill:var(--muted)}.state.on{fill:var(--ojo-b);font-weight:700}.cold{fill:#2f7ad8}.hot{fill:#d9480f}
+.person{font-size:20px}.sm2{font-size:15px}
+.frame{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:7 5}
+.hit{fill:transparent;cursor:pointer;rx:8}
+.hit:hover,.hit:focus-visible{fill:var(--hit);outline:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
+
+/* índice */
+.tabs{display:flex;gap:8px;margin:6px 0 4px;flex-wrap:wrap}
+.tab{font:inherit;font-weight:700;background:var(--paper);color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:6px 16px;cursor:pointer}
+.tab[aria-selected=true]{background:var(--accent);color:var(--paper)}
+.panel[hidden]{display:none}
+.lista{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.lista a,.lista span.prox{display:block;background:var(--paper);border-left:6px solid var(--accent);border-radius:8px;padding:12px 16px;color:var(--ink);text-decoration:none}
+.lista a:hover,.lista a:focus-visible{background:var(--hit);outline:none}
+.lista a b{display:block;color:var(--head)}
+.lista span.prox{border-color:var(--muted);color:var(--muted);opacity:.7}.lista span.prox b{display:block}
+h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
+
+.slat{fill:var(--muted);opacity:.75}.thinb{stroke-width:1.2}
+
+/* ---- PNP / NPN ---- */
+.zona{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:12px;align-items:start}
+@media (max-width:820px){.zona{grid-template-columns:1fr}}
+.lamina svg{min-width:560px}
+.panelc{background:var(--paper);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.panelc h3{margin:0;font-size:.95rem;color:var(--head)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;font:inherit;font-weight:700;background:var(--paper);color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:5px 8px;cursor:pointer;min-width:0}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--paper)}
+.seg button.mal[aria-pressed=true]{background:var(--ojo-b);border-color:var(--ojo-b)}
+.medida{border:2px solid var(--muted);border-radius:8px;padding:6px 10px;font-size:.95rem}
+.medida .v{font-size:1.6rem;font-weight:700;font-variant-numeric:tabular-nums}
+.leds{display:flex;gap:14px;align-items:center;font-size:.92rem}
+.led{width:18px;height:18px;border-radius:50%;border:2px solid var(--ink);display:inline-block;vertical-align:middle;margin-right:5px;background:transparent}
+.led.on{background:var(--lamp);box-shadow:0 0 10px var(--lamp)}
+.led.red.on{background:#ff4d4d;box-shadow:0 0 10px #ff4d4d}
+.vlab{font-size:14px;font-weight:700}
+.v24{fill:var(--pos)}.v0{fill:var(--muted)}
+.sensor{fill:var(--paper);stroke:var(--ink);stroke-width:2.5}
+.inner{fill:none;stroke:var(--muted);stroke-width:1.4;stroke-dasharray:6 4}
+.pieza{fill:#9aa7b4;stroke:var(--ink);stroke-width:2;cursor:pointer;transition:transform .35s}
+.campo{fill:none;stroke:var(--accent);stroke-width:1.6;opacity:.55}
+.ledS{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}.ledS.on{fill:var(--lamp)}
+.corto{stroke:var(--ojo-b);stroke-width:3;stroke-dasharray:6 4;fill:none}
+.cable{font-size:12px;fill:var(--muted)}
+.wire.out24{stroke:var(--vpos);stroke-width:6;filter:drop-shadow(0 0 3px var(--vpos-g))}
+.wire.out0{stroke:#7a7a7a}
+</style></head><body>
+<header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Tema 2</a><span class="sep">›</span><b aria-current="page">Sensores PNP y NPN</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
+<main><div class="cab"><h1>Sensores PNP y NPN · ¿Por qué casi siempre PNP?</h1><span class="tag">TEMA 2</span></div>
+<div class="zona">
+<div class="lamina"><svg id="esq" viewBox="0 0 900 520" role="img" aria-label="Sensor de tres hilos con su carga entre las líneas de +24 V y 0 V"></svg></div>
+<div class="panelc">
+ <h3>Tipo de sensor</h3><div class="seg" id="bTipo"><button data-v="P">PNP</button><button data-v="N">NPN</button></div>
+ <h3>¿Dónde va la carga?</h3><div class="seg" id="bCarga"><button data-v="M">Entre negro y 0 V<br><small>(entrada del LOGO!)</small></button><button data-v="P">Entre +24 V y negro</button></div>
+ <h3>Pieza</h3><div class="seg" id="bPieza"><button data-v="1">Acercar</button><button data-v="0">Alejar</button></div>
+ <h3>Avería</h3><div class="seg" id="bCorto"><button data-v="0">Sin avería</button><button data-v="1" class="mal">Negro a masa</button></div>
+ <div class="medida">Polímetro V⎓ entre el <b>negro</b> y el <b>0 V</b>:<div class="v" id="vm">0 V</div></div>
+ <div class="leds"><span><span class="led" id="ledS"></span>Detecta</span><span><span class="led" id="ledC"></span>Carga</span></div>
+</div></div>
+<p class="ayuda">Toca la <b>pieza</b> de metal para acercarla o alejarla del sensor (tecla <b>espacio</b>). Cambia el tipo de sensor (<b>P</b>), dónde va la carga (<b>C</b>) y prueba la avería (<b>A</b>). Esc vuelve al índice.</p>
+<div class="cajas">
+<div class="caja como"><b class="t">Cómo funciona esta animación</b><p>Un sensor de 3 hilos <b>no tiene contacto</b>: dentro lleva un <b>transistor</b> que hace de interruptor. Lo dibujamos como un interruptor dentro del sensor. Los cables tienen siempre los mismos colores: <b>BN marrón</b> al +, <b>BU azul</b> al 0 V y <b>BK negro</b> es la salida. Los cables con tensión se ven más gruesos y la corriente es la línea amarilla que se mueve.</p></div>
+<div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div>
+<div class="caja idea"><b class="t">IDEA CLAVE</b><p><b>PNP</b>: al detectar <b>da +24 V</b> por el negro → la carga va entre el negro y el <b>0 V</b>.</p><p><b>NPN</b>: al detectar <b>une el negro con el 0 V</b> → la carga va entre el <b>+24 V</b> y el negro.</p><p>La entrada del LOGO! es una carga hacia M (0 V): por eso solo funciona con <b>PNP</b>.</p></div>
+<div class="caja ojo"><b class="t">¿POR QUÉ CASI SIEMPRE PNP?</b><ul><li><b>Seguridad</b>: en las máquinas el 0 V va unido al chasis (a tierra). Si el cable negro roza el chasis, con un <b>PNP</b> la entrada se queda a <b>0</b> (no pasa nada); con un <b>NPN</b> la entrada se <b>activa sola</b>, como si hubiera pieza. Pruébalo con «Negro a masa».</li><li><b>Se entiende mejor</b>: «hay 24 V» = detecta. Con el polímetro se ve a la primera.</li><li>Los <b>autómatas europeos</b> (como el LOGO!) tienen entradas pensadas para PNP. En Asia y América se ve más NPN.</li></ul></div>
+<div class="caja taller"><b class="t">EN EL TALLER</b><p>Mira la <b>pegatina</b> del sensor: pone <b>PNP</b> o <b>NPN</b> y si es <b>NO</b> (NA) o <b>NC</b>. Casi todos llevan un <b>led</b> que se enciende al detectar: si el led se enciende pero la entrada no cambia, mide con el polímetro entre el negro y el 0 V.</p></div>
+</div></main>
+<script>
+const NS='http://www.w3.org/2000/svg',svg=document.getElementById('esq');
+function mk(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;}
+function tx(x,y,s,cls,anc){const e=mk('text',{x,y,class:cls||'num','text-anchor':anc||'start','dominant-baseline':'middle'});e.textContent=s;return e;}
+const ST={tipo:'P',carga:'M',pieza:false,corto:false};
+try{const t=new URLSearchParams(location.search).get('tipo');if(t==='N')ST.tipo='N';}catch(e){}
+const YP=60,YM=460;
+function draw(){
+  svg.innerHTML='';
+  const P=ST.tipo==='P',CM=ST.carga==='M',det=ST.pieza;
+  // ---- estado eléctrico
+  let vbk, cargaOn, protec=false;
+  if(ST.corto){vbk=0;if(P&&det)protec=true;}
+  else if(P){vbk=det?24:(CM?0:24);}
+  else{vbk=det?0:(CM?0:24);}
+  cargaOn=CM?(vbk===24):(vbk===0);
+  // ---- raíles
+  const rail=(y,c,lab)=>{mk('path',{d:`M60 ${y} H860`,class:'wire',stroke:c,'stroke-width':y===YP?5:4});tx(52,y,lab,'rail','end');};
+  rail(YP,'var(--pos)','+24 V');rail(YM,'var(--neg)','0 V');
+  if(ST.corto){mk('path',{d:`M820 ${YM} v14 M806 ${YM+14} h28 M811 ${YM+20} h18 M816 ${YM+26} h8`,class:'sym'});tx(842,YM+18,'chasis','cable');}
+  // ---- sensor
+  mk('rect',{x:120,y:160,width:200,height:200,rx:14,class:'sensor'});
+  tx(220,147,'Sensor '+(P?'PNP':'NPN'),'nm','middle');
+  mk('circle',{cx:300,cy:180,r:7,class:'ledS'+(det?' on':'')});tx(290,180,'led','cable','end');
+  // cara activa y campo
+  mk('rect',{x:112,y:200,width:10,height:120,fill:'var(--ink)'});
+  for(const r of [26,46,66])mk('path',{d:`M112 ${260-r} A ${r} ${r} 0 0 0 112 ${260+r}`,class:'campo'});
+  // pieza
+  const g=mk('g',{class:'pieza',tabindex:0,role:'button','aria-label':'Pieza de metal: acercar o alejar'});
+  mk('rect',{x:det?72:8,y:225,width:34,height:70,rx:4,class:'pieza'},g);
+  tx(det?89:25,310,'pieza','cable','middle');
+  g.addEventListener('click',()=>{ST.pieza=!ST.pieza;draw();});
+  g.addEventListener('keydown',e=>{if(e.key==='Enter'){ST.pieza=!ST.pieza;draw();}});
+  // electrónica
+  mk('rect',{x:140,y:215,width:80,height:90,rx:6,class:'box'});tx(180,252,'detector','cable','middle');tx(180,268,'(electrónica)','cable','middle');
+  // nudos internos y salidas: BN y=200, BK y=260, BU y=330 en x=320
+  const xi=250;
+  const W=(d,c,cls)=>mk('path',{d,class:'wire'+(cls?' '+cls:''),stroke:c});
+  W(`M320 200 H${xi} M${xi} 200 H180 V215`,'var(--pos)','vP');           // BN interno: + a la electrónica
+  W(`M180 305 V330 H320`,'var(--neg)');                                    // BU interno
+  // interruptor (transistor)
+  const sx=xi;
+  let y1,y2;
+  if(P){y1=200;y2=260;}else{y1=260;y2=330;}
+  // tramo fijo arriba e inferior del interruptor
+  mk('path',{d:`M${sx} ${y1} V${y1+14}`,class:'sym'});
+  mk('path',{d:`M${sx} ${y2-14} V${y2}`,class:'sym'});
+  const closed=det;
+  if(closed)mk('path',{d:`M${sx} ${y2-14} L${sx} ${y1+14}`,class:'sym','stroke-width':3});
+  else mk('path',{d:`M${sx} ${y2-14} L${sx-20} ${y1+16}`,class:'sym','stroke-width':3});
+  mk('path',{d:`M220 ${(y1+y2)/2+2} H${sx-(closed?2:10)}`,class:'sym thin','stroke-dasharray':'5 4'});
+  tx(sx+8,(y1+y2)/2,'transistor','cable');
+  // tramo de salida BK interno
+  if(P){W(`M${sx} 260 H320`,vbk===24?'var(--pos)':'#7a7a7a',vbk===24?'out24':'');}
+  else{W(`M${sx} 260 H320`,vbk===24?'var(--pos)':'#7a7a7a',vbk===24?'out24':'');}
+  // marcas de cables
+  tx(326,190,'BN marrón','cable');tx(326,250,'BK negro (salida)','cable');tx(326,320,'BU azul','cable');
+  // cables externos
+  W(`M320 200 H420 V${YP}`,'var(--pos)','vP');mk('circle',{cx:420,cy:YP,r:5,fill:'var(--pos)'});
+  W(`M320 330 H450 V${YM}`,'var(--neg)');mk('circle',{cx:450,cy:YM,r:5,fill:'var(--ink)'});
+  const xl=640;
+  W(`M320 260 H${xl}`,vbk===24?'var(--pos)':'#7a7a7a',vbk===24?'out24':'');
+  mk('circle',{cx:xl,cy:260,r:5,fill:'var(--ink)'});
+  // carga
+  let CB=null;const cargaBox=(y0,lab1,lab2)=>{CB=mk('g',{});mk('rect',{x:xl-55,y:y0,width:110,height:80,rx:8,class:'box'},CB);
+    mk('circle',{cx:xl+30,cy:y0+40,r:12,class:'ledS'+(cargaOn?' on':'')},CB);
+    const a=tx(xl-45,y0+30,lab1,'nm');CB.appendChild(a);const b2=tx(xl-45,y0+54,lab2,'cable');CB.appendChild(b2);};
+  if(CM){W(`M${xl} 260 V320`,vbk===24?'var(--pos)':'#7a7a7a',vbk===24?'out24':'');cargaBox(320,'I1','entrada');W(`M${xl} 400 V${YM}`,'var(--neg)');mk('circle',{cx:xl,cy:YM,r:5,fill:'var(--ink)'});tx(xl+62,360,'LOGO! (hacia M)','cable');}
+  else{W(`M${xl} ${YP} V120`,'var(--pos)','vP');mk('circle',{cx:xl,cy:YP,r:5,fill:'var(--pos)'});cargaBox(120,'H1','piloto 24 V');W(`M${xl} 200 V260`,vbk===24?'var(--pos)':'#7a7a7a',vbk===24?'out24':'');}
+  // avería: negro a masa
+  if(ST.corto){mk('path',{d:`M520 260 V${YM}`,class:'corto'});mk('circle',{cx:520,cy:260,r:5,fill:'var(--ojo-b)'});mk('circle',{cx:520,cy:YM,r:5,fill:'var(--ojo-b)'});tx(528,380,'roce con el chasis','cable');}
+  // tensión del negro
+  tx(560,244,vbk+' V',vbk===24?'vlab v24':'vlab v0','middle');
+  // ---- corriente
+  const flow=d=>{const e=mk('path',{d,class:'flow on'});};
+  if(cargaOn){
+    if(CM&&P)flow(`M420 ${YP} V200 H${sx} V260 H${xl} V${YM}`);
+    else if(!CM&&ST.corto)flow(`M${xl} ${YP} V260 H520 V${YM}`);
+    else if(!CM)flow(`M${xl} ${YP} V260 H${sx} V330 H450 V${YM}`);
+  }
+  if(CB)svg.appendChild(CB);
+  // ---- panel
+  for(const [id,k] of [['bTipo','tipo'],['bCarga','carga'],['bPieza','pieza'],['bCorto','corto']])
+    document.querySelectorAll('#'+id+' button').forEach(b=>{const v=b.dataset.v;const cur=k==='pieza'||k==='corto'?(ST[k]?'1':'0'):ST[k];b.setAttribute('aria-pressed',v===cur);});
+  document.getElementById('vm').textContent=vbk+' V';
+  document.getElementById('ledS').className='led'+(det?' on':'');
+  document.getElementById('ledC').className='led'+(cargaOn?(!det?' red on':' on'):'');
+  // ---- explicación
+  let r;
+  const tipo=P?'PNP':'NPN';
+  if(ST.corto){
+    if(P&&det)r='<b>PNP con el negro a masa</b>: el sensor intenta dar +24 V, pero el cable está unido al 0 V. Es un <b>cortocircuito</b> de su salida: el sensor se protege y corta. La entrada se queda a <b>0</b>: la máquina <b>no hace nada raro</b>.';
+    else if(P)r='<b>PNP con el negro a masa</b>: el negro está a 0 V, igual que sin pieza. La entrada se queda a <b>0</b>: la avería <b>no pone nada en marcha</b>. Es lo seguro.';
+    else if(!CM)r='<b class="alerta">¡Peligro!</b> NPN con el negro a masa: el roce une el negro con el 0 V, que es justo lo que hace el sensor al detectar. La carga se <b>activa sola</b>, '+(det?'y seguirá activa aunque quites la pieza.':'<b>sin ninguna pieza</b>. En una máquina, algo arrancaría sin motivo.');
+    else r='NPN con la carga hacia el 0 V: el negro está a 0 V con o sin avería; la carga no funciona nunca (mira el caso sin avería).';
+  }else if(P&&CM)r=det?'<b>PNP detecta</b>: el transistor une el <b>marrón (+24 V)</b> con el <b>negro</b>. Sale <b>24 V</b> por el negro y la corriente pasa por la carga hasta el 0 V. <b>La entrada I1 se activa.</b>':'PNP sin pieza: el transistor está abierto. El negro no recibe nada y la carga lo deja a <b>0 V</b>. La entrada I1 está a 0.';
+  else if(P&&!CM)r=det?'PNP con la carga hacia el +24 V: al detectar, el negro se pone a +24 V… pero el otro lado de la carga <b>también</b> está a +24 V. Sin diferencia de tensión <b>no pasa corriente</b>: la carga no funciona. <b>Así no se conecta un PNP.</b>':'PNP con la carga hacia el +24 V: la carga ya está a +24 V por los dos lados. Acerca la pieza y verás que tampoco funciona.';
+  else if(!P&&!CM)r=det?'<b>NPN detecta</b>: el transistor une el <b>negro</b> con el <b>azul (0 V)</b>. La corriente baja del +24 V, pasa por la carga, entra por el negro y sale por el azul. <b>La carga funciona.</b> Fíjate: el polímetro marca <b>0 V</b> cuando detecta.':'NPN sin pieza: el transistor está abierto. El negro queda a +24 V a través de la carga, que tiene +24 V por los dos lados: no funciona.';
+  else r=det?'NPN con la carga hacia el 0 V (como la entrada del LOGO!): al detectar, el negro se une al 0 V… y el otro lado de la carga <b>ya está a 0 V</b>. No pasa corriente: <b>el LOGO! no se entera nunca</b>. Por eso al LOGO! se le pone un sensor <b>PNP</b>.':'NPN con la carga hacia el 0 V: el negro está a 0 V con o sin pieza. Acerca la pieza: la entrada del LOGO! seguirá sin enterarse.';
+  document.getElementById('estado').innerHTML=`<p>${r}</p><p>Sensor: ${tipo} · Detecta: ${det?'<b>sí</b>':'no'} · Negro: <b>${vbk} V</b> · Carga: ${cargaOn?'<b>funciona</b>':'no'}</p>`;
+}
+for(const [id,k] of [['bTipo','tipo'],['bCarga','carga'],['bPieza','pieza'],['bCorto','corto']])
+  document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.v;ST[k]=(k==='pieza'||k==='corto')?v==='1':v;draw();}));
+document.addEventListener('keydown',e=>{
+  if(e.target.closest&&e.target.closest('button,a'))if(e.key===' '||e.key==='Enter')return;
+  if(e.key==='Escape'||e.key==='Backspace'){location.href='index.html#animaciones';return;}
+  const k=e.key.toLowerCase();
+  if(k===' '){e.preventDefault();ST.pieza=!ST.pieza;}
+  else if(k==='p')ST.tipo=ST.tipo==='P'?'N':'P';
+  else if(k==='c')ST.carga=ST.carga==='M'?'P':'M';
+  else if(k==='a')ST.corto=!ST.corto;
+  else return;
+  draw();});
+draw();
+(function(){const b=document.getElementById('tema'),r=document.documentElement;
+const ico=()=>{const d=r.dataset.theme==='dark';b.textContent=d?'☀️':'🌙';b.setAttribute('aria-label',d?'Cambiar a modo claro':'Cambiar a modo oscuro');b.title=b.getAttribute('aria-label');};ico();
+b.addEventListener('click',()=>{const d=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('tema',d)}catch(e){}ico();});})();
+</script></body></html>
