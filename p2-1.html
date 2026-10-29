@@ -82,7 +82,7 @@ h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 <div class="ver" role="group" aria-label="Versión de la solución"><button type="button" data-v="vieja">Solución antigua</button><button type="button" data-v="nueva">Solución mejorada</button><span class="vnota" id="vnota"></span></div>
 <div class="lamina"><svg id="esq" role="img" aria-label="Esquema multifilar del Ejercicio 2.1 · Persiana con permiso nocturno y subida automática de día"></svg></div>
 <p class="ayuda">Toca <b>Q1</b>, <b>Q2</b>, el sol/luna del crepuscular <b>S2</b> y las teclas ▲ ▼ de <b>S1</b>. Los <b>pulsadores</b> se mantienen pulsados con el ratón o el dedo; con <b>doble clic</b> se quedan fijados y otro clic los suelta. Se pueden pulsar varios a la vez. Con los botones <b>Solución antigua / Solución mejorada</b> (o la tecla <b>V</b>) cambias de esquema. Esc vuelve al índice.</p>
-<div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>El contacto <b>conmutado</b> del crepuscular reparte la fase: de noche su <b>14</b> da fase al pulsador y a H1; de día su <b>12</b> da fase directamente a la subida (A1A) y a H2. De día el pulsador se queda sin tensión y no hace nada.</p></div><div class="caja ojo"><b class="t">¡OJO!</b><p>Pulsa las <b>dos teclas a la vez</b> de noche: la tecla ▼ solo activa la bobina de <b>KA1</b>; su <b>NA 21-24</b> da la bajada y su <b>NC 11-12</b> corta la subida. Así el motor nunca recibe las dos órdenes a la vez.</p></div><div class="caja porque"><b class="t">¿POR QUÉ?</b><p>¿Por qué la bajada pasa por el NA de KA1 y no va directa al motor? Porque el <b>condensador</b> del motor devuelve tensión por el borne que no se usa: mientras sube, en <b>A1B</b> aparece tensión. Si la bobina estuviera en ese cable, KA1 entraría solo, cortaría la subida y el relé se pondría a vibrar. Con el NA abierto, esa tensión no llega a la bobina. Pulsa <b>Solución antigua</b> y sube la persiana para verlo.</p></div><div class="caja taller"><b class="t">EN EL TALLER</b><p>La persiana se para sola arriba y abajo: son sus <b>finales de carrera internos</b>. Fíjate en que el cable de A1A sigue con tensión arriba del todo, pero ya no pasa corriente. De noche, mientras pulsas ▲, <b>H2</b> también luce: la fase de la tecla vuelve por el cable de A1A hasta el borne 12 del crepuscular.</p></div></div></main>
+<div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>El contacto <b>conmutado</b> del crepuscular reparte la fase: de noche su <b>14</b> da fase al pulsador y a H1; de día su <b>12</b> da fase a H2 y a la subida (A1A). De día el pulsador se queda sin tensión y no hace nada.</p></div><div class="caja ojo"><b class="t">¡OJO!</b><p>Pulsa las <b>dos teclas a la vez</b> de noche: la tecla ▼ solo activa la bobina de <b>KA1</b>; su <b>NA 21-24</b> da la bajada y su <b>NC 11-12</b> corta la subida. Así el motor nunca recibe las dos órdenes a la vez.</p></div><div class="caja porque"><b class="t">¿POR QUÉ?</b><p>¿Por qué la bajada pasa por el NA de KA1 y no va directa al motor? Porque el <b>condensador</b> del motor devuelve tensión por el borne que no se usa: mientras sube, en <b>A1B</b> aparece tensión. Si la bobina estuviera en ese cable, KA1 entraría solo, cortaría la subida y el relé se pondría a vibrar. Con el NA abierto, esa tensión no llega a la bobina. Al bajar pasa lo mismo por <b>A1A</b>: por eso H2 y la subida automática se unen a la tecla ▲ antes del <b>NC 11-12</b>, que se abre al bajar y deja A1A aislado. Pulsa <b>Solución antigua</b> y sube o baja la persiana para verlo.</p></div><div class="caja taller"><b class="t">EN EL TALLER</b><p>La persiana se para sola arriba y abajo: son sus <b>finales de carrera internos</b>. Fíjate en que el cable de A1A sigue con tensión arriba del todo, pero ya no pasa corriente. De noche, mientras pulsas ▲, <b>H2</b> también luce: la fase de la tecla vuelve por el cable de A1A hasta el borne 12 del crepuscular.</p></div></div></main>
 <script>// ===== Motor de esquemas: nudos, tramos, contactos y cargas =====
 const U=46,NS='http://www.w3.org/2000/svg';
 let H=10,OX=1.5,G;
@@ -326,7 +326,7 @@ b.addEventListener('click',()=>{const d=r.dataset.theme==='dark'?'light':'dark';
 
 const O={};const si=v=>v?'<b>sí</b>':'no';
 let VER='nueva',GEN=0;
-const DEF={H:10.2,W:14.2,state:{q1:true,q2:true,noche:false,s14:false,s24:false,pos:50,ret:false},
+const DEF={H:10.2,W:14.2,state:{q1:true,q2:true,noche:false,s14:false,s24:false,pos:50,ret:false,retA:false},
  draw(){const nueva=VER==='nueva';const yt=7.2,yb=.5;YT=yt;YB=yb;YP=yt+.38;YM=yt+.2;
   SUPPLY(.8,yt,yb,13.7,false,[5.0],[4.7,7.5,9.3,10.6]);
   const x=5.0,y0=yt-1.45,yN=y0-.35,yD=nueva?2.45:2.65,yk=nueva?2.8:3.0;
@@ -335,14 +335,28 @@ const DEF={H:10.2,W:14.2,state:{q1:true,q2:true,noche:false,s14:false,s24:false,
   wire('c14','j1',[[5.3,y0],[5.3,yN],[7.5,yN]],'L');DOT(7.5,yN,'L');
   wire('j1','h1',[[7.5,yN],[10.6,yN],[10.6,1.85]],'L');O.h1=lamp('h1','h1n',10.6,.85,'H1');wire('h1n',rN(10.6),[[10.6,.85],[10.6,.5]],'N');
   const o=cPD('j1','p14','p24',7.5,yN,'S1','s14','s24');
-  wire('p14','k11',[[6.9,o.o14[1]],[6.9,yk+1]],'L');cNC('k11','k12',6.9,yk,['11','12'],'KA1',()=>!kaOn());
-  wire('c12','d1',[[4.7,y0],[4.7,yD]],'L');DOT(4.7,yD,'L');wire('d1','dA',[[4.7,yD],[6.9,yD]],'L');DOT(6.9,yD,'L');wire('k12','dA',[[6.9,yk],[6.9,yD]],'L');
-  wire('d1','h2',[[4.7,yD],[4.7,1.85]],'L');O.h2=lamp('h2','h2n',4.7,.85,'H2');wire('h2n',rN(4.7),[[4.7,.85],[4.7,.5]],'N');
-  wire('dA','mA',[[6.9,yD],[6.9,2.1],[7.15,1.85],[7.15,1.58]],'L');
+  if(nueva){ // la subida automática (S2-12 y H2) se une a la tecla ▲ ANTES del NC de KA1
+   wire('p14','jA',[[6.9,o.o14[1]],[6.9,4.0]],'L');DOT(6.9,4.0,'L');wire('jA','k11',[[6.9,4.0],[6.9,yk+1]],'L');cNC('k11','k12',6.9,yk,['11','12'],'KA1',()=>!kaOn());
+   wire('c12','d1',[[4.7,y0],[4.7,4.0]],'L');DOT(4.7,4.0,'L');wire('d1','jA',[[4.7,4.0],[6.9,4.0]],'L');
+   wire('d1','h2',[[4.7,4.0],[4.7,1.85]],'L');O.h2=lamp('h2','h2n',4.7,.85,'H2');
+   wire('k12','mA',[[6.9,yk],[6.9,2.1],[7.15,1.85],[7.15,1.58]],'L');
+  }else{
+   wire('p14','k11',[[6.9,o.o14[1]],[6.9,yk+1]],'L');cNC('k11','k12',6.9,yk,['11','12'],'KA1',()=>!kaOn());
+   wire('c12','d1',[[4.7,y0],[4.7,yD]],'L');DOT(4.7,yD,'L');wire('d1','dA',[[4.7,yD],[6.9,yD]],'L');DOT(6.9,yD,'L');wire('k12','dA',[[6.9,yk],[6.9,yD]],'L');
+   wire('d1','h2',[[4.7,yD],[4.7,1.85]],'L');const hv=LAMP(4.7,.85,'H2',['X1','X2']);O.h2=load('h2','h2n',v=>hv(v||ST.retA));
+   wire('dA','mA',[[6.9,yD],[6.9,2.1],[7.15,1.85],[7.15,1.58]],'L');
+   // retorno del condensador por A1A mientras baja: llega a H2
+   const ra=[[[7.15,1.58],[7.15,1.85],[6.9,2.1],[6.9,yk]],[[6.9,yD],[4.7,yD]],[[4.7,y0],[4.7,1.85]]].map(q=>mk('path',{d:pts(q),class:'wire',stroke:COL.L}));
+   M.upd.push(()=>ra.forEach(p=>{p.style.display=ST.retA?'':'none';p.classList.toggle('vL',!!ST.retA);}));
+  }
+  wire('h2n',rN(4.7),[[4.7,.85],[4.7,.5]],'N');
   if(nueva){
    wire('p24','b1',[[8.1,o.o24[1]],[8.1,4.0],[8.6,4.0]],'L');DOT(8.6,4.0,'L');wire('b1','k21',[[8.6,4.0],[8.6,3.8]],'L');cNA('k21','k24',8.6,2.8,['21','24'],'KA1',()=>kaOn());
    wire('k24','mB',[[8.6,2.8],[8.6,2.3],[8.1,2.3],[8.1,2.1],[7.85,1.85],[7.85,1.58]],'L');
    wire('b1','kc',[[8.6,4.0],[9.3,4.0],[9.3,1.85]],'L');O.ka=coil('kc','kn',9.3,.85,'KA1');
+   // retorno del condensador: se ve, pero se queda en el NA 21-24 (al subir) o en el NC 11-12 (al bajar), abiertos
+   const rb=mk('path',{d:pts([[7.85,1.58],[7.85,1.85],[8.1,2.1],[8.1,2.3],[8.6,2.3],[8.6,2.8]]),class:'wire',stroke:COL.L}),ra=mk('path',{d:pts([[7.15,1.58],[7.15,1.85],[6.9,2.1],[6.9,2.8]]),class:'wire',stroke:COL.L});
+   M.upd.push(()=>{const b=ST.ret&&!O.m.dn.on,a=ST.retA&&!O.m.up.on;rb.style.display=b?'':'none';rb.classList.toggle('vL',b);ra.style.display=a?'':'none';ra.classList.toggle('vL',a);});
   }else{
    wire('p24','b1',[[8.1,o.o24[1]],[8.1,3.6]],'L');DOT(8.1,3.6,'L');wire('b1','mB',[[8.1,3.6],[8.1,2.1],[7.85,1.85],[7.85,1.58]],'L');
    wire('b1','kc',[[8.1,3.6],[9.3,3.6],[9.3,1.85]],'L');const cv=COIL(9.3,.85,'KA1');O.ka=load('kc','kn',v=>cv(v||ST.ret));
@@ -355,24 +369,27 @@ const DEF={H:10.2,W:14.2,state:{q1:true,q2:true,noche:false,s14:false,s24:false,
   DC(12.8);},
  explain(){let r;const up=O.m.up.on,dn=O.m.dn.on,v=VER==='vieja',arr=ST.pos>=100;
   const RET=' <b>Solución antigua:</b> mientras el motor sube, su condensador devuelve tensión por <b>A1B</b>, y la bobina de KA1 está colgada de ese cable: ';
+  const RETA=' <b>Solución antigua:</b> mientras baja, el condensador devuelve tensión por <b>A1A</b>, y H2 está unido a ese cable: <b>H2 se enciende</b> aunque sea de noche.';
+  const NRB=' Mientras sube, el condensador devuelve tensión por <b>A1B</b>, pero se queda en el <b>NA 21-24</b> abierto: la bobina de KA1 no se entera.';
+  const NRA=' Mientras baja, el condensador devuelve tensión por <b>A1A</b>, pero se queda en el <b>NC 11-12</b> abierto de KA1: no llega a H2.';
   const H2N=' <b>H2</b> también luce mientras pulsas ▲: la fase de la tecla vuelve por el cable de A1A hasta el borne 12 del crepuscular.';
   if(!ST.q1)r='Q1 está bajado: no hay 230 V en el panel.';
   else if(!ST.q2)r='Q2 está bajado: el crepuscular no tiene 12 V, su relé está en reposo (<b>11-12</b> cerrado) y la instalación funciona como si fuera de día.';
-  else if(!ST.noche)r='Es de <b>día</b>: S2 cierra 11-12, H2 se enciende y la fase llega directamente a <b>A1A</b>. '+(arr?'La persiana ya está <b>arriba del todo</b>: su final de carrera ha cortado el motor.':'La persiana <b>sube</b>.')+' El pulsador no tiene tensión.'+(v&&!arr?RET+'<b>KA1 entra solo</b> y se queda activado mientras la persiana sube.':'');
-  else if(ST.s14&&ST.s24)r=(v?'De noche con <b>las dos teclas</b>: KA1 entra con la bajada y su NC 11-12 corta la subida. ':'De noche con <b>las dos teclas</b>: KA1 entra; su NA 21-24 da la bajada y su NC 11-12 corta la subida. ')+'La persiana '+(dn?'<b>baja</b>.':'está abajo del todo.');
-  else if(ST.s24)r=(v?'De noche, tecla ▼: llega fase a <b>A1B</b> y a la bobina de KA1. ':'De noche, tecla ▼: entra <b>KA1</b> y su NA <b>21-24</b> lleva la fase a <b>A1B</b>. ')+(dn?'La persiana <b>baja</b>.':'La persiana ya está abajo del todo.');
+  else if(!ST.noche)r='Es de <b>día</b>: S2 cierra 11-12, H2 se enciende y la fase llega a <b>A1A</b>'+(v?' directamente. ':' a través del NC 11-12 de KA1. ')+(arr?'La persiana ya está <b>arriba del todo</b>: su final de carrera ha cortado el motor.':'La persiana <b>sube</b>.')+' El pulsador no tiene tensión.'+(arr?'':v?RET+'<b>KA1 entra solo</b> y se queda activado mientras la persiana sube.':NRB);
+  else if(ST.s14&&ST.s24)r=(v?'De noche con <b>las dos teclas</b>: KA1 entra con la bajada y su NC 11-12 corta la subida. ':'De noche con <b>las dos teclas</b>: KA1 entra; su NA 21-24 da la bajada y su NC 11-12 corta la subida. ')+'La persiana '+(dn?'<b>baja</b>.':'está abajo del todo.')+(dn?(v?RETA:NRA):'')+H2N;
+  else if(ST.s24)r=(v?'De noche, tecla ▼: llega fase a <b>A1B</b> y a la bobina de KA1. ':'De noche, tecla ▼: entra <b>KA1</b> y su NA <b>21-24</b> lleva la fase a <b>A1B</b>. ')+(dn?'La persiana <b>baja</b>.':'La persiana ya está abajo del todo.')+(dn?(v?RETA:NRA):'');
   else if(ST.s14)r=v&&!arr?'De noche, tecla ▲: la fase pasa por el NC de KA1 hasta <b>A1A</b>.'+RET+'<b>KA1 entra solo</b>, su NC corta la subida, el relé cae y vuelve a entrar. <b>El relé vibra y la persiana da tirones.</b>'+H2N
-     :'De noche, tecla ▲: la fase pasa por el NC de KA1 hasta <b>A1A</b>. '+(up?'La persiana <b>sube</b>.':'La persiana ya está arriba del todo.')+H2N;
+     :'De noche, tecla ▲: la fase pasa por el NC de KA1 hasta <b>A1A</b>. '+(up?'La persiana <b>sube</b>.'+(v?'':NRB):'La persiana ya está arriba del todo.')+H2N;
   else r='Es de <b>noche</b>: S2 cierra 11-14, H1 indica que el mando manual está permitido. Pulsa ▲ o ▼.';
-  return `<p>${r}</p><p>Noche: ${si(ST.noche)} · H1: ${si(O.h1.on)} · H2: ${si(O.h2.on)} · KA1: ${si(O.ka.on||(v&&ST.ret))} · Sube: ${si(up)} · Baja: ${si(dn)}</p>`;}};
-const NOTA={vieja:'Bobina de KA1 en el mismo cable que A1B: falla por el retorno del condensador.',nueva:'La bajada pasa por el NA 21-24 de KA1: la bobina queda separada del motor.'};
+  return `<p>${r}</p><p>Noche: ${si(ST.noche)} · H1: ${si(O.h1.on)} · H2: ${si(O.h2.on||(v&&ST.retA))} · KA1: ${si(O.ka.on||(v&&ST.ret))} · Sube: ${si(up)} · Baja: ${si(dn)}</p>`;}};
+const NOTA={vieja:'Bobina de KA1 en el cable de A1B y H2 en el de A1A: fallan por el retorno del condensador.',nueva:'Bajada por el NA 21-24 de KA1 y subida automática antes del NC 11-12: los cables del motor quedan aislados.'};
 function marcar(){document.querySelectorAll('.ver button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===VER));const n=document.getElementById('vnota');if(n)n.textContent=NOTA[VER];}
 function verSet(v){if(v===VER)return;VER=v;GEN++;const keep=Object.assign({},ST);
   document.getElementById('esq').replaceChildren();M.wires=[];M.cont=[];M.loads=[];M.upd=[];TAPS.length=0;for(const k in O)delete O[k];
-  setup(DEF);Object.assign(ST,keep,{ret:false});solve();marcar();}
+  setup(DEF);Object.assign(ST,keep,{ret:false,retA:false});solve();marcar();}
 document.querySelectorAll('.ver button').forEach(b=>b.addEventListener('click',()=>verSet(b.dataset.v)));
 document.addEventListener('keydown',e=>{if((e.key==='v'||e.key==='V')&&!e.ctrlKey&&!e.metaKey&&!e.altKey)verSet(VER==='nueva'?'vieja':'nueva');});
 // retorno del condensador: en la solución antigua, mientras el motor sube, A1B tiene tensión y alimenta la bobina de KA1
-setInterval(()=>{const want=VER==='vieja'&&!!(O.m&&O.m.up.on);if(want!==ST.ret){ST.ret=want;solve();}},350);
+setInterval(()=>{const want=!!(O.m&&O.m.up.on),wa=!!(O.m&&O.m.dn.on);if(want!==ST.ret||wa!==ST.retA){ST.ret=want;ST.retA=wa;solve();}},350);
 setup(DEF);marcar();
 </script></body></html>
