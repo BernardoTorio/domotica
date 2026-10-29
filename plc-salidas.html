@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var t=localStorage.getItem('tema');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='light';}})();</script><title>Cablear las salidas · Domótica 2MT</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet"><style>:root{--paper:#ffffff;--bg:#eef2ea;--ink:#141414;--muted:#4b5563;--fase:#7B3F00;--neutro:#1F5FD0;--pos:#D00000;--neg:#141414;--pe:#3A9A3A;
+--vfase:#C8641E;--vfase-g:rgba(200,100,30,.55);--vpos:#FF1F1F;--vpos-g:rgba(255,31,31,.5);
+--flow:#ffb800;--lamp:#ffd84d;--glow:rgba(255,216,77,.45);--coil:#9ed27a;--tc:#ff9a52;--accent:#4f7f2a;--head:#1F4E79;--hit:rgba(79,127,42,.13);
+--idea:#E2EFDA;--idea-b:#548235;--ojo:#FCE4D6;--ojo-b:#C00000;--taller:#EDE7F6;--taller-b:#6A4C93;--est:#FFF8DB;--est-b:#BF9000;--como:#DDEBF7;--como-b:#2E75B6}
+html[data-theme=dark]{--paper:#1e252d;--bg:#141a20;--ink:#e9edf1;--muted:#a9b4bf;--fase:#c9864a;--neutro:#6fa8ff;--pos:#ff6b6b;--neg:#e9edf1;--pe:#6fcf6f;
+--vfase:#F0974E;--vfase-g:rgba(240,151,78,.6);--vpos:#FF4040;
+--flow:#ffd23f;--hit:rgba(158,210,122,.16);--accent:#9ed27a;--head:#8cc4ff;
+--idea:#22311c;--idea-b:#9ed27a;--ojo:#3a2320;--ojo-b:#ff8a7a;--taller:#2b2540;--taller-b:#c3a8ff;--est:#3a3216;--est-b:#ffd23f;--como:#1c2c3d;--como-b:#7fb6ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',Verdana,sans-serif;font-size:17px;line-height:1.5}
+.barra{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--paper);border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:2}
+.ico{font-size:1.15rem;line-height:1;min-width:42px;height:38px;display:inline-flex;align-items:center;justify-content:center}
+.btn{font:inherit;background:transparent;color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:4px 10px;cursor:pointer;text-decoration:none}
+.btn:hover,.btn:focus-visible{background:var(--hit);outline:none}
+.migas{flex:1;min-width:0;overflow:hidden;white-space:nowrap;direction:rtl;text-align:left;font-size:.98rem}
+.migas>span{direction:ltr;unicode-bidi:isolate}
+.migas a{color:var(--head);text-decoration:none}.migas a:hover{text-decoration:underline}
+.migas b{color:var(--ink)}.migas .sep{color:var(--muted);margin:0 .35em}
+main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
+.cab{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 8px}
+.cab h1{font-size:1.25rem;margin:0;color:var(--head)}
+.tag{background:var(--accent);color:var(--paper);font-weight:700;font-size:.8rem;letter-spacing:.06em;border-radius:6px;padding:2px 9px}
+.ejs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.ejs a{border:2px solid var(--accent);border-radius:8px;padding:3px 12px;color:var(--ink);text-decoration:none;font-weight:700;background:var(--paper)}
+.ejs a[aria-current=page]{background:var(--accent);color:var(--paper)}
+.ejs a:hover,.ejs a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
+.lamina{background:var(--paper);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.08);overflow-x:auto}
+.lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh;touch-action:manipulation}
+.ayuda{color:var(--muted);font-size:.95rem;margin:8px 4px 14px}
+.cajas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.caja{border-left:6px solid;border-radius:6px;padding:10px 14px}
+.caja b.t{display:block;margin-bottom:2px}
+.caja ul{margin:.2em 0;padding-left:1.2em}
+.idea{background:var(--idea);border-color:var(--idea-b)}.idea b.t{color:var(--idea-b)}
+.ojo{background:var(--ojo);border-color:var(--ojo-b)}.ojo b.t{color:var(--ojo-b)}
+.taller{background:var(--taller);border-color:var(--taller-b)}.taller b.t{color:var(--taller-b)}
+.est{background:var(--est);border-color:var(--est-b);grid-column:1/-1}.est b.t{color:var(--est-b)}
+.como{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.como b.t{color:var(--como-b)}
+.caja p{margin:.2em 0}.alerta{color:var(--ojo-b);font-weight:700}
+.vivo{color:var(--vfase);font-weight:700}.vivo12{color:var(--vpos);font-weight:700}.amar{color:#d99a00;font-weight:700}
+/* svg */
+.sym{stroke:var(--ink);stroke-width:2;fill:none;stroke-linecap:round}.thin{stroke-width:1.4}
+.box{stroke:var(--ink);stroke-width:2;fill:var(--paper)}
+.wire{stroke-width:3;fill:none;stroke-linejoin:round;stroke-linecap:round;transition:stroke-width .15s,opacity .15s}
+.wire.vL{stroke:var(--vfase);stroke-width:6;filter:drop-shadow(0 0 3px var(--vfase-g))}
+.wire.vP{stroke:var(--vpos);stroke-width:6;filter:drop-shadow(0 0 3px var(--vpos-g))}
+.wire.pale{opacity:.4}
+.flow{display:none;stroke:var(--flow);stroke-width:3;fill:none;stroke-dasharray:5 11;animation:run .7s linear infinite;stroke-linejoin:round}
+.flow.on{display:inline}
+@keyframes run{to{stroke-dashoffset:-16}}
+@media (prefers-reduced-motion:reduce){.flow{animation:none;stroke-dasharray:none;opacity:.6}}
+.num{font-size:13px;fill:var(--ink)}.sm{font-size:11px}.nm{font-size:15px;font-weight:700;fill:var(--ink)}
+.rail{font-size:15px;font-weight:700;fill:var(--ink)}
+.pe{stroke:var(--pe);stroke-width:1.8;stroke-dasharray:4 3;fill:none}.pe-t{fill:var(--pe)}
+.glow{fill:var(--glow);stroke:none;display:none}.glow.show{display:inline}
+.lampon{fill:var(--lamp)}.coilon{fill:var(--coil)}.tcon{fill:var(--tc)}
+.state{font-size:12px;fill:var(--muted)}.state.on{fill:var(--ojo-b);font-weight:700}.cold{fill:#2f7ad8}.hot{fill:#d9480f}
+.person{font-size:20px}.sm2{font-size:15px}
+.frame{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:7 5}
+.hit{fill:transparent;cursor:pointer;rx:8}
+.hit:hover,.hit:focus-visible{fill:var(--hit);outline:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
+
+/* índice */
+.tabs{display:flex;gap:8px;margin:6px 0 4px;flex-wrap:wrap}
+.tab{font:inherit;font-weight:700;background:var(--paper);color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:6px 16px;cursor:pointer}
+.tab[aria-selected=true]{background:var(--accent);color:var(--paper)}
+.panel[hidden]{display:none}
+.lista{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.lista a,.lista span.prox{display:block;background:var(--paper);border-left:6px solid var(--accent);border-radius:8px;padding:12px 16px;color:var(--ink);text-decoration:none}
+.lista a:hover,.lista a:focus-visible{background:var(--hit);outline:none}
+.lista a b{display:block;color:var(--head)}
+.lista span.prox{border-color:var(--muted);color:var(--muted);opacity:.7}.lista span.prox b{display:block}
+h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
+
+.slat{fill:var(--muted);opacity:.75}.thinb{stroke-width:1.2}
+
+/* ---- cableado PLC ---- */
+.zona{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:12px;align-items:start}
+@media (max-width:820px){.zona{grid-template-columns:1fr}}
+.lamina svg{min-width:600px}
+.panelc{background:var(--paper);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.panelc h3{margin:0;font-size:.95rem;color:var(--head)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;font:inherit;font-weight:700;background:var(--paper);color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:5px 8px;cursor:pointer;min-width:0}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--paper)}
+.seg button.mal[aria-pressed=true]{background:var(--ojo-b);border-color:var(--ojo-b)}
+.leds{display:flex;gap:12px;flex-wrap:wrap;font-size:.92rem}
+.led{width:16px;height:16px;border-radius:50%;border:2px solid var(--ink);display:inline-block;vertical-align:middle;margin-right:5px}
+.led.on{background:var(--lamp);box-shadow:0 0 10px var(--lamp)}
+.secs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+.secs button{font:inherit;font-weight:700;background:var(--paper);color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:6px 14px;cursor:pointer}
+.secs button[aria-selected=true]{background:var(--accent);color:var(--paper)}
+.plc{fill:#eef2f5;stroke:var(--ink);stroke-width:2.5}
+html[data-theme=dark] .plc{fill:#26303a}
+.term{fill:var(--paper);stroke:var(--ink);stroke-width:1.8}
+.tl{font-size:13px;font-weight:700;fill:var(--ink)}
+.cable{font-size:12px;fill:var(--muted)}
+.inled{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}.inled.on{fill:#7CFC00;stroke:#2b7a0b}
+.ledS{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}.ledS.on{fill:var(--lamp)}
+.bus{stroke:var(--muted);stroke-width:1.6;stroke-dasharray:5 4;fill:none}
+.res{fill:var(--paper);stroke:var(--muted);stroke-width:1.4}
+.sol{fill:#ffcc33;stroke:#c98a00;stroke-width:2}.luna{fill:#c9d3e0;stroke:var(--ink);stroke-width:1.5}
+.err{fill:var(--ojo-b);font-weight:700;font-size:14px}
+.okt{fill:#2b7a0b;font-weight:700;font-size:14px}
+.cruz{stroke:var(--ojo-b);stroke-width:5;stroke-linecap:round}
+.slat{fill:var(--muted);opacity:.75}
+</style></head><body>
+<header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Tema 2</a><span class="sep">›</span><b aria-current="page">Cablear las salidas</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
+<main><div class="cab"><h1>Cómo se cablean las salidas de un autómata</h1><span class="tag">TEMA 2</span></div>
+<nav class="secs" id="secs" role="tablist" aria-label="Apartados"></nav>
+<div class="zona">
+<div class="lamina"><svg id="esq" viewBox="0 0 900 520" role="img" aria-label="Esquema de cableado de las salidas"></svg></div>
+<div class="panelc" id="panel"></div>
+</div>
+<p class="ayuda" id="ayuda"></p>
+<div class="cajas" id="cajas"></div>
+</main>
+<script>
+// ===== utilidades de dibujo =====
+const NS='http://www.w3.org/2000/svg',svg=document.getElementById('esq');
+const COL={L:'var(--fase)',N:'var(--neutro)',P:'var(--pos)',M:'var(--neg)',S:'#7a7a7a'};
+function mk(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;}
+function T(x,y,s,cls,anc){const e=mk('text',{x,y,class:cls||'num','text-anchor':anc||'start','dominant-baseline':'middle'});e.textContent=s;return e;}
+// cable: t = L N P M ; on = con tensión (resalta fase y positivo)
+function W(d,t,on){const c=['wire'];if(on&&t==='L')c.push('vL');if(on&&t==='P')c.push('vP');return mk('path',{d,class:c.join(' '),stroke:COL[t]});}
+function FL(d){return mk('path',{d,class:'flow on'});}
+function DOT(x,y,t){mk('circle',{cx:x,cy:y,r:4.5,fill:t?COL[t]:'var(--ink)'});}
+function NAME(x,y,s){T(x,y,s,'nm','end');}
+function railH(y,t,lab,x0,x1,on){W(`M${x0} ${y} H${x1}`,t,on);T(x0-8,y,lab,'rail','end');}
+// zona clicable
+function HIT(x,y,w,h,label,on){const r=mk('rect',{x,y,width:w,height:h,class:'hit',tabindex:0,role:'button','aria-label':label});on(r);return r;}
+function clickable(r,fn){r.addEventListener('click',fn);r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn();}});}
+// pulsador: mantener; doble clic fija
+const LATCH={},LAST={};
+function pushable(r,key,redraw){
+  r.addEventListener('pointerdown',e=>{e.preventDefault();const t=Date.now();
+    if(t-(LAST[key]||0)<350){LATCH[key]=!LATCH[key];ST[key]=LATCH[key];LAST[key]=0;redraw();return;}
+    LAST[key]=t;ST[key]=true;redraw();
+    window.addEventListener('pointerup',()=>{if(!LATCH[key]){ST[key]=false;redraw();}},{once:true});});
+  r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();LATCH[key]=!LATCH[key];ST[key]=LATCH[key];redraw();}});
+}
+// contacto NA vertical: arriba hasta yc-14, abajo desde yc+14. Devuelve mitad de la lámina
+function NA(x,yc,closed){
+  if(closed)mk('path',{d:`M${x} ${yc+14} L${x} ${yc-14}`,class:'sym','stroke-width':2.6});
+  else mk('path',{d:`M${x} ${yc+14} L${x-17} ${yc-15}`,class:'sym','stroke-width':2.6});
+  return [closed?x:x-8.5,yc];
+}
+// conmutado: común arriba en x (llega hasta yc-14); 12 en x-16, 14 en x+16 (bajan desde yc+12)
+function CONM(x,yc,to14){
+  mk('path',{d:`M${x-16} ${yc+12} h9`,class:'sym'});         // gancho del NC
+  mk('path',{d:`M${x+16} ${yc+12} V${yc+10}`,class:'sym'});
+  if(to14)mk('path',{d:`M${x} ${yc-14} L${x+16} ${yc+12}`,class:'sym','stroke-width':2.6});
+  else mk('path',{d:`M${x} ${yc-14} L${x-14} ${yc+12}`,class:'sym','stroke-width':2.6});
+  return [to14?x+8:x-7,yc];
+}
+function DASH(x1,y,x2){mk('path',{d:`M${x1} ${y} H${x2}`,class:'sym thin','stroke-dasharray':'5 4'});}
+function PUSH(x,y){mk('path',{d:`M${x+6} ${y-12} H${x} V${y+12} H${x+6}`,class:'sym'});}
+// bornes del PLC en el borde de arriba (y) o de abajo
+function TERM(x,y,lab,below){mk('circle',{cx:x,cy:y,r:6,class:'term'});if(below)T(x+8,y-13,lab,'tl');else T(x,y+18,lab,'tl','middle');}
+function themeBtn(){const b=document.getElementById('tema'),r=document.documentElement;
+const ico=()=>{const d=r.dataset.theme==='dark';b.textContent=d?'☀️':'🌙';b.setAttribute('aria-label',d?'Cambiar a modo claro':'Cambiar a modo oscuro');b.title=b.getAttribute('aria-label');};ico();
+b.addEventListener('click',()=>{const d=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('tema',d)}catch(e){}ico();});}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'||(e.key==='Backspace'&&!/input|textarea/i.test(e.target.tagName))){location.href='index.html#animaciones';}});
+// pestañas
+function tabs(names,cur,cb){const box=document.getElementById('secs');box.innerHTML='';names.forEach((n,i)=>{const b=document.createElement('button');b.textContent=n;b.setAttribute('role','tab');b.setAttribute('aria-selected',i===cur);b.onclick=()=>cb(i);box.appendChild(b);});}
+function segs(id,opts,val,cb){const box=document.getElementById(id);box.innerHTML='';opts.forEach(([v,t,cls])=>{const b=document.createElement('button');b.innerHTML=t;if(cls)b.className=cls;b.setAttribute('aria-pressed',String(v)===String(val));b.onclick=()=>cb(v);box.appendChild(b);});}
+
+const ST={sec:0,pers:'stop',pos:50,led:false,ledq:'Q0.4'};
+try{const s=+new URLSearchParams(location.search).get('ap');if(s>=1&&s<=2)ST.sec=s-1;}catch(e){}
+const SECN=['1 · Relés individuales (LOGO!)','2 · Relés en grupos de 4 (S7-1200)'];
+const yL=40,yP=64,yN=470,yM=494,BY=110,BH=90;
+function caja(cls,t,html){return `<div class="caja ${cls}"><b class="t">${t}</b>${html}</div>`;}
+function rails(){railH(yL,'L','L',70,860,true);railH(yP,'P','+24 V',70,860,true);railH(yN,'N','N',70,860,false);railH(yM,'M','0 V',70,860,false);
+  T(860,yL-13,'230 Vca (desde Q1)','cable','end');T(860,yP+13,'24 Vcc (fuente)','cable','end');}
+// motor de persiana con ventana
+function persiana(xm,ya,yb,up,dn){
+  const yc=375,r=30;
+  const moving=(up&&ST.pos<100)||(dn&&ST.pos>0);
+  W(`M${xm-15} ${yc-r+4} V${yc-r-8}`,'L',up);W(`M${xm+15} ${yc-r+4} V${yc-r-8}`,'L',dn);
+  mk('circle',{cx:xm,cy:yc,r,class:'box'});T(xm,yc-6,'M','sm2','middle');T(xm,yc+12,'1~','num','middle');
+  T(xm-20,yc-r-14,'A1A','cable','end');T(xm+20,yc-r-14,'A1B','cable');
+  W(`M${xm} ${yc+r} V${yN}`,'N');DOT(xm,yN,'N');T(xm+6,yc+r+12,'A2','cable');
+  NAME(xm-r-12,yc,'M1');
+  // ventana
+  const wx=xm+60,wy=290,ww=90,wh=150,hb=wh*(1-ST.pos/100);
+  mk('rect',{x:wx,y:wy,width:ww,height:wh,fill:'#cfe8ff',stroke:'var(--ink)','stroke-width':2});
+  for(let y=wy;y<wy+hb;y+=9)mk('rect',{x:wx,y,width:ww,height:7,class:'slat'});
+  T(wx+ww/2,wy+wh+14,up&&moving?'sube ▲':dn&&moving?'baja ▼':ST.pos>=100?'arriba':ST.pos<=0?'abajo':'parada','cable','middle');
+  return moving;
+}
+function piloto(x,ytop,on,burnt){
+  const yc=360,r=16;
+  mk('circle',{cx:x,cy:yc,r,class:'box',fill:on?'var(--lamp)':'var(--paper)'});
+  if(on)mk('circle',{cx:x,cy:yc,r:r+8,fill:'var(--glow)'});
+  const d=r*.7;mk('path',{d:`M${x-d} ${yc-d} L${x+d} ${yc+d} M${x-d} ${yc+d} L${x+d} ${yc-d}`,class:'sym'});
+  T(x+8,yc-r-12,'X1 (+)','cable');T(x+8,yc+r+12,'X2 (−)','cable');NAME(x-r-10,yc,'H1');T(x-r-10,yc+18,'LED 24 Vcc','cable','end');
+  W(`M${x} ${yc+r} V${yM}`,'M');DOT(x,yM,'M');
+  if(burnt){mk('path',{d:`M${x-24} ${yc-24} l48 48 M${x+24} ${yc-24} l-48 48`,class:'cruz'});T(x,yc+52,'¡230 Vca! Se quema','err','middle');}
+}
+// contacto horizontal de una salida del LOGO!
+function relOut(x1,x2,closed,lab){
+  const y=172,xm=(x1+x2)/2;
+  mk('path',{d:`M${x1} ${BY+BH-6} V${y} H${xm-9} M${xm+9} ${y} H${x2} V${BY+BH-6}`,class:'sym thin'});
+  mk('path',{d:closed?`M${xm-9} ${y} H${xm+9}`:`M${xm-9} ${y} L${xm+8} ${y-12}`,class:'sym','stroke-width':2.2});
+  T(xm,y-26,lab,'tl','middle');
+}
+// contacto vertical de una salida agrupada (cuelga del bus del común)
+function relGrp(x,closed){
+  const yb=150,ye=BY+BH-6;
+  mk('path',{d:`M${x} ${yb} V${yb+10} M${x} ${ye-12} V${ye}`,class:'sym thin'});
+  mk('path',{d:closed?`M${x} ${ye-12} V${yb+10}`:`M${x} ${ye-12} L${x-9} ${yb+11}`,class:'sym','stroke-width':2.2});
+}
+let TICK=false;
+function controls(extra){
+  if(TICK)return;
+  document.getElementById('panel').innerHTML=`<h3>Programa: persiana</h3><div class="seg" id="p1"></div><h3>Programa: piloto H1</h3><div class="seg" id="p2"></div>`+(extra||'');
+  segs('p1',[['up','▲ Subir'],['stop','Parar'],['down','▼ Bajar']],ST.pers,v=>{ST.pers=v;draw();});
+  segs('p2',[[0,'Apagado'],[1,'Encendido']],ST.led?1:0,v=>{ST.led=!!v;draw();});
+}
+function setText(r,ayuda,cajas){document.getElementById('ayuda').innerHTML=ayuda+' Esc vuelve al índice.';
+  document.getElementById('cajas').innerHTML=caja('est','Qué está pasando','<div aria-live="polite">'+r.map(x=>'<p>'+x+'</p>').join('')+'</div>')+cajas;}
+function textoPers(up,dn,moving,q1,q2){
+  if(up)return moving?`El programa activa <b>${q1}</b>: su contacto se cierra y la fase llega a <b>A1A</b>. La persiana <b>sube</b>.`:`<b>${q1}</b> sigue activa, pero la persiana está <b>arriba del todo</b>: su final de carrera interno ha parado el motor.`;
+  if(dn)return moving?`El programa activa <b>${q2}</b>: la fase llega a <b>A1B</b>. La persiana <b>baja</b>.`:`<b>${q2}</b> sigue activa, pero la persiana está <b>abajo del todo</b>: se ha parado sola.`;
+  return `Persiana parada: ${q1} y ${q2} abiertas.`;
+}
+
+// ===================== 1: LOGO! =====================
+function sec1(){
+  rails();
+  mk('rect',{x:180,y:BY,width:620,height:BH,rx:10,class:'plc'});T(490,BY+22,'LOGO! 8 12/24RCE · cada salida es un relé con sus tornillos 1 y 2','nm','middle');
+  const O=[['Q1',220,260],['Q2',340,380],['Q3',520,560],['Q4',640,680]];
+  const up=ST.pers==='up',dn=ST.pers==='down';
+  const cl={Q1:up,Q2:dn,Q3:ST.led,Q4:false};
+  for(const [q,a,b] of O){relOut(a,b,cl[q],q);TERM(a,BY+BH,'1',true);TERM(b,BY+BH,'2',true);}
+  // alimentación de los contactos
+  W(`M140 ${yL} V235 H340`,'L',true);DOT(140,yL,'L');DOT(220,235,'L');
+  W(`M220 235 V${BY+BH+6}`,'L',true);W(`M340 235 V${BY+BH+6}`,'L',true);
+  W(`M830 ${yP} V255 H520 V${BY+BH+6}`,'P',true);DOT(830,yP,'P');
+  // persiana
+  W(`M260 ${BY+BH+6} V270 H305 V337`,'L',up);W(`M380 ${BY+BH+6} V290 H335 V337`,'L',dn);
+  const moving=persiana(320,0,0,up,dn);
+  // piloto
+  W(`M560 ${BY+BH+6} V310 H620 V344`,'P',ST.led);piloto(620,0,ST.led,false);
+  if(up&&moving)FL(`M140 ${yL} V235 H220 V172 H260 V270 H305 V375 H320 V${yN}`);
+  if(dn&&moving)FL(`M140 ${yL} V235 H340 V172 H380 V290 H335 V375 H320 V${yN}`);
+  if(ST.led)FL(`M830 ${yP} V255 H520 V172 H560 V310 H620 V${yM}`);
+  controls(`<h3>Salidas</h3><div class="leds">${['Q1','Q2','Q3'].map(q=>`<span><span class="led${cl[q]?' on':''}"></span>${q}</span>`).join('')}</div>`);
+  const r=[textoPers(up,dn,moving,'Q1','Q2')];
+  r.push(ST.led?'El programa activa <b>Q3</b>: su contacto lleva los <b>+24 V</b> al piloto LED, que vuelve por el <b>0 V</b>. <b>H1 encendido.</b>':'Q3 abierta: el piloto H1 está apagado.');
+  r.push('Fíjate: <b>Q1 y Q2 trabajan a 230 Vca</b> y <b>Q3 a 24 Vcc</b>, en el mismo LOGO!. Cada relé es independiente.');
+  setText(r,'Usa los botones del programa para subir, parar o bajar la persiana y para encender el piloto.',
+   caja('idea','IDEA CLAVE','<p>En el LOGO! cada salida es un <b>relé independiente</b> con sus dos tornillos: por el <b>1</b> entra la tensión y por el <b>2</b> sale al actuador. Por eso en cada salida puedes poner <b>la tensión que quieras</b>: 230 Vca para la persiana y 24 Vcc para el piloto.</p>')+
+   caja('ojo','¡OJO!','<p>La subida y la bajada van a <b>dos salidas distintas</b> (Q1 → A1A y Q2 → A1B). El programa nunca debe activarlas a la vez: es el <b>enclavamiento</b>. El neutro de la persiana va directo a N, y el negativo del piloto al 0 V.</p>')+
+   caja('taller','EN EL TALLER','<p>Más cables (dos por salida), pero total libertad: cada actuador con su tensión. Cuida los colores: <b>marrón/azul</b> para 230 Vca y <b>rojo/negro</b> para 24 Vcc.</p>'));
+  return moving;
+}
+
+// ===================== 2: S7-1200 grupos =====================
+function sec2(){
+  rails();
+  mk('rect',{x:180,y:BY,width:620,height:BH,rx:10,class:'plc'});T(490,BY+16,'PLC con salidas a relé en grupos (como el S7-1200)','nm','middle');
+  const up=ST.pers==='up',dn=ST.pers==='down',g1=ST.ledq==='Q0.2';
+  const G1=[['Q0.0',270,up],['Q0.1',320,dn],['Q0.2',370,g1&&ST.led],['Q0.3',420,false]];
+  const G2=[['Q0.4',550,!g1&&ST.led],['Q0.5',600,false],['Q0.6',650,false],['Q0.7',700,false]];
+  // buses de común
+  mk('path',{d:`M220 ${BY+BH-6} V150 H420`,class:'sym thin'});mk('path',{d:`M500 ${BY+BH-6} V150 H700`,class:'sym thin'});
+  T(320,141,'grupo 1 · común 1L','cable','middle');T(600,141,'grupo 2 · común 2L','cable','middle');
+  TERM(220,BY+BH,'1L',true);TERM(500,BY+BH,'2L',true);
+  for(const [q,x,c] of [...G1,...G2]){relGrp(x,c);TERM(x,BY+BH,q.slice(1),true);}
+  // alimentaciones de los comunes
+  W(`M140 ${yL} V235 H220 V${BY+BH+6}`,'L',true);DOT(140,yL,'L');
+  W(`M830 ${yP} V255 H500 V${BY+BH+6}`,'P',true);DOT(830,yP,'P');
+  W(`M270 ${BY+BH+6} V270 H285 V337`,'L',up);W(`M320 ${BY+BH+6} V290 H315 V337`,'L',dn);
+  const moving=persiana(300,0,0,up,dn);
+  const xl=g1?370:550,on=ST.led;
+  const burnt=g1&&on;
+  W(`M${xl} ${BY+BH+6} V310 H620 V344`,g1?'L':'P',on);piloto(620,0,on&&!g1,burnt);
+  if(up&&moving)FL(`M140 ${yL} V235 H220 V150 H270 V270 H285 V375 H300 V${yN}`);
+  if(dn&&moving)FL(`M140 ${yL} V235 H220 V150 H320 V290 H315 V375 H300 V${yN}`);
+  if(on&&!g1)FL(`M830 ${yP} V255 H500 V150 H550 V310 H620 V${yM}`);
+  controls(`<h3>¿Dónde conecto el piloto de 24 V?</h3><div class="seg" id="p3"></div><h3>Salidas</h3><div class="leds">${[...G1,...G2].filter(g=>g[2]).map(g=>`<span><span class="led on"></span>${g[0]}</span>`).join('')||'ninguna activa'}</div>`);
+  if(!TICK)segs('p3',[['Q0.4','Q0.4<br><small>grupo 2 (24 V)</small>'],['Q0.2','Q0.2<br><small>grupo 1 (230 V)</small>','mal']],ST.ledq,v=>{ST.ledq=v;draw();});
+  const r=[textoPers(up,dn,moving,'Q0.0','Q0.1')];
+  if(!on)r.push('Piloto apagado.');
+  else if(g1)r.push('<b class="alerta">¡Mal!</b> El piloto está en <b>Q0.2</b>, que pertenece al <b>grupo 1</b>: su común <b>1L</b> lleva la <b>fase de 230 Vca</b>. Al cerrar Q0.2 le llegan 230 Vca a un LED de 24 Vcc: <b>se quema</b>. Y además se une la fase con el 0 V de la fuente de 24 V.');
+  else r.push('El piloto está en <b>Q0.4</b>, del <b>grupo 2</b>, cuyo común <b>2L</b> lleva <b>+24 V</b>. Al cerrar Q0.4 el LED recibe 24 Vcc: <b>H1 encendido</b>.');
+  setText(r,'Usa los botones del programa y prueba a conectar el piloto en el grupo equivocado.',
+   caja('idea','IDEA CLAVE','<p>Aquí las salidas van en <b>grupos</b> que comparten un <b>común</b>: <b>1L</b> para Q0.0–Q0.3 y <b>2L</b> para Q0.4–Q0.7. Por el común entra la tensión de todo el grupo y por cada Q sale hacia su actuador. <b>Todo lo de un grupo trabaja a la misma tensión.</b></p>')+
+   caja('ojo','¡OJO!','<p>Antes de cablear, <b>reparte los actuadores por tensiones</b>: grupo 1 a 230 Vca (persiana, lámparas, electroválvulas) y grupo 2 a 24 Vcc (pilotos, relés de 24 V). Un actuador de 24 V en un grupo de 230 V <b>se quema</b>.</p>')+
+   caja('taller','EN EL TALLER','<p>Se ahorran cables (un solo común por grupo), pero hay que planificar. Cuántas salidas tiene cada grupo depende del modelo: míralo en la serigrafía o en el manual. Aquí lo dibujamos de 4 en 4.</p>'));
+  return moving;
+}
+let timer=null;
+function draw(){svg.innerHTML='';if(!TICK)tabs(SECN,ST.sec,i=>{ST.sec=i;draw();});const mv=[sec1,sec2][ST.sec]();
+  clearTimeout(timer);if(mv)timer=setTimeout(()=>{ST.pos=Math.max(0,Math.min(100,ST.pos+(ST.pers==='up'?4:-4)));TICK=true;draw();TICK=false;},160);}
+draw();themeBtn();
+</script></body></html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var t=localStorage.getItem('tema');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='light';}})();</script><title>Cablear las entradas · Domótica 2MT</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet"><style>:root{--paper:#ffffff;--bg:#eef2ea;--ink:#141414;--muted:#4b5563;--fase:#7B3F00;--neutro:#1F5FD0;--pos:#D00000;--neg:#141414;--pe:#3A9A3A;
+--vfase:#C8641E;--vfase-g:rgba(200,100,30,.55);--vpos:#FF1F1F;--vpos-g:rgba(255,31,31,.5);
+--flow:#ffb800;--lamp:#ffd84d;--glow:rgba(255,216,77,.45);--coil:#9ed27a;--tc:#ff9a52;--accent:#4f7f2a;--head:#1F4E79;--hit:rgba(79,127,42,.13);
+--idea:#E2EFDA;--idea-b:#548235;--ojo:#FCE4D6;--ojo-b:#C00000;--taller:#EDE7F6;--taller-b:#6A4C93;--est:#FFF8DB;--est-b:#BF9000;--como:#DDEBF7;--como-b:#2E75B6}
+html[data-theme=dark]{--paper:#1e252d;--bg:#141a20;--ink:#e9edf1;--muted:#a9b4bf;--fase:#c9864a;--neutro:#6fa8ff;--pos:#ff6b6b;--neg:#e9edf1;--pe:#6fcf6f;
+--vfase:#F0974E;--vfase-g:rgba(240,151,78,.6);--vpos:#FF4040;
+--flow:#ffd23f;--hit:rgba(158,210,122,.16);--accent:#9ed27a;--head:#8cc4ff;
+--idea:#22311c;--idea-b:#9ed27a;--ojo:#3a2320;--ojo-b:#ff8a7a;--taller:#2b2540;--taller-b:#c3a8ff;--est:#3a3216;--est-b:#ffd23f;--como:#1c2c3d;--como-b:#7fb6ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',Verdana,sans-serif;font-size:17px;line-height:1.5}
+.barra{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--paper);border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:2}
+.ico{font-size:1.15rem;line-height:1;min-width:42px;height:38px;display:inline-flex;align-items:center;justify-content:center}
+.btn{font:inherit;background:transparent;color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:4px 10px;cursor:pointer;text-decoration:none}
+.btn:hover,.btn:focus-visible{background:var(--hit);outline:none}
+.migas{flex:1;min-width:0;overflow:hidden;white-space:nowrap;direction:rtl;text-align:left;font-size:.98rem}
+.migas>span{direction:ltr;unicode-bidi:isolate}
+.migas a{color:var(--head);text-decoration:none}.migas a:hover{text-decoration:underline}
+.migas b{color:var(--ink)}.migas .sep{color:var(--muted);margin:0 .35em}
+main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
+.cab{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 8px}
+.cab h1{font-size:1.25rem;margin:0;color:var(--head)}
+.tag{background:var(--accent);color:var(--paper);font-weight:700;font-size:.8rem;letter-spacing:.06em;border-radius:6px;padding:2px 9px}
+.ejs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.ejs a{border:2px solid var(--accent);border-radius:8px;padding:3px 12px;color:var(--ink);text-decoration:none;font-weight:700;background:var(--paper)}
+.ejs a[aria-current=page]{background:var(--accent);color:var(--paper)}
+.ejs a:hover,.ejs a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
+.lamina{background:var(--paper);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.08);overflow-x:auto}
+.lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh;touch-action:manipulation}
+.ayuda{color:var(--muted);font-size:.95rem;margin:8px 4px 14px}
+.cajas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.caja{border-left:6px solid;border-radius:6px;padding:10px 14px}
+.caja b.t{display:block;margin-bottom:2px}
+.caja ul{margin:.2em 0;padding-left:1.2em}
+.idea{background:var(--idea);border-color:var(--idea-b)}.idea b.t{color:var(--idea-b)}
+.ojo{background:var(--ojo);border-color:var(--ojo-b)}.ojo b.t{color:var(--ojo-b)}
+.taller{background:var(--taller);border-color:var(--taller-b)}.taller b.t{color:var(--taller-b)}
+.est{background:var(--est);border-color:var(--est-b);grid-column:1/-1}.est b.t{color:var(--est-b)}
+.como{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.como b.t{color:var(--como-b)}
+.caja p{margin:.2em 0}.alerta{color:var(--ojo-b);font-weight:700}
+.vivo{color:var(--vfase);font-weight:700}.vivo12{color:var(--vpos);font-weight:700}.amar{color:#d99a00;font-weight:700}
+/* svg */
+.sym{stroke:var(--ink);stroke-width:2;fill:none;stroke-linecap:round}.thin{stroke-width:1.4}
+.box{stroke:var(--ink);stroke-width:2;fill:var(--paper)}
+.wire{stroke-width:3;fill:none;stroke-linejoin:round;stroke-linecap:round;transition:stroke-width .15s,opacity .15s}
+.wire.vL{stroke:var(--vfase);stroke-width:6;filter:drop-shadow(0 0 3px var(--vfase-g))}
+.wire.vP{stroke:var(--vpos);stroke-width:6;filter:drop-shadow(0 0 3px var(--vpos-g))}
+.wire.pale{opacity:.4}
+.flow{display:none;stroke:var(--flow);stroke-width:3;fill:none;stroke-dasharray:5 11;animation:run .7s linear infinite;stroke-linejoin:round}
+.flow.on{display:inline}
+@keyframes run{to{stroke-dashoffset:-16}}
+@media (prefers-reduced-motion:reduce){.flow{animation:none;stroke-dasharray:none;opacity:.6}}
+.num{font-size:13px;fill:var(--ink)}.sm{font-size:11px}.nm{font-size:15px;font-weight:700;fill:var(--ink)}
+.rail{font-size:15px;font-weight:700;fill:var(--ink)}
+.pe{stroke:var(--pe);stroke-width:1.8;stroke-dasharray:4 3;fill:none}.pe-t{fill:var(--pe)}
+.glow{fill:var(--glow);stroke:none;display:none}.glow.show{display:inline}
+.lampon{fill:var(--lamp)}.coilon{fill:var(--coil)}.tcon{fill:var(--tc)}
+.state{font-size:12px;fill:var(--muted)}.state.on{fill:var(--ojo-b);font-weight:700}.cold{fill:#2f7ad8}.hot{fill:#d9480f}
+.person{font-size:20px}.sm2{font-size:15px}
+.frame{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:7 5}
+.hit{fill:transparent;cursor:pointer;rx:8}
+.hit:hover,.hit:focus-visible{fill:var(--hit);outline:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
+
+/* índice */
+.tabs{display:flex;gap:8px;margin:6px 0 4px;flex-wrap:wrap}
+.tab{font:inherit;font-weight:700;background:var(--paper);color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:6px 16px;cursor:pointer}
+.tab[aria-selected=true]{background:var(--accent);color:var(--paper)}
+.panel[hidden]{display:none}
+.lista{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.lista a,.lista span.prox{display:block;background:var(--paper);border-left:6px solid var(--accent);border-radius:8px;padding:12px 16px;color:var(--ink);text-decoration:none}
+.lista a:hover,.lista a:focus-visible{background:var(--hit);outline:none}
+.lista a b{display:block;color:var(--head)}
+.lista span.prox{border-color:var(--muted);color:var(--muted);opacity:.7}.lista span.prox b{display:block}
+h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
+
+.slat{fill:var(--muted);opacity:.75}.thinb{stroke-width:1.2}
+
+/* ---- cableado PLC ---- */
+.zona{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:12px;align-items:start}
+@media (max-width:820px){.zona{grid-template-columns:1fr}}
+.lamina svg{min-width:600px}
+.panelc{background:var(--paper);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.panelc h3{margin:0;font-size:.95rem;color:var(--head)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;font:inherit;font-weight:700;background:var(--paper);color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:5px 8px;cursor:pointer;min-width:0}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--paper)}
+.seg button.mal[aria-pressed=true]{background:var(--ojo-b);border-color:var(--ojo-b)}
+.leds{display:flex;gap:12px;flex-wrap:wrap;font-size:.92rem}
+.led{width:16px;height:16px;border-radius:50%;border:2px solid var(--ink);display:inline-block;vertical-align:middle;margin-right:5px}
+.led.on{background:var(--lamp);box-shadow:0 0 10px var(--lamp)}
+.secs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+.secs button{font:inherit;font-weight:700;background:var(--paper);color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:6px 14px;cursor:pointer}
+.secs button[aria-selected=true]{background:var(--accent);color:var(--paper)}
+.plc{fill:#eef2f5;stroke:var(--ink);stroke-width:2.5}
+html[data-theme=dark] .plc{fill:#26303a}
+.term{fill:var(--paper);stroke:var(--ink);stroke-width:1.8}
+.tl{font-size:13px;font-weight:700;fill:var(--ink)}
+.cable{font-size:12px;fill:var(--muted)}
+.inled{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}.inled.on{fill:#7CFC00;stroke:#2b7a0b}
+.ledS{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}.ledS.on{fill:var(--lamp)}
+.bus{stroke:var(--muted);stroke-width:1.6;stroke-dasharray:5 4;fill:none}
+.res{fill:var(--paper);stroke:var(--muted);stroke-width:1.4}
+.sol{fill:#ffcc33;stroke:#c98a00;stroke-width:2}.luna{fill:#c9d3e0;stroke:var(--ink);stroke-width:1.5}
+.err{fill:var(--ojo-b);font-weight:700;font-size:14px}
+.okt{fill:#2b7a0b;font-weight:700;font-size:14px}
+.cruz{stroke:var(--ojo-b);stroke-width:5;stroke-linecap:round}
+.slat{fill:var(--muted);opacity:.75}
+</style></head><body>
+<header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Tema 2</a><span class="sep">›</span><b aria-current="page">Cablear las entradas</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
+<main><div class="cab"><h1>Cómo se cablean las entradas de un autómata</h1><span class="tag">TEMA 2</span></div>
+<nav class="secs" id="secs" role="tablist" aria-label="Apartados"></nav>
+<div class="zona">
+<div class="lamina"><svg id="esq" viewBox="0 0 900 500" role="img" aria-label="Esquema de cableado de las entradas"></svg></div>
+<div class="panelc" id="panel"></div>
+</div>
+<p class="ayuda" id="ayuda"></p>
+<div class="cajas" id="cajas"></div>
+</main>
+<script>
+// ===== utilidades de dibujo =====
+const NS='http://www.w3.org/2000/svg',svg=document.getElementById('esq');
+const COL={L:'var(--fase)',N:'var(--neutro)',P:'var(--pos)',M:'var(--neg)',S:'#7a7a7a'};
+function mk(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;}
+function T(x,y,s,cls,anc){const e=mk('text',{x,y,class:cls||'num','text-anchor':anc||'start','dominant-baseline':'middle'});e.textContent=s;return e;}
+// cable: t = L N P M ; on = con tensión (resalta fase y positivo)
+function W(d,t,on){const c=['wire'];if(on&&t==='L')c.push('vL');if(on&&t==='P')c.push('vP');return mk('path',{d,class:c.join(' '),stroke:COL[t]});}
+function FL(d){return mk('path',{d,class:'flow on'});}
+function DOT(x,y,t){mk('circle',{cx:x,cy:y,r:4.5,fill:t?COL[t]:'var(--ink)'});}
+function NAME(x,y,s){T(x,y,s,'nm','end');}
+function railH(y,t,lab,x0,x1,on){W(`M${x0} ${y} H${x1}`,t,on);T(x0-8,y,lab,'rail','end');}
+// zona clicable
+function HIT(x,y,w,h,label,on){const r=mk('rect',{x,y,width:w,height:h,class:'hit',tabindex:0,role:'button','aria-label':label});on(r);return r;}
+function clickable(r,fn){r.addEventListener('click',fn);r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn();}});}
+// pulsador: mantener; doble clic fija
+const LATCH={},LAST={};
+function pushable(r,key,redraw){
+  r.addEventListener('pointerdown',e=>{e.preventDefault();const t=Date.now();
+    if(t-(LAST[key]||0)<350){LATCH[key]=!LATCH[key];ST[key]=LATCH[key];LAST[key]=0;redraw();return;}
+    LAST[key]=t;ST[key]=true;redraw();
+    window.addEventListener('pointerup',()=>{if(!LATCH[key]){ST[key]=false;redraw();}},{once:true});});
+  r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();LATCH[key]=!LATCH[key];ST[key]=LATCH[key];redraw();}});
+}
+// contacto NA vertical: arriba hasta yc-14, abajo desde yc+14. Devuelve mitad de la lámina
+function NA(x,yc,closed){
+  if(closed)mk('path',{d:`M${x} ${yc+14} L${x} ${yc-14}`,class:'sym','stroke-width':2.6});
+  else mk('path',{d:`M${x} ${yc+14} L${x-17} ${yc-15}`,class:'sym','stroke-width':2.6});
+  return [closed?x:x-8.5,yc];
+}
+// conmutado: común arriba en x (llega hasta yc-14); 12 en x-16, 14 en x+16 (bajan desde yc+12)
+function CONM(x,yc,to14){
+  mk('path',{d:`M${x-16} ${yc+12} h9`,class:'sym'});         // gancho del NC
+  mk('path',{d:`M${x+16} ${yc+12} V${yc+10}`,class:'sym'});
+  if(to14)mk('path',{d:`M${x} ${yc-14} L${x+16} ${yc+12}`,class:'sym','stroke-width':2.6});
+  else mk('path',{d:`M${x} ${yc-14} L${x-14} ${yc+12}`,class:'sym','stroke-width':2.6});
+  return [to14?x+8:x-7,yc];
+}
+function DASH(x1,y,x2){mk('path',{d:`M${x1} ${y} H${x2}`,class:'sym thin','stroke-dasharray':'5 4'});}
+function PUSH(x,y){mk('path',{d:`M${x+6} ${y-12} H${x} V${y+12} H${x+6}`,class:'sym'});}
+// bornes del PLC en el borde de arriba (y) o de abajo
+function TERM(x,y,lab,below){mk('circle',{cx:x,cy:y,r:6,class:'term'});if(below)T(x+8,y-13,lab,'tl');else T(x,y+18,lab,'tl','middle');}
+function themeBtn(){const b=document.getElementById('tema'),r=document.documentElement;
+const ico=()=>{const d=r.dataset.theme==='dark';b.textContent=d?'☀️':'🌙';b.setAttribute('aria-label',d?'Cambiar a modo claro':'Cambiar a modo oscuro');b.title=b.getAttribute('aria-label');};ico();
+b.addEventListener('click',()=>{const d=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('tema',d)}catch(e){}ico();});}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'||(e.key==='Backspace'&&!/input|textarea/i.test(e.target.tagName))){location.href='index.html#animaciones';}});
+// pestañas
+function tabs(names,cur,cb){const box=document.getElementById('secs');box.innerHTML='';names.forEach((n,i)=>{const b=document.createElement('button');b.textContent=n;b.setAttribute('role','tab');b.setAttribute('aria-selected',i===cur);b.onclick=()=>cb(i);box.appendChild(b);});}
+function segs(id,opts,val,cb){const box=document.getElementById(id);box.innerHTML='';opts.forEach(([v,t,cls])=>{const b=document.createElement('button');b.innerHTML=t;if(cls)b.className=cls;b.setAttribute('aria-pressed',String(v)===String(val));b.onclick=()=>cb(v);box.appendChild(b);});}
+
+const ST={sec:0,s1:false,frio:false,noche:false,pres:false,q1:true,q2:true,m:'0V',d1:false,d2:false};
+try{const s=+new URLSearchParams(location.search).get('ap');if(s>=1&&s<=3)ST.sec=s-1;}catch(e){}
+const YP=0;
+function plcBox(title,y0){mk('rect',{x:90,y:y0,width:720,height:110,rx:10,class:'plc'});T(450,y0+95,title,'nm','middle');}
+function inputCell(x,y0,on,lab){ // LED + resistencia hasta el bus interno
+  mk('path',{d:`M${x} ${y0+6} V${y0+10} M${x+12} ${y0+10} V${y0+29} M${x} ${y0+10} H${x+12}`,class:'sym thin'});
+  mk('circle',{cx:x+12,cy:y0+36,r:7,class:'inled'+(on?' on':'')});
+  mk('rect',{x:x+7,y:y0+48,width:10,height:16,class:'res'});
+  mk('path',{d:`M${x+12} ${y0+43} V${y0+48} M${x+12} ${y0+64} V${y0+72}`,class:'sym thin'});
+}
+function caja(cls,t,html){return `<div class="caja ${cls}"><b class="t">${t}</b>${html}</div>`;}
+const SECN=['1 · Sensores pasivos','2 · Sensores activos de relé (4 y 5 hilos)','3 · Sensores PNP y NPN (3 hilos)'];
+
+// ===================== APARTADO 1: PASIVOS =====================
+function sec1(){
+  const y0=360,yp=70,ym=100,X1=300,X2=456;
+  railH(yp,'P','+12 V',70,860,true);railH(ym,'M','0 V',70,860,false);
+  T(860,yp-14,'desde Q2','cable','end');
+  plcBox('LOGO! 8 12/24RCE · por dentro, cada entrada es una carga hacia M',y0);
+  TERM(130,y0,'L+');TERM(180,y0,'M');TERM(X1,y0,'I1');TERM(X2,y0,'I2');TERM(600,y0,'I3');TERM(700,y0,'I4');
+  W(`M130 ${yp} V${y0-6}`,'P',true);DOT(130,yp,'P');W(`M180 ${ym} V${y0-6}`,'M');DOT(180,ym,'M');
+  mk('path',{d:`M180 ${y0+6} V${y0+72} H712`,class:'bus'});
+  for(const [x,on] of [[X1,ST.s1],[X2,ST.frio],[600,false],[700,false]])inputCell(x,y0,on);
+  // S1 pulsador (tecla ▲ del pulsador doble)
+  const yc=220;
+  W(`M${X1} ${yp} V${yc-14}`,'P',true);DOT(X1,yp,'P');
+  W(`M${X1} ${yc+14} V${y0-6}`,'P',ST.s1);
+  const m1=NA(X1,yc,ST.s1);PUSH(X1-62,yc);DASH(X1-56,yc,m1[0]);T(X1-58,yc-22,'▲','sm','middle');
+  NAME(X1-70,yc,'S1');T(X1+7,yc-24,'11');T(X1+7,yc+26,'14');
+  pushable(HIT(X1-80,yc-35,100,70,'Pulsador S1 tecla subir',()=>{}),'s1',draw);
+  // S2 termostato conmutado
+  const xc=X2-16;
+  W(`M${xc} ${yp} V${yc-14}`,'P',true);DOT(xc,yp,'P');
+  W(`M${xc-16} ${yc+12} V${yc+60}`,'P',!ST.frio);
+  W(`M${X2} ${yc+12} V${y0-6}`,'P',ST.frio);
+  const m2=CONM(xc,yc,ST.frio);
+  mk('rect',{x:xc-95,y:yc-16,width:42,height:32,class:'box'});T(xc-74,yc,'t°','sm2','middle');DASH(xc-53,yc,m2[0]);
+  NAME(xc-102,yc,'S2');T(xc+7,yc-24,'11');T(xc-28,yc+30,'12','num','end');T(X2+7,yc+30,'14');
+  clickable(HIT(xc-110,yc-35,140,70,'Termostato S2',()=>{}),()=>{ST.frio=!ST.frio;draw();});
+  T(xc-74,yc-28,ST.frio?'frío: pide calor':'calor: no pide','cable','middle');
+  // corriente
+  if(ST.s1)FL(`M${X1} ${yp} V${y0+10} H${X1+12} V${y0+72} H180 V${ym}`);
+  if(ST.frio)FL(`M${xc} ${yp} V${yc-14} L${X2} ${yc+12} V${y0+10} H${X2+12} V${y0+72} H180 V${ym}`);
+  // panel y textos
+  panel(`<h3>Pulsador S1 (tecla ▲)</h3><div class="seg" id="p1"></div><h3>Temperatura de la sala</h3><div class="seg" id="p2"></div>`+leds([['I1',ST.s1],['I2',ST.frio]]));
+  segs('p1',[[0,'Suelto'],[1,'Pulsado']],ST.s1?1:0,v=>{ST.s1=!!v;LATCH.s1=!!v;draw();});
+  segs('p2',[[0,'Calor'],[1,'Frío']],ST.frio?1:0,v=>{ST.frio=!!v;draw();});
+  let r=[];
+  r.push(ST.s1?'<b>S1 pulsado</b>: su contacto 11-14 deja pasar el <b>+12 V</b> hasta <b>I1</b>. La corriente entra por I1, pasa por el led de la entrada y sale por <b>M</b> al 0 V. <b>I1 = 1.</b>':'S1 suelto: el contacto 11-14 está abierto y a I1 no le llega nada. <b>I1 = 0.</b>');
+  r.push(ST.frio?'La sala está <b>fría</b>: el termostato pasa del 12 al <b>14</b> y lleva el +12 V a <b>I2</b>. <b>I2 = 1.</b>':'La sala está <b>caliente</b>: el termostato está en el <b>12</b>, que no va a ningún sitio. <b>I2 = 0.</b>');
+  setText(r,'Toca la tecla ▲ de <b>S1</b> (se mantiene mientras aprietas; doble clic la deja fijada) y el termostato <b>S2</b> para cambiar la temperatura.',
+   caja('idea','IDEA CLAVE','<p>Un sensor <b>pasivo</b> es solo un contacto: no necesita alimentación. Se cablea con <b>dos hilos</b>: el <b>común al +12 V</b> y el otro tornillo a la <b>entrada</b>.</p>')+
+   caja('ojo','¡OJO!','<p>Del termostato solo se usa el contacto que interesa (aquí el <b>14</b>, que se cierra con frío). El <b>12</b> se queda libre: no se lleva a ningún sitio.</p>')+
+   caja('taller','EN EL TALLER','<p>Con el polímetro en <b>V⎓</b>, punta negra en <b>M</b> y roja en la entrada: <b>12 V</b> con el contacto cerrado y <b>0 V</b> abierto.</p>'));
+}
+
+// ===================== APARTADO 2: ACTIVOS DE RELÉ =====================
+function sec2(){
+  const y0=360,yL=36,yN=58,yp=98,ym=122,XA=376,XB=660;
+  railH(yL,'L','L',70,860,ST.q1);railH(yN,'N','N',70,860,false);
+  railH(yp,'P','+12 V',70,860,ST.q2);railH(ym,'M','0 V',70,860,false);
+  T(860,yL-13,'230 Vca (Q1)','cable','end');T(860,yp-13,'12 Vcc (Q2)','cable','end');
+  plcBox('LOGO! 8 12/24RCE',y0);
+  TERM(130,y0,'L+');TERM(180,y0,'M');TERM(XA,y0,'I1');TERM(XB,y0,'I2');
+  W(`M130 ${yp} V${y0-6}`,'P',ST.q2);DOT(130,yp,'P');W(`M180 ${ym} V${y0-6}`,'M');DOT(180,ym,'M');
+  mk('path',{d:`M180 ${y0+6} V${y0+72} H${XB+12}`,class:'bus'});
+  const to14=ST.q2&&ST.noche, r2=ST.q1&&ST.pres;
+  const I1=ST.q2&&to14, I2=ST.q2&&r2;
+  inputCell(XA,y0,I1);inputCell(XB,y0,I2);
+  // ---- crepuscular de 5 hilos
+  const yc=228,bx=230,by=200;
+  mk('rect',{x:bx,y:by,width:76,height:56,rx:6,class:'box'});
+  if(ST.noche){mk('path',{d:`M${bx+42} ${by+12} a16 16 0 1 0 12 27 a12 12 0 1 1 -12 -27 z`,class:'luna'});}
+  else{mk('circle',{cx:bx+38,cy:by+28,r:11,class:'sol'});}
+  T(bx+38,by+66,ST.noche?'noche':'día','cable','middle');
+  W(`M${bx+14} ${by} V${yp}`,'P',ST.q2);DOT(bx+14,yp,'P');T(bx+8,by-10,'+','vlab','end');
+  W(`M${bx+62} ${by} V${ym}`,'M');DOT(bx+62,ym,'M');T(bx+68,by-10,'−','vlab');
+  NAME(bx-8,by+28,'S1');T(bx-8,by+48,'5 hilos','cable','end');
+  const xc=XA-16;
+  W(`M${xc} ${yp} V${yc-14}`,'P',ST.q2);DOT(xc,yp,'P');
+  W(`M${xc-16} ${yc+12} V${yc+55}`,'P',ST.q2&&!to14);
+  W(`M${XA} ${yc+12} V${y0-6}`,'P',ST.q2&&to14);
+  const m1=CONM(xc,yc,to14);DASH(bx+76,yc,m1[0]);
+  T(xc+7,yc-24,'11');T(xc-28,yc+30,'12','num','end');T(XA+7,yc+30,'14');
+  clickable(HIT(bx-4,by-4,84,80,'Sensor crepuscular: día o noche',()=>{}),()=>{ST.noche=!ST.noche;draw();});
+  // ---- detector de presencia (4 hilos: L, N y contacto R2)
+  const px=505,py=200;
+  mk('rect',{x:px,y:py,width:76,height:56,rx:6,class:'box'});
+  for(const r of [8,15,22])mk('path',{d:`M${px+44} ${py+28-r} A ${r} ${r} 0 0 0 ${px+44} ${py+28+r}`,class:'sym thin'});
+  mk('rect',{x:px+46,y:py+16,width:8,height:24,fill:'var(--ink)'});
+  if(ST.pres)T(px+18,py+28,'🚶','person','middle');
+  W(`M${px+14} ${py} V${yL}`,'L',ST.q1);DOT(px+14,yL,'L');T(px+8,py-10,'L','num','end');
+  W(`M${px+62} ${py} V${yN}`,'N');DOT(px+62,yN,'N');T(px+68,py-10,'N','num');
+  NAME(px-8,py+28,'S2');T(px-8,py+48,'4 hilos','cable','end');
+  W(`M${XB} ${yp} V${yc-14}`,'P',ST.q2);DOT(XB,yp,'P');
+  W(`M${XB} ${yc+14} V${y0-6}`,'P',ST.q2&&r2);
+  const m2=NA(XB,yc,r2);DASH(px+76,yc,m2[0]);T(XB+7,yc-24,'R2');T(XB+7,yc+26,'R2');
+  T(px+38,py+70,'LS: no se usa','cable','middle');
+  clickable(HIT(px-4,py-4,84,80,'Detector de presencia',()=>{}),()=>{ST.pres=!ST.pres;draw();});
+  if(I1)FL(`M${xc} ${yp} V${yc-14} L${XA} ${yc+12} V${y0+10} H${XA+12} V${y0+72} H180 V${ym}`);
+  if(I2)FL(`M${XB} ${yp} V${y0+10} H${XB+12} V${y0+72} H180 V${ym}`);
+  panel(`<h3>Luz (S1 crepuscular)</h3><div class="seg" id="p1"></div><h3>Detector S2</h3><div class="seg" id="p2"></div><h3>Magnetotérmicos</h3><div class="seg" id="p3"></div><div class="seg" id="p4"></div>`+leds([['I1',I1],['I2',I2]]));
+  segs('p1',[[0,'Día'],[1,'Noche']],ST.noche?1:0,v=>{ST.noche=!!v;draw();});
+  segs('p2',[[0,'Nadie'],[1,'Presencia']],ST.pres?1:0,v=>{ST.pres=!!v;draw();});
+  segs('p3',[[1,'Q2 12 V ON'],[0,'Q2 OFF','mal']],ST.q2?1:0,v=>{ST.q2=!!v;draw();});
+  segs('p4',[[1,'Q1 230 V ON'],[0,'Q1 OFF','mal']],ST.q1?1:0,v=>{ST.q1=!!v;draw();});
+  const r=[];
+  if(!ST.q2)r.push('<b>Q2 bajado</b>: no hay 12 V. El LOGO! está apagado y el crepuscular no tiene alimentación: su relé se queda en <b>reposo</b> (11-12).');
+  else{
+    r.push(ST.noche?'<b>De noche</b>: el crepuscular (alimentado por rojo y negro) activa su relé interno y su contacto pasa al <b>14</b>: el +12 V llega a <b>I1</b>.':'<b>De día</b>: el relé del crepuscular está en reposo (<b>11-12</b>). I1 = 0.');
+    if(!ST.q1)r.push('<b>Q1 bajado</b>: el detector no tiene 230 V, su contacto R2 se queda abierto aunque haya alguien.');
+    else r.push(ST.pres?'<b>Presencia</b>: el detector (alimentado a 230 V por L y N) cierra su contacto seco <b>R2</b> y lleva el +12 V a <b>I2</b>.':'Nadie delante del detector: R2 abierto. I2 = 0.');
+  }
+  setText(r,'Toca el <b>crepuscular S1</b> para cambiar entre día y noche, y el <b>detector S2</b> para que haya alguien. Baja <b>Q2</b> o <b>Q1</b> para ver qué pasa sin alimentación.',
+   caja('idea','IDEA CLAVE','<p>Un sensor <b>activo de relé</b> tiene <b>dos circuitos</b>: la <b>alimentación</b> (rojo y negro a 12 V, o L y N a 230 V) y un <b>contacto seco</b>, que se cablea igual que un pulsador: un tornillo al +12 V y el otro a la entrada.</p>')+
+   caja('como','4 o 5 hilos','<p><b>5 hilos</b> (crepuscular, inundación): 2 de alimentación + 3 del contacto conmutado (11-12-14). <b>4 hilos</b> (detector con R2): 2 de alimentación + 2 del contacto NA.</p>')+
+   caja('ojo','¡OJO!','<p>La alimentación del sensor y su contacto <b>no se mezclan</b>: el PIR va a 230 V, pero por su R2 solo pasan los 12 V de la entrada. La salida <b>LS</b> del detector da 230 V: <b>nunca</b> a una entrada del LOGO! 12/24.</p>'));
+}
+
+// ===================== APARTADO 3: PNP y NPN =====================
+function sec3(){
+  const y0=360,yp=70,ym=100,X0=440,X1=680,XM=280;
+  railH(yp,'P','+24 V',70,860,true);railH(ym,'M','0 V',70,860,false);
+  plcBox('PLC con común de entradas 1M (como el S7-1200)',y0);
+  TERM(130,y0,'L+');TERM(180,y0,'M');TERM(XM,y0,'1M');TERM(X0,y0,'I0.0');TERM(X1,y0,'I0.1');
+  W(`M130 ${yp} V${y0-6}`,'P',true);DOT(130,yp,'P');W(`M180 ${ym} V${y0-6}`,'M');DOT(180,ym,'M');
+  const m24=ST.m==='24';
+  if(m24){W(`M${XM} ${yp} V${y0-6}`,'P',true);DOT(XM,yp,'P');}else{W(`M${XM} ${ym} V${y0-6}`,'M');DOT(XM,ym,'M');}
+  mk('path',{d:`M${XM} ${y0+6} V${y0+72} H${X1+12}`,class:'bus'});
+  const I0=ST.d1&&!m24, I1=ST.d2&&m24;
+  inputCell(X0,y0,I0);inputCell(X1,y0,I1);
+  // sensor genérico: caja con BN, BU arriba y BK abajo
+  function sensor(bx,tipo,det,key,xBK){
+    const by=170,w=110,h=90,xBN=bx+20,xBU=bx+50;
+    mk('rect',{x:bx,y:by,width:w,height:h,rx:8,class:'box'});
+    T(bx+w-8,by+16,tipo,'nm','end');mk('circle',{cx:bx+w-14,cy:by+36,r:6,class:'ledS'+(det?' on':'')});
+    mk('rect',{x:bx-8,y:by+25,width:8,height:40,fill:'var(--ink)'});
+    mk('rect',{x:det?bx-38:bx-62,y:by+30,width:20,height:30,rx:3,class:'pieza',fill:'#9aa7b4',stroke:'var(--ink)'});
+    clickable(HIT(bx-70,by,w+70,h,'Sensor '+tipo+': acercar o alejar la pieza',()=>{}),()=>{ST[key]=!ST[key];draw();});
+    W(`M${xBN} ${by} V${yp}`,'P',true);DOT(xBN,yp,'P');T(xBN-5,by-10,'BN','cable','end');
+    W(`M${xBU} ${by} V${ym}`,'M');DOT(xBU,ym,'M');T(xBU+5,by-10,'BU','cable');
+    // interruptor (transistor) interno
+    const ys=by+28,ye=by+58;
+    if(tipo==='PNP'){mk('path',{d:`M${xBN} ${by} V${ys}`,class:'sym'});
+      mk('path',{d:det?`M${xBN} ${ye} L${xBN} ${ys}`:`M${xBN} ${ye} L${xBN-12} ${ys+2}`,class:'sym','stroke-width':2.4});
+      mk('path',{d:`M${xBN} ${ye} V${ye+10} H${xBK} V${by+h}`,class:'sym'});}
+    else{mk('path',{d:`M${xBU} ${by} V${ys}`,class:'sym'});
+      mk('path',{d:det?`M${xBU} ${ye} L${xBU} ${ys}`:`M${xBU} ${ye} L${xBU-12} ${ys+2}`,class:'sym','stroke-width':2.4});
+      mk('path',{d:`M${xBU} ${ye} V${ye+10} H${xBK} V${by+h}`,class:'sym'});}
+    T(bx+64,by+50,'transistor','cable');
+    return by+h;
+  }
+  const b1=sensor(330,'PNP',ST.d1,'d1',X0);
+  W(`M${X0} ${b1} V${y0-6}`,'P',ST.d1);T(X0+6,b1+16,'BK','cable');
+  NAME(250,215,'B1');
+  const b2=sensor(570,'NPN',ST.d2,'d2',X1);
+  W(`M${X1} ${b2} V${y0-6}`,ST.d2?'M':'P',ST.d2?false:false);T(X1+6,b2+16,'BK','cable');
+  NAME(490,215,'B2');
+  if(I0)FL(`M350 ${yp} V238 H${X0} V${y0+10} H${X0+12} V${y0+72} H${XM} V${ym}`);
+  if(I1)FL(`M${XM} ${yp} V${y0+72} H${X1+12} V${y0+10} H${X1} V238 H620 V${ym}`);
+  if(!m24){mk('path',{d:`M${X1-14} ${y0+20} l28 28 M${X1+14} ${y0+20} l-28 28`,class:'cruz',opacity:ST.d2?1:.35});}
+  else{mk('path',{d:`M${X0-14} ${y0+20} l28 28 M${X0+14} ${y0+20} l-28 28`,class:'cruz',opacity:ST.d1?1:.35});}
+  panel(`<h3>Común 1M del PLC</h3><div class="seg" id="p1"></div><h3>B1 (PNP)</h3><div class="seg" id="p2"></div><h3>B2 (NPN)</h3><div class="seg" id="p3"></div>`+leds([['I0.0',I0],['I0.1',I1]]));
+  segs('p1',[['0V','1M a 0 V<br><small>(para PNP)</small>'],['24','1M a +24 V<br><small>(para NPN)</small>']],ST.m,v=>{ST.m=v;draw();});
+  segs('p2',[[0,'Lejos'],[1,'Pieza']],ST.d1?1:0,v=>{ST.d1=!!v;draw();});
+  segs('p3',[[0,'Lejos'],[1,'Pieza']],ST.d2?1:0,v=>{ST.d2=!!v;draw();});
+  const r=[];
+  if(!m24){r.push('El común <b>1M está al 0 V</b>: cada entrada es una carga entre su tornillo y el 0 V. Solo se activa si le llega <b>+24 V</b>.');
+    r.push(ST.d1?'<b>B1 (PNP) detecta</b> y da +24 V por el negro: la corriente entra por I0.0 y sale por 1M. <b>I0.0 = 1.</b>':'B1 (PNP) sin pieza: I0.0 = 0.');
+    r.push(ST.d2?'<b>B2 (NPN) detecta</b> y une su negro con el 0 V… pero 1M también está a 0 V: no hay diferencia de tensión. <b class="alerta">I0.1 no se entera.</b>':'B2 (NPN): acerca su pieza y verás que I0.1 no se activa nunca con este común.');}
+  else{r.push('El común <b>1M está al +24 V</b>: ahora cada entrada se activa cuando su tornillo se une al <b>0 V</b>.');
+    r.push(ST.d2?'<b>B2 (NPN) detecta</b> y une su negro con el 0 V: la corriente baja desde 1M, atraviesa la entrada I0.1 y sale por el negro y el azul. <b>I0.1 = 1.</b>':'B2 (NPN) sin pieza: I0.1 = 0.');
+    r.push(ST.d1?'<b>B1 (PNP) detecta</b> y da +24 V por el negro… pero 1M también está a +24 V. <b class="alerta">I0.0 no se entera.</b>':'B1 (PNP): acerca su pieza y verás que I0.0 no se activa nunca con este común.');}
+  setText(r,'Cambia dónde va el común <b>1M</b> y acerca la pieza a cada sensor (o tócalos en el dibujo). Con un común solo funciona uno de los dos.',
+   caja('ojo','NO SE PUEDEN MEZCLAR','<p>Todas las entradas de un grupo comparten el <b>mismo común</b>. Si el común va al <b>0 V</b>, solo valen sensores <b>PNP</b>; si va al <b>+24 V</b>, solo <b>NPN</b>. Por eso, <b>una vez elegido el tipo, todos los sensores de ese autómata (o de ese grupo de entradas) tienen que ser iguales</b>.</p>')+
+   caja('idea','IDEA CLAVE','<p>Un sensor de <b>3 hilos</b> lleva <b>BN</b> marrón al +, <b>BU</b> azul al 0 V y <b>BK</b> negro a la entrada. No tiene contacto: su salida es un transistor, que solo funciona en <b>continua</b>.</p>')+
+   caja('taller','Y EL LOGO!','<p>El LOGO! 12/24 no tiene borne 1M: su común está unido por dentro a <b>M</b> (0 V). Por eso con él solo se pueden usar sensores <b>PNP</b>.</p>'));
+}
+
+function panel(h){document.getElementById('panel').innerHTML=h;}
+function leds(a){return '<h3>Entradas</h3><div class="leds">'+a.map(([n,on])=>`<span><span class="led${on?' on':''}"></span>${n} = ${on?1:0}</span>`).join('')+'</div>';}
+function setText(r,ayuda,cajas){document.getElementById('ayuda').innerHTML=ayuda+' Esc vuelve al índice.';
+  document.getElementById('cajas').innerHTML=caja('est','Qué está pasando','<div aria-live="polite">'+r.map(x=>'<p>'+x+'</p>').join('')+'</div>')+cajas;}
+function draw(){svg.innerHTML='';tabs(SECN,ST.sec,i=>{ST.sec=i;draw();});[sec1,sec2,sec3][ST.sec]();}
+draw();themeBtn();
+</script></body></html>
