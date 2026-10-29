@@ -2,11 +2,11 @@
 <script>(function(){try{var t=localStorage.getItem('tema');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='light';}})();</script><title>2.1 Persiana nocturna · Domótica 2MT</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet"><style>:root{--paper:#ffffff;--bg:#eef2ea;--ink:#141414;--muted:#4b5563;--fase:#7B3F00;--neutro:#1F5FD0;--pos:#D00000;--neg:#141414;--pe:#3A9A3A;
 --vfase:#C8641E;--vfase-g:rgba(200,100,30,.55);--vpos:#FF1F1F;--vpos-g:rgba(255,31,31,.5);
 --flow:#ffb800;--lamp:#ffd84d;--glow:rgba(255,216,77,.45);--coil:#9ed27a;--tc:#ff9a52;--accent:#4f7f2a;--head:#1F4E79;--hit:rgba(79,127,42,.13);
---idea:#E2EFDA;--idea-b:#548235;--ojo:#FCE4D6;--ojo-b:#C00000;--taller:#EDE7F6;--taller-b:#6A4C93;--est:#FFF8DB;--est-b:#BF9000;--como:#DDEBF7;--como-b:#2E75B6}
+--idea:#E2EFDA;--idea-b:#548235;--ojo:#FCE4D6;--ojo-b:#C00000;--taller:#EDE7F6;--taller-b:#6A4C93;--pq:#FFF8E1;--pq-b:#A06A00;--est:#FFF8DB;--est-b:#BF9000;--como:#DDEBF7;--como-b:#2E75B6}
 html[data-theme=dark]{--paper:#1e252d;--bg:#141a20;--ink:#e9edf1;--muted:#a9b4bf;--fase:#c9864a;--neutro:#6fa8ff;--pos:#ff6b6b;--neg:#e9edf1;--pe:#6fcf6f;
 --vfase:#F0974E;--vfase-g:rgba(240,151,78,.6);--vpos:#FF4040;
 --flow:#ffd23f;--hit:rgba(158,210,122,.16);--accent:#9ed27a;--head:#8cc4ff;
---idea:#22311c;--idea-b:#9ed27a;--ojo:#3a2320;--ojo-b:#ff8a7a;--taller:#2b2540;--taller-b:#c3a8ff;--est:#3a3216;--est-b:#ffd23f;--como:#1c2c3d;--como-b:#7fb6ff}
+--idea:#22311c;--idea-b:#9ed27a;--ojo:#3a2320;--ojo-b:#ff8a7a;--taller:#2b2540;--taller-b:#c3a8ff;--pq:#3a3020;--pq-b:#f3c55c;--est:#3a3216;--est-b:#ffd23f;--como:#1c2c3d;--como-b:#7fb6ff}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',Verdana,sans-serif;font-size:17px;line-height:1.5}
 .barra{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--paper);border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:2}
@@ -24,6 +24,7 @@ main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
 .ejs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
 .ejs a{border:2px solid var(--accent);border-radius:8px;padding:3px 12px;color:var(--ink);text-decoration:none;font-weight:700;background:var(--paper)}
 .ejs a[aria-current=page]{background:var(--accent);color:var(--paper)}
+.ver{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 10px}.ver button{font:inherit;font-weight:700;border:2px solid var(--accent);border-radius:8px;padding:3px 12px;background:var(--paper);color:var(--ink);cursor:pointer}.ver button[aria-pressed=true]{background:var(--accent);color:var(--paper)}.ver button:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}.vnota{color:var(--muted);font-size:.9rem}
 .ejs a:hover,.ejs a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
 .lamina{background:var(--paper);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.08);overflow-x:auto}
 .lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh;touch-action:manipulation}
@@ -34,7 +35,7 @@ main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
 .caja ul{margin:.2em 0;padding-left:1.2em}
 .idea{background:var(--idea);border-color:var(--idea-b)}.idea b.t{color:var(--idea-b)}
 .ojo{background:var(--ojo);border-color:var(--ojo-b)}.ojo b.t{color:var(--ojo-b)}
-.taller{background:var(--taller);border-color:var(--taller-b)}.taller b.t{color:var(--taller-b)}
+.taller{background:var(--taller);border-color:var(--taller-b)}.taller b.t{color:var(--taller-b)}.porque{background:var(--pq);border-color:var(--pq-b)}.porque b.t{color:var(--pq-b)}
 .est{background:var(--est);border-color:var(--est-b);grid-column:1/-1}.est b.t{color:var(--est-b)}
 .como{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.como b.t{color:var(--como-b)}
 .caja p{margin:.2em 0}.alerta{color:var(--ojo-b);font-weight:700}
@@ -78,9 +79,10 @@ h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 <header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Práctica 2</a><span class="sep">›</span><b aria-current="page">2.1 Persiana nocturna</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
 <main><div class="cab"><h1>Ejercicio 2.1 · Persiana con permiso nocturno y subida automática de día</h1><span class="tag">SOLUCIÓN</span></div>
 <nav class="ejs" aria-label="Ejercicios de la práctica 2"><a href="p2-1.html" aria-current="page">2.1</a></nav>
+<div class="ver" role="group" aria-label="Versión de la solución"><button type="button" data-v="vieja">Solución antigua</button><button type="button" data-v="nueva">Solución mejorada</button><span class="vnota" id="vnota"></span></div>
 <div class="lamina"><svg id="esq" role="img" aria-label="Esquema multifilar del Ejercicio 2.1 · Persiana con permiso nocturno y subida automática de día"></svg></div>
-<p class="ayuda">Toca <b>Q1</b>, <b>Q2</b>, el sol/luna del crepuscular <b>S2</b> y las teclas ▲ ▼ de <b>S1</b>. Los <b>pulsadores</b> se mantienen pulsados con el ratón o el dedo; con <b>doble clic</b> se quedan fijados y otro clic los suelta. Se pueden pulsar varios a la vez. Esc vuelve al índice.</p>
-<div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>El contacto <b>conmutado</b> del crepuscular reparte la fase: de noche su <b>14</b> da fase al pulsador y a H1; de día su <b>12</b> da fase directamente a la subida (A1A) y a H2. De día el pulsador se queda sin tensión y no hace nada.</p></div><div class="caja ojo"><b class="t">¡OJO!</b><p>Pulsa las <b>dos teclas a la vez</b> de noche: la bobina de <b>KA1</b> entra con la bajada y su <b>NC 11-12</b> corta la subida. Así el motor nunca recibe las dos órdenes a la vez.</p></div><div class="caja taller"><b class="t">EN EL TALLER</b><p>La persiana se para sola arriba y abajo: son sus <b>finales de carrera internos</b>. Fíjate en que el cable de A1A sigue con tensión arriba del todo, pero ya no pasa corriente.</p></div></div></main>
+<p class="ayuda">Toca <b>Q1</b>, <b>Q2</b>, el sol/luna del crepuscular <b>S2</b> y las teclas ▲ ▼ de <b>S1</b>. Los <b>pulsadores</b> se mantienen pulsados con el ratón o el dedo; con <b>doble clic</b> se quedan fijados y otro clic los suelta. Se pueden pulsar varios a la vez. Con los botones <b>Solución antigua / Solución mejorada</b> (o la tecla <b>V</b>) cambias de esquema. Esc vuelve al índice.</p>
+<div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>El contacto <b>conmutado</b> del crepuscular reparte la fase: de noche su <b>14</b> da fase al pulsador y a H1; de día su <b>12</b> da fase directamente a la subida (A1A) y a H2. De día el pulsador se queda sin tensión y no hace nada.</p></div><div class="caja ojo"><b class="t">¡OJO!</b><p>Pulsa las <b>dos teclas a la vez</b> de noche: la tecla ▼ solo activa la bobina de <b>KA1</b>; su <b>NA 21-24</b> da la bajada y su <b>NC 11-12</b> corta la subida. Así el motor nunca recibe las dos órdenes a la vez.</p></div><div class="caja porque"><b class="t">¿POR QUÉ?</b><p>¿Por qué la bajada pasa por el NA de KA1 y no va directa al motor? Porque el <b>condensador</b> del motor devuelve tensión por el borne que no se usa: mientras sube, en <b>A1B</b> aparece tensión. Si la bobina estuviera en ese cable, KA1 entraría solo, cortaría la subida y el relé se pondría a vibrar. Con el NA abierto, esa tensión no llega a la bobina. Pulsa <b>Solución antigua</b> y sube la persiana para verlo.</p></div><div class="caja taller"><b class="t">EN EL TALLER</b><p>La persiana se para sola arriba y abajo: son sus <b>finales de carrera internos</b>. Fíjate en que el cable de A1A sigue con tensión arriba del todo, pero ya no pasa corriente. De noche, mientras pulsas ▲, <b>H2</b> también luce: la fase de la tecla vuelve por el cable de A1A hasta el borne 12 del crepuscular.</p></div></div></main>
 <script>// ===== Motor de esquemas: nudos, tramos, contactos y cargas =====
 const U=46,NS='http://www.w3.org/2000/svg';
 let H=10,OX=1.5,G;
@@ -315,7 +317,7 @@ function MOTORX(a1a,a1b,a2,x,y,nm,xw){const v=MOTORP(x,y,nm);G.lastChild.style.d
   T(w0+.375,y0+1.12,'persiana','middle','state');const pt=T(w0+.375,y0+1.34,'','middle','state');
   M.upd.push(()=>{v(up.on,dn.on);const n=Math.round((100-ST.pos)/100*7);sl.forEach((r,i)=>r.style.display=i<n?'':'none');
     const mv=up.on&&dn.on?'¡subir y bajar a la vez! ':up.on?'▲ subiendo · ':dn.on?'▼ bajando · ':'';pt.textContent=mv+(ST.pos>=100?'arriba del todo':ST.pos<=0?'abajo del todo':ST.pos+' %');pt.setAttribute('class','state'+(up.on||dn.on?' on':''));});
-  setInterval(()=>{const u=up.on,d=dn.on;if(u===d)return;const p=Math.max(0,Math.min(100,ST.pos+(u?5:-5)));if(p!==ST.pos){ST.pos=p;solve();}},150);
+  const g=GEN,iv=setInterval(()=>{if(g!==GEN){clearInterval(iv);return;}const u=up.on,d=dn.on;if(u===d)return;const p=Math.max(0,Math.min(100,ST.pos+(u?5:-5)));if(p!==ST.pos){ST.pos=p;solve();}},150);
   return {up,dn};}
 
 (function(){const b=document.getElementById('tema'),r=document.documentElement;
@@ -323,28 +325,54 @@ const ico=()=>{const d=r.dataset.theme==='dark';b.textContent=d?'☀️':'🌙';
 b.addEventListener('click',()=>{const d=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('tema',d)}catch(e){}ico();});})();
 
 const O={};const si=v=>v?'<b>sí</b>':'no';
-setup({H:10.2,W:14.2,state:{q1:true,q2:true,noche:false,s14:false,s24:false,pos:50},
- draw(){const yt=7.2,yb=.5;YT=yt;YB=yb;YP=yt+.38;YM=yt+.2;
+let VER='nueva',GEN=0;
+const DEF={H:10.2,W:14.2,state:{q1:true,q2:true,noche:false,s14:false,s24:false,pos:50,ret:false},
+ draw(){const nueva=VER==='nueva';const yt=7.2,yb=.5;YT=yt;YB=yb;YP=yt+.38;YM=yt+.2;
   SUPPLY(.8,yt,yb,13.7,false,[5.0],[4.7,7.5,9.3,10.6]);
-  const x=5.0,y0=yt-1.45,yN=y0-.35,yD=2.65;
+  const x=5.0,y0=yt-1.45,yN=y0-.35,yD=nueva?2.45:2.65,yk=nueva?2.8:3.0;
+  const kaOn=()=>!!(O.ka&&(O.ka.on||(!nueva&&ST.ret)));
   wire(rL(5),'c',[[x,yt],[x,y0+1]],'L');O.s2=SENS5('c','c12','c14',x,y0,'crep','S2','noche');
   wire('c14','j1',[[5.3,y0],[5.3,yN],[7.5,yN]],'L');DOT(7.5,yN,'L');
   wire('j1','h1',[[7.5,yN],[10.6,yN],[10.6,1.85]],'L');O.h1=lamp('h1','h1n',10.6,.85,'H1');wire('h1n',rN(10.6),[[10.6,.85],[10.6,.5]],'N');
   const o=cPD('j1','p14','p24',7.5,yN,'S1','s14','s24');
-  wire('p14','k11',[[6.9,o.o14[1]],[6.9,4.0]],'L');cNC('k11','k12',6.9,3.0,['11','12'],'KA1',()=>!O.ka.on);
-  wire('c12','d1',[[4.7,y0],[4.7,yD]],'L');DOT(4.7,yD,'L');wire('d1','dA',[[4.7,yD],[6.9,yD]],'L');DOT(6.9,yD,'L');wire('k12','dA',[[6.9,3.0],[6.9,yD]],'L');
+  wire('p14','k11',[[6.9,o.o14[1]],[6.9,yk+1]],'L');cNC('k11','k12',6.9,yk,['11','12'],'KA1',()=>!kaOn());
+  wire('c12','d1',[[4.7,y0],[4.7,yD]],'L');DOT(4.7,yD,'L');wire('d1','dA',[[4.7,yD],[6.9,yD]],'L');DOT(6.9,yD,'L');wire('k12','dA',[[6.9,yk],[6.9,yD]],'L');
   wire('d1','h2',[[4.7,yD],[4.7,1.85]],'L');O.h2=lamp('h2','h2n',4.7,.85,'H2');wire('h2n',rN(4.7),[[4.7,.85],[4.7,.5]],'N');
   wire('dA','mA',[[6.9,yD],[6.9,2.1],[7.15,1.85],[7.15,1.58]],'L');
-  wire('p24','b1',[[8.1,o.o24[1]],[8.1,3.6]],'L');DOT(8.1,3.6,'L');wire('b1','mB',[[8.1,3.6],[8.1,2.1],[7.85,1.85],[7.85,1.58]],'L');
-  wire('b1','kc',[[8.1,3.6],[9.3,3.6],[9.3,1.85]],'L');O.ka=coil('kc','kn',9.3,.85,'KA1');wire('kn',rN(9.3),[[9.3,.85],[9.3,.5]],'N');
+  if(nueva){
+   wire('p24','b1',[[8.1,o.o24[1]],[8.1,4.0],[8.6,4.0]],'L');DOT(8.6,4.0,'L');wire('b1','k21',[[8.6,4.0],[8.6,3.8]],'L');cNA('k21','k24',8.6,2.8,['21','24'],'KA1',()=>kaOn());
+   wire('k24','mB',[[8.6,2.8],[8.6,2.3],[8.1,2.3],[8.1,2.1],[7.85,1.85],[7.85,1.58]],'L');
+   wire('b1','kc',[[8.6,4.0],[9.3,4.0],[9.3,1.85]],'L');O.ka=coil('kc','kn',9.3,.85,'KA1');
+  }else{
+   wire('p24','b1',[[8.1,o.o24[1]],[8.1,3.6]],'L');DOT(8.1,3.6,'L');wire('b1','mB',[[8.1,3.6],[8.1,2.1],[7.85,1.85],[7.85,1.58]],'L');
+   wire('b1','kc',[[8.1,3.6],[9.3,3.6],[9.3,1.85]],'L');const cv=COIL(9.3,.85,'KA1');O.ka=load('kc','kn',v=>cv(v||ST.ret));
+   // tensión de retorno del condensador por A1B (solo se ve en la solución antigua)
+   const rt=[mk('path',{d:pts([[7.85,1.58],[7.85,1.85],[8.1,2.1],[8.1,o.o24[1]]]),class:'wire',stroke:COL.L}),mk('path',{d:pts([[8.1,3.6],[9.3,3.6],[9.3,1.85]]),class:'wire',stroke:COL.L})];
+   M.upd.push(()=>rt.forEach(p=>{p.style.display=ST.ret?'':'none';p.classList.toggle('vL',!!ST.ret);}));
+  }
+  wire('kn',rN(9.3),[[9.3,.85],[9.3,.5]],'N');
   O.m=MOTORX('mA','mB','mN',7.5,1.25,'M1',5.5);wire('mN',rN(7.5),[[7.5,.85],[7.5,.5]],'N');
   DC(12.8);},
- explain(){let r;const up=O.m.up.on,dn=O.m.dn.on;
+ explain(){let r;const up=O.m.up.on,dn=O.m.dn.on,v=VER==='vieja',arr=ST.pos>=100;
+  const RET=' <b>Solución antigua:</b> mientras el motor sube, su condensador devuelve tensión por <b>A1B</b>, y la bobina de KA1 está colgada de ese cable: ';
+  const H2N=' <b>H2</b> también luce mientras pulsas ▲: la fase de la tecla vuelve por el cable de A1A hasta el borne 12 del crepuscular.';
   if(!ST.q1)r='Q1 está bajado: no hay 230 V en el panel.';
   else if(!ST.q2)r='Q2 está bajado: el crepuscular no tiene 12 V, su relé está en reposo (<b>11-12</b> cerrado) y la instalación funciona como si fuera de día.';
-  else if(!ST.noche)r='Es de <b>día</b>: S2 cierra 11-12, H2 se enciende y la fase llega directamente a <b>A1A</b>. '+(up?'La persiana <b>sube</b>.':'La persiana ya está <b>arriba del todo</b>: su final de carrera ha cortado el motor.')+' El pulsador no tiene tensión.';
-  else if(ST.s14&&ST.s24)r='De noche con <b>las dos teclas</b>: KA1 entra con la bajada y su NC 11-12 corta la subida. La persiana '+(dn?'<b>baja</b>.':'está abajo del todo.');
-  else if(ST.s24)r='De noche, tecla ▼: llega fase a <b>A1B</b> y a la bobina de KA1. '+(dn?'La persiana <b>baja</b>.':'La persiana ya está abajo del todo.');
-  else if(ST.s14)r='De noche, tecla ▲: la fase pasa por el NC de KA1 hasta <b>A1A</b>. '+(up?'La persiana <b>sube</b>.':'La persiana ya está arriba del todo.');
+  else if(!ST.noche)r='Es de <b>día</b>: S2 cierra 11-12, H2 se enciende y la fase llega directamente a <b>A1A</b>. '+(arr?'La persiana ya está <b>arriba del todo</b>: su final de carrera ha cortado el motor.':'La persiana <b>sube</b>.')+' El pulsador no tiene tensión.'+(v&&!arr?RET+'<b>KA1 entra solo</b> y se queda activado mientras la persiana sube.':'');
+  else if(ST.s14&&ST.s24)r=(v?'De noche con <b>las dos teclas</b>: KA1 entra con la bajada y su NC 11-12 corta la subida. ':'De noche con <b>las dos teclas</b>: KA1 entra; su NA 21-24 da la bajada y su NC 11-12 corta la subida. ')+'La persiana '+(dn?'<b>baja</b>.':'está abajo del todo.');
+  else if(ST.s24)r=(v?'De noche, tecla ▼: llega fase a <b>A1B</b> y a la bobina de KA1. ':'De noche, tecla ▼: entra <b>KA1</b> y su NA <b>21-24</b> lleva la fase a <b>A1B</b>. ')+(dn?'La persiana <b>baja</b>.':'La persiana ya está abajo del todo.');
+  else if(ST.s14)r=v&&!arr?'De noche, tecla ▲: la fase pasa por el NC de KA1 hasta <b>A1A</b>.'+RET+'<b>KA1 entra solo</b>, su NC corta la subida, el relé cae y vuelve a entrar. <b>El relé vibra y la persiana da tirones.</b>'+H2N
+     :'De noche, tecla ▲: la fase pasa por el NC de KA1 hasta <b>A1A</b>. '+(up?'La persiana <b>sube</b>.':'La persiana ya está arriba del todo.')+H2N;
   else r='Es de <b>noche</b>: S2 cierra 11-14, H1 indica que el mando manual está permitido. Pulsa ▲ o ▼.';
-  return `<p>${r}</p><p>Noche: ${si(ST.noche)} · H1: ${si(O.h1.on)} · H2: ${si(O.h2.on)} · KA1: ${si(O.ka.on)} · Sube: ${si(up)} · Baja: ${si(dn)}</p>`;}});</script></body></html>
+  return `<p>${r}</p><p>Noche: ${si(ST.noche)} · H1: ${si(O.h1.on)} · H2: ${si(O.h2.on)} · KA1: ${si(O.ka.on||(v&&ST.ret))} · Sube: ${si(up)} · Baja: ${si(dn)}</p>`;}};
+const NOTA={vieja:'Bobina de KA1 en el mismo cable que A1B: falla por el retorno del condensador.',nueva:'La bajada pasa por el NA 21-24 de KA1: la bobina queda separada del motor.'};
+function marcar(){document.querySelectorAll('.ver button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===VER));const n=document.getElementById('vnota');if(n)n.textContent=NOTA[VER];}
+function verSet(v){if(v===VER)return;VER=v;GEN++;const keep=Object.assign({},ST);
+  document.getElementById('esq').replaceChildren();M.wires=[];M.cont=[];M.loads=[];M.upd=[];TAPS.length=0;for(const k in O)delete O[k];
+  setup(DEF);Object.assign(ST,keep,{ret:false});solve();marcar();}
+document.querySelectorAll('.ver button').forEach(b=>b.addEventListener('click',()=>verSet(b.dataset.v)));
+document.addEventListener('keydown',e=>{if((e.key==='v'||e.key==='V')&&!e.ctrlKey&&!e.metaKey&&!e.altKey)verSet(VER==='nueva'?'vieja':'nueva');});
+// retorno del condensador: en la solución antigua, mientras el motor sube, A1B tiene tensión y alimenta la bobina de KA1
+setInterval(()=>{const want=VER==='vieja'&&!!(O.m&&O.m.up.on);if(want!==ST.ret){ST.ret=want;solve();}},350);
+setup(DEF);marcar();
+</script></body></html>
