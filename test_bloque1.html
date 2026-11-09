@@ -75,6 +75,8 @@ figcaption{font-size:14px;color:var(--muted);font-style:italic;margin-top:4px}
 .opt:hover:not(:disabled){border-color:var(--green)}
 .opt .k{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--btn);font-weight:700;font-size:14px}
 .opt:disabled{cursor:default}
+.card.resume{border-left:5px solid var(--yellow);background:var(--yellow-soft)}
+.pt{display:inline-block;min-width:1.5em;height:1.5em;line-height:calc(1.5em - 3px);padding:0 .12em;margin:0 .06em;border-radius:999px;background:#FFDD40;color:#111;border:1.5px solid #111;font-weight:700;font-size:.82em;text-align:center;vertical-align:.1em;font-style:normal}
 .opt.right{border-color:var(--ok);background:var(--ok-soft)}
 .opt.right .k{background:var(--ok);color:#fff}
 .opt.wrong{border-color:var(--red);background:var(--red-soft)}
@@ -114,6 +116,38 @@ figcaption{font-size:14px;color:var(--muted);font-style:italic;margin-top:4px}
 #zoom{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:20;cursor:zoom-out;padding:16px}
 #zoom img{max-width:100%;max-height:100%;background:#fff;border-radius:8px;padding:8px}
 @media (max-width:560px){body{font-size:16px}.qtext{font-size:17px}h1{font-size:22px}.crumbs{font-size:12px}}
+
+/* ---------- mapa de preguntas y marcador ---------- */
+.qmap,.qbar,.qsheet{display:none}
+.qmap h2{margin:0 0 8px;font-size:15px}
+.qblk{margin:0 0 8px}.qblk>span{display:block;font-size:11px;color:var(--muted);margin:0 0 3px}
+.qblk .g{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.qblk button{font:inherit;font-size:12px;font-weight:700;border:1.5px solid var(--line);background:var(--btn);color:var(--ink);border-radius:6px;padding:5px 0;cursor:pointer}
+.qblk button.ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.qblk button.ko{background:var(--red-soft);border-color:var(--red);color:var(--red)}
+.qblk button.cur{outline:3px solid var(--green);outline-offset:1px}
+.qmap .leg{font-size:11px;color:var(--muted);margin:6px 0 0}
+.qmap .leg i{display:inline-block;width:10px;height:10px;border-radius:3px;border:1.5px solid var(--line);margin:0 3px 0 6px;vertical-align:-1px}
+.qmap .leg i:first-child{margin-left:0}
+.qmap .leg i.ok{background:var(--ok-soft);border-color:var(--ok)}.qmap .leg i.ko{background:var(--red-soft);border-color:var(--red)}
+.sc{font-size:15px;margin:0 0 6px}.sc b{font-size:22px;margin-right:4px}.sc.ok b{color:var(--ok)}.sc.ko b{color:var(--red)}
+.sc.nota{border-top:1px solid var(--line);padding-top:8px;margin-top:8px}.sc small{display:block;color:var(--muted);font-size:11px}
+.qmap .fin,.qsheet .fin{width:100%;margin-top:8px;font-size:14px;padding:8px}
+@media (min-width:1240px){
+  body.inq .qmap{display:block;position:fixed;top:76px;max-height:calc(100vh - 92px);overflow:auto;width:min(230px,calc((100vw - 860px)/2 - 30px));background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;box-shadow:var(--shadow)}
+  body.inq .qmap.l{right:calc(50% + 444px)} body.inq .qmap.r{left:calc(50% + 444px)}
+}
+@media (max-width:1239px){
+  body.inq .qbar{display:block;position:fixed;left:0;right:0;bottom:0;z-index:15;background:var(--card);border-top:1px solid var(--line);padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px));cursor:pointer;box-shadow:0 -4px 12px rgba(0,0,0,.15)}
+  .qbar .segs{display:flex;gap:1px;height:10px;border-radius:5px;overflow:hidden;background:var(--line)}
+  .qbar .segs i{flex:1;background:var(--btn)}.qbar .segs i.ok{background:var(--ok)}.qbar .segs i.ko{background:var(--red)}.qbar .segs i.cur{box-shadow:inset 0 0 0 2px var(--ink)}
+  .qbar .tx{font-size:14px;font-weight:700;margin-top:4px;display:flex;gap:6px;align-items:center}.qbar .tx .ok{color:var(--ok)}.qbar .tx .ko{color:var(--red)}.qbar .more{margin-left:auto;color:var(--muted);font-weight:400}
+  body.inq .qsheet{display:block;position:fixed;left:0;right:0;bottom:46px;max-height:62vh;overflow:auto;z-index:14;background:var(--card);border-top:1px solid var(--line);padding:10px 12px 14px;box-shadow:0 -6px 16px rgba(0,0,0,.25)}
+  body.inq .qsheet[hidden]{display:none}
+  .qsheet .qblk .g{grid-template-columns:repeat(10,1fr)}
+  .qsheet .qblk button{padding:8px 0}
+  body.inq main{padding-bottom:110px}
+}
 </style>
 </head>
 <body>
@@ -168,12 +202,13 @@ document.addEventListener('keydown', e => {
 
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const pts = s => esc(s).replace(/[\u24B6-\u24CF]/g, c => `<b class="pt">${String.fromCharCode(c.charCodeAt(0) - 0x24B6 + 65)}</b>`);
 
 let state = { screen: 'start' };
 
 /* ---------- inicio ---------- */
 function start(){
-  state = { screen: 'start' };
+  state = { screen: 'start' }; drawMap();
   const cnt = t => DATA.filter(q => q.tema === t).length;
   const N = DATA.length, B = 25, blocks = [];
   for (let a = 1; a <= N; a += B) blocks.push([a, Math.min(a + B - 1, N)]);
@@ -227,7 +262,7 @@ function start(){
   </div>
   <div class="box"><span class="lbl">CÓMO FUNCIONA</span>
     Elige una respuesta tocándola (o con las teclas A, B, C, D). Aciertes o no, verás <b>por qué</b> es esa la respuesta.
-    Toca un esquema para verlo en grande.<br>
+    Toca un esquema para verlo en grande. Si sales a medias, el test se queda guardado en este móvil u ordenador y puedes seguirlo otro día.<br>
     <b>En orden</b>: las preguntas salen siempre con el mismo número y las respuestas en el mismo orden, como en el test en papel.
     <b>Al azar</b>: cambian las preguntas y el orden de las respuestas cada vez.
     <b>Por tema</b>: practica solo lo que quieras (por ejemplo, tablas de funcionamiento o medidas).</div>`;
@@ -249,6 +284,7 @@ function start(){
   document.getElementById('call').onclick = () => { app.querySelectorAll('input[name=cat]').forEach(i => i.checked = true); upd(); };
   document.getElementById('cnone').onclick = () => { app.querySelectorAll('input[name=cat]').forEach(i => i.checked = false); upd(); };
   upd();
+  offerProg();
   document.getElementById('go').onclick = () => {
     const pool = pick(), ord = state.mode === 'orden';
     state = { screen: 'q', mode: ord ? 'orden' : 'azar', list: pool.map(q => item(q, ord)), i: 0, ok: 0, answered: false };
@@ -283,6 +319,46 @@ function filtered(){
   return DATA.filter(q => temas.includes(q.tema) && tipos.includes(q.tipo) && (dif === 'all' || q.dif === dif));
 }
 
+/* ---------- test a medias: se guarda en este navegador para seguirlo otro día ---------- */
+const PKEY = 'testProg:' + (location.pathname.split('/').pop() || 'test');
+function saveProg(){
+  try {
+    if (state.screen !== 'q' || !state.list.some(x => x.pick !== null)) return;
+    localStorage.setItem(PKEY, JSON.stringify({ v: 1, t: Date.now(), mode: state.mode, i: state.i, list: state.list.map(x => [x.q.n, x.order, x.pick]) }));
+  } catch(e) {}
+}
+function clearProg(){ try { localStorage.removeItem(PKEY); } catch(e) {} }
+function loadProg(){
+  try {
+    const p = JSON.parse(localStorage.getItem(PKEY) || 'null');
+    if (!p || p.v !== 1 || !Array.isArray(p.list) || !p.list.length) return null;
+    const byn = {}; DATA.forEach(q => byn[q.n] = q);
+    const list = p.list.map(a => {
+      const q = byn[a[0]], o = a[1], k = a[2];
+      if (!q || !Array.isArray(o) || o.slice().sort().join('') !== '0123') return null;
+      return { q, order: o, pick: (k === 0 || k === 1 || k === 2 || k === 3) ? k : null };
+    });
+    if (list.some(x => !x)) return null;
+    const done = list.filter(x => x.pick !== null).length;
+    if (!done || done === list.length) return null;
+    return { mode: p.mode === 'orden' ? 'orden' : 'azar', list, done, i: Math.max(0, Math.min(list.length - 1, p.i | 0)),
+             ok: list.filter(x => x.pick !== null && x.order[x.pick] === 0).length };
+  } catch(e) { return null; }
+}
+function offerProg(){
+  const p = loadProg(); if (!p) return;
+  const d = document.createElement('div'); d.className = 'card resume'; d.id = 'resume';
+  d.innerHTML = `<b>Tienes un test a medias.</b> Llevas ${p.done} de ${p.list.length} preguntas contestadas y ${p.ok} ${p.ok === 1 ? 'acierto' : 'aciertos'}.
+    <div class="nav" style="justify-content:flex-start;margin-top:10px"><button class="go" id="cont">Seguir donde lo dejé</button><button class="go ghost" id="drop">Borrarlo</button></div>`;
+  app.insertBefore(d, app.querySelector('.card'));
+  document.getElementById('cont').onclick = () => {
+    const first = p.list.findIndex(x => x.pick === null);
+    state = { screen: 'q', mode: p.mode, list: p.list, i: first >= 0 ? first : p.i, ok: p.ok, answered: false };
+    show();
+  };
+  document.getElementById('drop').onclick = () => { clearProg(); d.remove(); };
+}
+
 /* ---------- pregunta ---------- */
 function opts(q){ return [q.ok, ...q.d]; } // índice 0 = correcta
 function show(){
@@ -309,9 +385,9 @@ function show(){
   </div>
   <div class="card">
     ${q.img ? `<figure><img src="${IMGS[q.img]}" alt="Esquema: ${esc(q.cap)}" id="fig"><figcaption>${esc(q.cap)}</figcaption></figure>` : ''}
-    <div class="qtext">${esc(q.q)}</div>
+    <div class="qtext">${pts(q.q)}</div>
     ${q.tab ? tabla(q.tab) : ''}
-    <div class="opts">${it.order.map((o,k) => `<button class="opt" data-k="${k}"><span class="k">${'ABCD'[k]}</span><span>${esc(all[o])}</span></button>`).join('')}</div>
+    <div class="opts">${it.order.map((o,k) => `<button class="opt" data-k="${k}"><span class="k">${'ABCD'[k]}</span><span>${pts(all[o])}</span></button>`).join('')}</div>
     <div id="fb"></div>
   </div>`;
   const f = document.getElementById('fig'); if (f) f.onclick = () => openZoom(f.src);
@@ -325,6 +401,7 @@ function show(){
   tg.onclick = () => { qg.hidden = !qg.hidden; tg.setAttribute('aria-expanded', !qg.hidden); };
   app.querySelectorAll('.qgrid button[data-j]').forEach(b => b.onclick = () => go(+b.dataset.j));
   if (state.answered) paint();
+  drawMap();
   window.scrollTo({ top: 0 });
 }
 function tabla(t){
@@ -336,7 +413,7 @@ function answer(k){
   const it = state.list[state.i];
   it.pick = k; state.answered = true;
   if (it.order[k] === 0) state.ok++;
-  paint();
+  paint(); saveProg();
   const nb = document.getElementById('next'); if (nb) nb.focus({ preventScroll: true });
 }
 function paint(){
@@ -351,22 +428,24 @@ function paint(){
   const okLetter = 'ABCD'[it.order.indexOf(0)];
   const last = state.i === state.list.length - 1;
   document.getElementById('fb').innerHTML = `
-    <div class="verdict ${good?'ok':'ko'}">${good ? '✔ ¡Correcto!' : `✘ No es correcta. La buena es la ${okLetter}.`}</div>
-    <div class="box why"><span class="lbl">¿POR QUÉ?</span>${esc(q.j)}</div>
+    <div class="verdict ${good?'ok':'ko'}">${good ? '✔ ¡Correcto!' : `✘ No es correcta. La buena es la opción ${okLetter}.`}</div>
+    <div class="box why"><span class="lbl">¿POR QUÉ?</span>${pts(q.j)}</div>
     <div class="hint">Lo tienes en: ${esc(q.t)}</div>
     <div class="nav"><button class="go" id="next">${last ? 'Ver resultado' : 'Siguiente →'}</button></div>`;
   document.getElementById('next').onclick = next;
   document.querySelector('.score').textContent = `Aciertos: ${state.ok}`;
+  drawMap();
 }
 function lab(x, k){ return state.mode === 'orden' ? x.q.n : k + 1; }
-function go(k){ if (k < 0 || k >= state.list.length) return; state.i = k; show(); }
+function go(k){ if (k < 0 || k >= state.list.length) return; state.i = k; show(); saveProg(); }
 function next(){
-  if (state.i < state.list.length - 1) { state.i++; show(); } else result();
+  if (state.i < state.list.length - 1) { state.i++; show(); saveProg(); } else result();
 }
 
 /* ---------- resultado ---------- */
 function result(){
-  state.screen = 'end';
+  state.screen = 'end'; drawMap();
+  if (state.list.every(it => it.pick !== null)) clearProg();
   const n = state.list.length, ans = state.list.filter(it => it.pick !== null), blank = state.list.filter(it => it.pick === null);
   const nota = ans.length ? state.ok / ans.length * 10 : 0;
   const fails = ans.filter(it => it.order[it.pick] !== 0);
@@ -380,10 +459,10 @@ function result(){
   </div>
   ${fails.length ? `<div class="card"><h2 style="margin:0 0 4px;font-size:20px">Tus fallos (${fails.length})</h2>
     ${fails.map(it => { const a = opts(it.q); return `<div class="review">
-      <div class="rq">Nº ${it.q.n}. ${esc(it.q.q)}${it.q.img ? ` <span class="cnt">(${esc(it.q.cap.split('. ')[0])})</span>` : ''}</div>
-      <div class="ry">Tu respuesta: ${esc(a[it.order[it.pick]])}</div>
-      <div class="ra">Correcta: ${esc(a[0])}</div>
-      <div class="cnt">${esc(it.q.j)} · ${esc(it.q.t)}</div></div>`; }).join('')}
+      <div class="rq">Nº ${it.q.n}. ${pts(it.q.q)}${it.q.img ? ` <span class="cnt">(${esc(it.q.cap.split('. ')[0])})</span>` : ''}</div>
+      <div class="ry">Tu respuesta: ${pts(a[it.order[it.pick]])}</div>
+      <div class="ra">Correcta: ${pts(a[0])}</div>
+      <div class="cnt">${pts(it.q.j)} · ${esc(it.q.t)}</div></div>`; }).join('')}
   </div>` : ''}
   <div class="nav" style="justify-content:center">
     ${fails.length ? '<button class="go ghost" id="redo">Repetir solo los fallos</button>' : ''}
@@ -396,6 +475,37 @@ function result(){
   const bl = document.getElementById('blank');
   if (bl) bl.onclick = () => { const m = state.mode; state = { screen: 'q', mode: m, list: blank.map(it => item(it.q, m === 'orden')), i: 0, ok: 0, answered: false }; show(); };
   window.scrollTo({ top: 0 });
+}
+
+/* ---------- mapa de preguntas y marcador (a los lados; en el móvil, barra de abajo) ---------- */
+const mapL = document.createElement('aside'), mapR = document.createElement('aside'), qbar = document.createElement('div'), qsheet = document.createElement('div');
+mapL.className = 'qmap l'; mapR.className = 'qmap r'; qbar.className = 'qbar'; qsheet.className = 'qsheet'; qsheet.hidden = true;
+mapL.setAttribute('aria-label', 'Mapa de preguntas'); mapR.setAttribute('aria-label', 'Cómo vas');
+document.body.append(mapL, mapR, qsheet, qbar);
+qbar.onclick = () => { qsheet.hidden = !qsheet.hidden; };
+function qcls(x, k){ return (x.pick === null ? '' : (x.order[x.pick] === 0 ? 'ok' : 'ko')) + (k === state.i ? ' cur' : ''); }
+function gridHTML(){
+  const L = state.list; let h = '';
+  for (let a = 0; a < L.length; a += 10) {
+    const b = Math.min(a + 9, L.length - 1);
+    h += `<div class="qblk"><span>${lab(L[a], a)} a ${lab(L[b], b)}</span><div class="g">` + L.slice(a, a + 10).map((x, j) => `<button data-j="${a + j}" class="${qcls(x, a + j)}" aria-label="Pregunta ${lab(x, a + j)}">${lab(x, a + j)}</button>`).join('') + '</div></div>';
+  }
+  return h;
+}
+function drawMap(){
+  const on = state.screen === 'q'; document.body.classList.toggle('inq', on);
+  if (!on) { qsheet.hidden = true; return; }
+  const L = state.list, n = L.length, ans = L.filter(x => x.pick !== null), ok = ans.filter(x => x.order[x.pick] === 0).length, ko = ans.length - ok;
+  const nota = ans.length ? (ok / ans.length * 10).toFixed(1).replace('.', ',') : '–';
+  mapL.innerHTML = '<h2>Preguntas</h2>' + gridHTML() + '<p class="leg"><i class="ok"></i>acertada <i class="ko"></i>fallada <i></i>sin contestar</p>';
+  mapR.innerHTML = `<h2>Cómo vas</h2><div class="sc ok"><b>${ok}</b>aciertos</div><div class="sc ko"><b>${ko}</b>fallos</div><div class="sc"><b>${n - ans.length}</b>sin contestar</div><div class="sc nota">Nota: <b>${nota}</b><small>solo cuenta lo contestado</small></div><button class="go fin" id="finR">Terminar y ver resultado</button>`;
+  qbar.innerHTML = `<div class="segs">${L.map((x, k) => `<i class="${qcls(x, k)}"></i>`).join('')}</div><div class="tx">${state.i + 1} de ${n} · <span class="ok">✔ ${ok}</span> · <span class="ko">✘ ${ko}</span><span class="more">▴ mapa de preguntas</span></div>`;
+  qsheet.innerHTML = gridHTML() + '<button class="go fin" id="finS">Terminar y ver resultado</button>';
+  mapL.querySelectorAll('button[data-j]').forEach(b => b.onclick = () => go(+b.dataset.j));
+  qsheet.querySelectorAll('button[data-j]').forEach(b => b.onclick = () => { qsheet.hidden = true; go(+b.dataset.j); });
+  document.getElementById('finR').onclick = result;
+  document.getElementById('finS').onclick = () => { qsheet.hidden = true; result(); };
+  const c = mapL.querySelector('.cur'); if (c && c.scrollIntoView) c.scrollIntoView({ block: 'nearest' });
 }
 start();
 </script>
