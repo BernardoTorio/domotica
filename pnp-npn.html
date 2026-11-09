@@ -21,10 +21,6 @@ main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
 .cab{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 8px}
 .cab h1{font-size:1.25rem;margin:0;color:var(--head)}
 .tag{background:var(--accent);color:var(--paper);font-weight:700;font-size:.8rem;letter-spacing:.06em;border-radius:6px;padding:2px 9px}
-.ejs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
-.ejs a{border:2px solid var(--accent);border-radius:8px;padding:3px 12px;color:var(--ink);text-decoration:none;font-weight:700;background:var(--paper)}
-.ejs a[aria-current=page]{background:var(--accent);color:var(--paper)}
-.ejs a:hover,.ejs a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
 .lamina{background:var(--paper);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.08);overflow-x:auto}
 .lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh;touch-action:manipulation}
 .ayuda{color:var(--muted);font-size:.95rem;margin:8px 4px 14px}
@@ -109,9 +105,23 @@ h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 .cable{font-size:12px;fill:var(--muted)}
 .wire.out24{stroke:var(--vpos);stroke-width:6;filter:drop-shadow(0 0 3px var(--vpos-g))}
 .wire.out0{stroke:#7a7a7a}
+/* tira del grupo: anterior · k de N · siguiente, y botón grande al final */
+.tira{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 12px}
+.tira a{text-decoration:none;color:var(--ink);border:2px solid var(--accent);border-radius:8px;font-weight:700;background:var(--paper);min-height:44px;display:flex;align-items:center;justify-content:center;padding:0 12px}
+.tira a:hover,.tira a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
+.tira .where{flex:1;text-align:center;font-weight:700;color:var(--muted);font-size:.95rem}
+.tira .steps{flex-basis:100%;display:flex;gap:6px}
+.tira .steps a{flex:1;min-width:0;padding:0 2px;font-size:.95rem}
+.tira .steps a.cur{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.tira a.off{visibility:hidden}
+.tira .steps a.seen::after{content:"✓";margin-left:3px;font-size:.78em;color:var(--accent)}
+.tira .steps a.cur.seen::after{color:var(--paper)}
+.nextbig{display:flex;align-items:center;justify-content:center;margin:18px 0 0;padding:16px;border-radius:12px;background:var(--accent);color:var(--paper);font-weight:700;font-size:1.1rem;text-decoration:none;text-align:center}
+.nextbig:hover,.nextbig:focus-visible{outline:none;box-shadow:0 0 0 4px var(--hit)}
+.pqs{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.pqs b.t{color:var(--como-b)}
 </style></head><body>
 <header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Tema 2</a><span class="sep">›</span><b aria-current="page">Sensores PNP y NPN</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
-<main><div class="cab"><h1>Sensores PNP y NPN · ¿Por qué casi siempre PNP?</h1><span class="tag">TEMA 2</span></div>
+<main><nav class="tira" aria-label="Animaciones del Tema 2"><a class="arr off" aria-hidden="true" tabindex="-1">‹ PNP y NPN</a><span class="where">Tema 2 · 1 de 3</span><a class="arr" href="plc-entradas.html" aria-label="Siguiente: Cablear las entradas">Entradas ›</a><div class="steps"><a href="pnp-npn.html" class="cur" aria-current="page" title="Sensores PNP y NPN">PNP y NPN</a><a href="plc-entradas.html" title="Cablear las entradas">Entradas</a><a href="plc-salidas.html" title="Cablear las salidas">Salidas</a></div></nav><div class="cab"><h1>Sensores PNP y NPN · ¿Por qué casi siempre PNP?</h1><span class="tag">TEMA 2</span></div>
 <div class="zona">
 <div class="lamina"><svg id="esq" viewBox="0 0 900 520" role="img" aria-label="Sensor de tres hilos con su carga entre las líneas de +24 V y 0 V"></svg></div>
 <div class="panelc">
@@ -126,11 +136,11 @@ h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 <p class="ayuda">Elige <b>qué detecta</b> el sensor: metal, luz (crepuscular), una señal de radio o el nivel de un depósito (tecla <b>E</b>). Toca el <b>estímulo</b> en el dibujo o pulsa <b>espacio</b> para activarlo. Cambia el tipo de sensor (<b>P</b>), dónde va la carga (<b>C</b>) y prueba la avería (<b>A</b>). Esc vuelve al índice.</p>
 <div class="cajas">
 <div class="caja como"><b class="t">Cómo funciona esta animación</b><p>Un sensor de 3 hilos <b>no tiene contacto</b>: dentro lleva un <b>transistor</b> que hace de interruptor. Lo dibujamos como un interruptor dentro del sensor. Los cables tienen siempre los mismos colores: <b>BN marrón</b> al +, <b>BU azul</b> al 0 V y <b>BK negro</b> es la salida. Los cables con tensión se ven más gruesos y la corriente es la línea amarilla que se mueve.</p></div>
-<div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div>
+<div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja pqs"><b class="t">Para qué sirve</b><p>Para saber <b>cómo se conecta un sensor de 3 hilos</b> a la entrada de un autómata. Según sea PNP o NPN, la carga va en un sitio o en otro; si se conecta mal, la entrada no se entera de que el sensor detecta. En el LOGO! del aula solo valen los PNP.</p></div>
 <div class="caja idea"><b class="t">IDEA CLAVE</b><p><b>PNP</b>: al detectar <b>da +24 V</b> por el negro → la carga va entre el negro y el <b>0 V</b>.</p><p><b>NPN</b>: al detectar <b>une el negro con el 0 V</b> → la carga va entre el <b>+24 V</b> y el negro.</p><p>La entrada del LOGO! es una carga hacia M (0 V): por eso solo funciona con <b>PNP</b>.</p><p><b>Da igual qué detecte el sensor</b> (metal, luz, radio, agua…): la salida PNP o NPN funciona exactamente igual. Lo que cambia es solo la «cara» del sensor.</p></div>
 <div class="caja ojo"><b class="t">¿POR QUÉ CASI SIEMPRE PNP?</b><ul><li><b>Es la costumbre en Europa</b>: los autómatas europeos, como el LOGO!, están hechos para sensores PNP. En Asia (sobre todo Japón) se usa más NPN.</li><li><b>Por qué aquí se eligió PNP</b>: es más seguro. En las máquinas el 0 V va unido al chasis. Si el cable negro roza el chasis, con un <b>PNP</b> la entrada se queda a <b>0</b> y no se pone nada en marcha; con un <b>NPN</b> la entrada se <b>activa sola</b>. Pruébalo con «Negro a masa».</li><li><b>Se entiende mejor</b>: «hay 24 V» = detecta. Con el polímetro se ve a la primera.</li></ul><p class="alerta">Una vez elegido el tipo, en ese autómata <b>todos los sensores tienen que ser iguales</b>: el común de las entradas se cablea para PNP o para NPN, no para los dos. En el LOGO! 12/24, siempre PNP.</p></div>
 <div class="caja taller"><b class="t">EN EL TALLER</b><p>Los crepusculares y de inundación del aula son de <b>5 hilos con contacto seco</b> (relé), no de transistor: por eso valen para 230 V y para 12 V. Los de 3 hilos PNP/NPN solo sirven en <b>continua</b>.</p><p>Mira la <b>pegatina</b> del sensor: pone <b>PNP</b> o <b>NPN</b> y si es <b>NO</b> (NA) o <b>NC</b>. Casi todos llevan un <b>led</b> que se enciende al detectar: si el led se enciende pero la entrada no cambia, mide con el polímetro entre el negro y el 0 V.</p></div>
-</div></main>
+</div><a class="nextbig" href="plc-entradas.html">Siguiente: Cablear las entradas →</a></main>
 <script>
 const NS='http://www.w3.org/2000/svg',svg=document.getElementById('esq');
 function mk(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;}
@@ -277,4 +287,11 @@ draw();
 (function(){const b=document.getElementById('tema'),r=document.documentElement;
 const ico=()=>{const d=r.dataset.theme==='dark';b.textContent=d?'☀️':'🌙';b.setAttribute('aria-label',d?'Cambiar a modo claro':'Cambiar a modo oscuro');b.title=b.getAttribute('aria-label');};ico();
 b.addEventListener('click',()=>{const d=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('tema',d)}catch(e){}ico();});})();
-</script></body></html>
+</script><script>(function(){ // marca «vista»: esta animación y, en la tira del grupo, las que ya se han abierto
+  try {
+    var me = location.pathname.split('/').pop(); if (me) localStorage.setItem('visto:' + me, '1');
+    document.querySelectorAll('.tira .steps a').forEach(function(a){
+      if (localStorage.getItem('visto:' + a.getAttribute('href'))) { a.classList.add('seen'); a.title = (a.title ? a.title + ' · ' : '') + 'ya la has visto'; }
+    });
+  } catch(e) {}
+})();</script></body></html>

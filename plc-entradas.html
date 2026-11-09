@@ -21,10 +21,6 @@ main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
 .cab{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 8px}
 .cab h1{font-size:1.25rem;margin:0;color:var(--head)}
 .tag{background:var(--accent);color:var(--paper);font-weight:700;font-size:.8rem;letter-spacing:.06em;border-radius:6px;padding:2px 9px}
-.ejs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
-.ejs a{border:2px solid var(--accent);border-radius:8px;padding:3px 12px;color:var(--ink);text-decoration:none;font-weight:700;background:var(--paper)}
-.ejs a[aria-current=page]{background:var(--accent);color:var(--paper)}
-.ejs a:hover,.ejs a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
 .lamina{background:var(--paper);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.08);overflow-x:auto}
 .lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh;touch-action:manipulation}
 .ayuda{color:var(--muted);font-size:.95rem;margin:8px 4px 14px}
@@ -105,9 +101,23 @@ html[data-theme=dark] .plc{fill:#26303a}
 .okt{fill:#2b7a0b;font-weight:700;font-size:14px}
 .cruz{stroke:var(--ojo-b);stroke-width:5;stroke-linecap:round}
 .slat{fill:var(--muted);opacity:.75}
+/* tira del grupo: anterior · k de N · siguiente, y botón grande al final */
+.tira{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 12px}
+.tira a{text-decoration:none;color:var(--ink);border:2px solid var(--accent);border-radius:8px;font-weight:700;background:var(--paper);min-height:44px;display:flex;align-items:center;justify-content:center;padding:0 12px}
+.tira a:hover,.tira a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
+.tira .where{flex:1;text-align:center;font-weight:700;color:var(--muted);font-size:.95rem}
+.tira .steps{flex-basis:100%;display:flex;gap:6px}
+.tira .steps a{flex:1;min-width:0;padding:0 2px;font-size:.95rem}
+.tira .steps a.cur{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.tira a.off{visibility:hidden}
+.tira .steps a.seen::after{content:"✓";margin-left:3px;font-size:.78em;color:var(--accent)}
+.tira .steps a.cur.seen::after{color:var(--paper)}
+.nextbig{display:flex;align-items:center;justify-content:center;margin:18px 0 0;padding:16px;border-radius:12px;background:var(--accent);color:var(--paper);font-weight:700;font-size:1.1rem;text-decoration:none;text-align:center}
+.nextbig:hover,.nextbig:focus-visible{outline:none;box-shadow:0 0 0 4px var(--hit)}
+.pqs{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.pqs b.t{color:var(--como-b)}
 </style></head><body>
 <header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Tema 2</a><span class="sep">›</span><b aria-current="page">Cablear las entradas</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
-<main><div class="cab"><h1>Cómo se cablean las entradas de un autómata</h1><span class="tag">TEMA 2</span></div>
+<main><nav class="tira" aria-label="Animaciones del Tema 2"><a class="arr" href="pnp-npn.html" aria-label="Anterior: Sensores PNP y NPN">‹ PNP y NPN</a><span class="where">Tema 2 · 2 de 3</span><a class="arr" href="plc-salidas.html" aria-label="Siguiente: Cablear las salidas">Salidas ›</a><div class="steps"><a href="pnp-npn.html" title="Sensores PNP y NPN">PNP y NPN</a><a href="plc-entradas.html" class="cur" aria-current="page" title="Cablear las entradas">Entradas</a><a href="plc-salidas.html" title="Cablear las salidas">Salidas</a></div></nav><div class="cab"><h1>Cómo se cablean las entradas de un autómata</h1><span class="tag">TEMA 2</span></div>
 <nav class="secs" id="secs" role="tablist" aria-label="Apartados"></nav>
 <div class="zona">
 <div class="lamina"><svg id="esq" viewBox="0 0 900 500" role="img" aria-label="Esquema de cableado de las entradas"></svg></div>
@@ -115,7 +125,7 @@ html[data-theme=dark] .plc{fill:#26303a}
 </div>
 <p class="ayuda" id="ayuda"></p>
 <div class="cajas" id="cajas"></div>
-</main>
+<a class="nextbig" href="plc-salidas.html">Siguiente: Cablear las salidas →</a></main>
 <script>
 // ===== utilidades de dibujo =====
 const NS='http://www.w3.org/2000/svg',svg=document.getElementById('esq');
@@ -347,8 +357,16 @@ function sec3(){
 
 function panel(h){document.getElementById('panel').innerHTML=h;}
 function leds(a){return '<h3>Entradas</h3><div class="leds">'+a.map(([n,on])=>`<span><span class="led${on?' on':''}"></span>${n} = ${on?1:0}</span>`).join('')+'</div>';}
+const PQS='<div class="caja pqs"><b class="t">Para qué sirve</b><p>Para cablear bien las <b>entradas</b> del autómata. Cada tipo de sensor se conecta de una forma: los pasivos (pulsador, termostato) llevan dos hilos; los activos necesitan, además, su alimentación; y los de 3 hilos PNP y NPN no se pueden mezclar. Lo usarás en los esquemas de la Práctica 3.</p></div>';
 function setText(r,ayuda,cajas){document.getElementById('ayuda').innerHTML=ayuda+' Esc vuelve al índice.';
-  document.getElementById('cajas').innerHTML=caja('est','Qué está pasando','<div aria-live="polite">'+r.map(x=>'<p>'+x+'</p>').join('')+'</div>')+cajas;}
+  document.getElementById('cajas').innerHTML=caja('est','Qué está pasando','<div aria-live="polite">'+r.map(x=>'<p>'+x+'</p>').join('')+'</div>')+PQS+cajas;}
 function draw(){svg.innerHTML='';tabs(SECN,ST.sec,i=>{ST.sec=i;draw();});[sec1,sec2,sec3][ST.sec]();}
 draw();themeBtn();
-</script></body></html>
+</script><script>(function(){ // marca «vista»: esta animación y, en la tira del grupo, las que ya se han abierto
+  try {
+    var me = location.pathname.split('/').pop(); if (me) localStorage.setItem('visto:' + me, '1');
+    document.querySelectorAll('.tira .steps a').forEach(function(a){
+      if (localStorage.getItem('visto:' + a.getAttribute('href'))) { a.classList.add('seen'); a.title = (a.title ? a.title + ' · ' : '') + 'ya la has visto'; }
+    });
+  } catch(e) {}
+})();</script></body></html>

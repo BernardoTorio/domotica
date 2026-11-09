@@ -21,10 +21,6 @@ main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
 .cab{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 8px}
 .cab h1{font-size:1.25rem;margin:0;color:var(--head)}
 .tag{background:var(--accent);color:var(--paper);font-weight:700;font-size:.8rem;letter-spacing:.06em;border-radius:6px;padding:2px 9px}
-.ejs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
-.ejs a{border:2px solid var(--accent);border-radius:8px;padding:3px 12px;color:var(--ink);text-decoration:none;font-weight:700;background:var(--paper)}
-.ejs a[aria-current=page]{background:var(--accent);color:var(--paper)}
-.ejs a:hover,.ejs a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
 .lamina{background:var(--paper);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.08);overflow-x:auto}
 .lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh;touch-action:manipulation}
 .ayuda{color:var(--muted);font-size:.95rem;margin:8px 4px 14px}
@@ -72,18 +68,31 @@ main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
 .lista a b{display:block;color:var(--head)}
 .lista span.prox{border-color:var(--muted);color:var(--muted);opacity:.7}.lista span.prox b{display:block}
 h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
+/* tira del grupo: anterior · k de N · siguiente, y botón grande al final */
+.tira{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 12px}
+.tira a{text-decoration:none;color:var(--ink);border:2px solid var(--accent);border-radius:8px;font-weight:700;background:var(--paper);min-height:44px;display:flex;align-items:center;justify-content:center;padding:0 12px}
+.tira a:hover,.tira a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
+.tira .where{flex:1;text-align:center;font-weight:700;color:var(--muted);font-size:.95rem}
+.tira .steps{flex-basis:100%;display:flex;gap:6px}
+.tira .steps a{flex:1;min-width:0;padding:0 2px;font-size:.95rem}
+.tira .steps a.cur{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.tira a.off{visibility:hidden}
+.tira .steps a.seen::after{content:"✓";margin-left:3px;font-size:.78em;color:var(--accent)}
+.tira .steps a.cur.seen::after{color:var(--paper)}
+.nextbig{display:flex;align-items:center;justify-content:center;margin:18px 0 0;padding:16px;border-radius:12px;background:var(--accent);color:var(--paper);font-weight:700;font-size:1.1rem;text-decoration:none;text-align:center}
+.nextbig:hover,.nextbig:focus-visible{outline:none;box-shadow:0 0 0 4px var(--hit)}
+.pqs{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.pqs b.t{color:var(--como-b)}
 </style></head><body>
 <header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Práctica 1</a><span class="sep">›</span><b aria-current="page">1.1 Termostato para calefacción</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
-<main><div class="cab"><h1>Ejercicio 1.1 · Termostato para calefacción</h1><span class="tag">SOLUCIÓN</span></div>
-<nav class="ejs" aria-label="Ejercicios de la práctica 1"><a href="p1-1.html" aria-current="page">1.1</a><a href="p1-2.html">1.2</a><a href="p1-3.html">1.3</a><a href="p1-4.html">1.4</a><a href="p1-5.html">1.5</a></nav>
+<main><nav class="tira" aria-label="Animaciones de la Práctica 1"><a class="arr off" aria-hidden="true" tabindex="-1">‹ 1.1</a><span class="where">Práctica 1 · 1 de 5</span><a class="arr" href="p1-2.html" aria-label="Siguiente: 1.2 Ventilador con señalización">1.2 ›</a><div class="steps"><a href="p1-1.html" class="cur" aria-current="page" title="Termostato para calefacción">1.1</a><a href="p1-2.html" title="Ventilador con señalización">1.2</a><a href="p1-3.html" title="Calefacción con relé">1.3</a><a href="p1-4.html" title="Detector de presencia">1.4</a><a href="p1-5.html" title="Caldeo con presencia y relé">1.5</a></div></nav><div class="cab"><h1>Ejercicio 1.1 · Termostato para calefacción</h1><span class="tag">SOLUCIÓN</span></div>
 <div class="lamina"><svg id="esq" role="img" aria-label="Esquema multifilar del Ejercicio 1.1 · Termostato para calefacción"></svg></div>
 <p class="ayuda">Toca <b>Q1</b> o <b>S1</b> para abrirlos o cerrarlos, y el recuadro <b>t°</b> del termostato para cambiar entre frío y calor. Esc vuelve al índice.</p>
-<div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja como"><b class="t">CÓMO FUNCIONA ESTA ANIMACIÓN</b><ul><li><b>Toca los aparatos del esquema.</b> El magnetotérmico <b>Q1</b> y el interruptor <b>S1</b> se abren y se cierran. El recuadro <b>t°</b> cambia el termostato entre frío y calor. En el detector, tocar es «pasar por delante», y el sol/luna cambia entre día y noche.</li>
+<div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja pqs"><b class="t">Para qué sirve</b><p>Para que la <b>calefacción</b> se encienda y se apague sola. Cuando la sala está por debajo de la temperatura elegida, el termostato da tensión al enchufe del radiador; al llegar a esa temperatura, la corta. Es el primer circuito del curso: un sensor (el termostato) manda directamente sobre un actuador (el enchufe).</p></div><div class="caja como"><b class="t">CÓMO FUNCIONA ESTA ANIMACIÓN</b><ul><li><b>Toca los aparatos del esquema.</b> El magnetotérmico <b>Q1</b> y el interruptor <b>S1</b> se abren y se cierran. El recuadro <b>t°</b> cambia el termostato entre frío y calor. En el detector, tocar es «pasar por delante», y el sol/luna cambia entre día y noche.</li>
 <li>Los <b>pulsadores</b> (en la práctica 2): mantenlos pulsados; con <b>doble clic</b> se quedan fijados y otro clic los suelta.</li>
 <li><span class="vivo">Marrón vivo y grueso</span> = ese cable tiene <b>tensión</b> (<span class="vivo12">rojo vivo</span> en 12 V). Pálido = sin tensión.</li>
 <li><span class="amar">Amarillo que se mueve</span> = por ahí pasa <b>corriente</b>.</li>
 <li>Bombilla encendida, bobina coloreada o enchufe coloreado = está <b>funcionando</b>.</li>
-<li>🌙/☀️ cambia a modo oscuro o claro. <b>Esc</b> o <b>←</b> para volver. Recuerda: <b>borne</b> = tornillo del aparato.</li></ul></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>El termostato es un interruptor que acciona la temperatura. Su contacto <b>11-12</b> se cierra con <b>frío</b>: por eso es el que se usa para la calefacción.</p></div><div class="caja taller"><b class="t">EN EL TALLER</b><p>Borne = tornillo. Gira la rueda del termostato por encima de la temperatura del aula y oirás el «clic» del contacto.</p></div></div></main>
+<li>🌙/☀️ cambia a modo oscuro o claro. <b>Esc</b> o <b>←</b> para volver. Recuerda: <b>borne</b> = tornillo del aparato.</li></ul></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>El termostato es un interruptor que acciona la temperatura. Su contacto <b>11-12</b> se cierra con <b>frío</b>: por eso es el que se usa para la calefacción.</p></div><div class="caja taller"><b class="t">EN EL TALLER</b><p>Borne = tornillo. Gira la rueda del termostato por encima de la temperatura del aula y oirás el «clic» del contacto.</p></div></div><a class="nextbig" href="p1-2.html">Siguiente: 1.2 Ventilador con señalización →</a></main>
 <script>// ===== Motor de esquemas: nudos, tramos, contactos y cargas =====
 const U=46,NS='http://www.w3.org/2000/svg';
 let H=10,OX=1.5,G;
@@ -272,4 +281,11 @@ setup({H:9.3,W:5.2,state:{q1:true,s1:true,frio:true},
  explain(){let r;
   if(!ST.q1)r='Q1 está bajado: no llega tensión a nada.';else if(!ST.s1)r='S1 está abierto: la instalación está desconectada. Fíjate: hasta S1 los cables siguen teniendo tensión.';
   else r=ST.frio?'Hace frío: el termostato cierra <b>11-12</b> y el radiador enchufado en TC1 <b>calienta</b>.':'Hace calor: el termostato pasa a <b>11-14</b>, el 12 se abre y el radiador <b>se apaga</b>. El cable hasta el termostato sigue con tensión.';
-  return `<p>${r}</p><p>Q1: ${si(ST.q1)} · S1 cerrado: ${si(ST.s1)} · Temperatura: ${ST.frio?'frío (18 °C)':'calor (25 °C)'} · Radiador funcionando: ${si(O.tc.on)}</p>`;}});</script></body></html>
+  return `<p>${r}</p><p>Q1: ${si(ST.q1)} · S1 cerrado: ${si(ST.s1)} · Temperatura: ${ST.frio?'frío (18 °C)':'calor (25 °C)'} · Radiador funcionando: ${si(O.tc.on)}</p>`;}});</script><script>(function(){ // marca «vista»: esta animación y, en la tira del grupo, las que ya se han abierto
+  try {
+    var me = location.pathname.split('/').pop(); if (me) localStorage.setItem('visto:' + me, '1');
+    document.querySelectorAll('.tira .steps a').forEach(function(a){
+      if (localStorage.getItem('visto:' + a.getAttribute('href'))) { a.classList.add('seen'); a.title = (a.title ? a.title + ' · ' : '') + 'ya la has visto'; }
+    });
+  } catch(e) {}
+})();</script></body></html>

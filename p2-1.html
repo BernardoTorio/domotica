@@ -21,11 +21,7 @@ main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
 .cab{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 8px}
 .cab h1{font-size:1.25rem;margin:0;color:var(--head)}
 .tag{background:var(--accent);color:var(--paper);font-weight:700;font-size:.8rem;letter-spacing:.06em;border-radius:6px;padding:2px 9px}
-.ejs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
-.ejs a{border:2px solid var(--accent);border-radius:8px;padding:3px 12px;color:var(--ink);text-decoration:none;font-weight:700;background:var(--paper)}
-.ejs a[aria-current=page]{background:var(--accent);color:var(--paper)}
 .ver{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 10px}.ver button{font:inherit;font-weight:700;border:2px solid var(--accent);border-radius:8px;padding:3px 12px;background:var(--paper);color:var(--ink);cursor:pointer}.ver button[aria-pressed=true]{background:var(--accent);color:var(--paper)}.ver button:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}.vnota{color:var(--muted);font-size:.9rem}
-.ejs a:hover,.ejs a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
 .lamina{background:var(--paper);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.08);overflow-x:auto}
 .lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh;touch-action:manipulation}
 .ayuda{color:var(--muted);font-size:.95rem;margin:8px 4px 14px}
@@ -75,14 +71,27 @@ main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
 h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 
 .slat{fill:var(--muted);opacity:.75}.thinb{stroke-width:1.2}
+/* tira del grupo: anterior · k de N · siguiente, y botón grande al final */
+.tira{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 12px}
+.tira a{text-decoration:none;color:var(--ink);border:2px solid var(--accent);border-radius:8px;font-weight:700;background:var(--paper);min-height:44px;display:flex;align-items:center;justify-content:center;padding:0 12px}
+.tira a:hover,.tira a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
+.tira .where{flex:1;text-align:center;font-weight:700;color:var(--muted);font-size:.95rem}
+.tira .steps{flex-basis:100%;display:flex;gap:6px}
+.tira .steps a{flex:1;min-width:0;padding:0 2px;font-size:.95rem}
+.tira .steps a.cur{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.tira a.off{visibility:hidden}
+.tira .steps a.seen::after{content:"✓";margin-left:3px;font-size:.78em;color:var(--accent)}
+.tira .steps a.cur.seen::after{color:var(--paper)}
+.nextbig{display:flex;align-items:center;justify-content:center;margin:18px 0 0;padding:16px;border-radius:12px;background:var(--accent);color:var(--paper);font-weight:700;font-size:1.1rem;text-decoration:none;text-align:center}
+.nextbig:hover,.nextbig:focus-visible{outline:none;box-shadow:0 0 0 4px var(--hit)}
+.pqs{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.pqs b.t{color:var(--como-b)}
 </style></head><body>
 <header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Práctica 2</a><span class="sep">›</span><b aria-current="page">2.1 Persiana nocturna</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
-<main><div class="cab"><h1>Ejercicio 2.1 · Persiana con permiso nocturno y subida automática de día</h1><span class="tag">SOLUCIÓN</span></div>
-<nav class="ejs" aria-label="Ejercicios de la práctica 2"><a href="p2-1.html" aria-current="page">2.1</a></nav>
+<main><nav class="tira" aria-label="Animaciones de la Práctica 2"><a class="arr off" aria-hidden="true" tabindex="-1">‹ 2.1</a><span class="where">Práctica 2 · 1 de 1</span><a class="arr" href="index.html#animaciones" aria-label="Volver a las animaciones">Fin ›</a><div class="steps"><a href="p2-1.html" class="cur" aria-current="page" title="Persiana con permiso nocturno">2.1</a></div></nav><div class="cab"><h1>Ejercicio 2.1 · Persiana con permiso nocturno y subida automática de día</h1><span class="tag">SOLUCIÓN</span></div>
 <div class="ver" role="group" aria-label="Versión de la solución"><button type="button" data-v="vieja">Solución antigua</button><button type="button" data-v="nueva">Solución mejorada</button><span class="vnota" id="vnota"></span></div>
 <div class="lamina"><svg id="esq" role="img" aria-label="Esquema multifilar del Ejercicio 2.1 · Persiana con permiso nocturno y subida automática de día"></svg></div>
 <p class="ayuda">Toca <b>Q1</b>, <b>Q2</b>, el sol/luna del crepuscular <b>S2</b> y las teclas ▲ ▼ de <b>S1</b>. Los <b>pulsadores</b> se mantienen pulsados con el ratón o el dedo; con <b>doble clic</b> se quedan fijados y otro clic los suelta. Se pueden pulsar varios a la vez. Con los botones <b>Solución antigua / Solución mejorada</b> (o la tecla <b>V</b>) cambias de esquema. Esc vuelve al índice.</p>
-<div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>El contacto <b>conmutado</b> del crepuscular reparte la fase: de noche su <b>14</b> da fase al pulsador y a H1; de día su <b>12</b> da fase a H2 y a la subida (A1A). De día el pulsador se queda sin tensión y no hace nada.</p></div><div class="caja ojo"><b class="t">¡OJO!</b><p>Pulsa las <b>dos teclas a la vez</b> de noche: la tecla ▼ solo activa la bobina de <b>KA1</b>; su <b>NA 21-24</b> da la bajada y su <b>NC 11-12</b> corta la subida. Así el motor nunca recibe las dos órdenes a la vez.</p></div><div class="caja porque"><b class="t">¿POR QUÉ?</b><p>¿Por qué la bajada pasa por el NA de KA1 y no va directa al motor? Porque el <b>condensador</b> del motor devuelve tensión por el borne que no se usa: mientras sube, en <b>A1B</b> aparece tensión. Si la bobina estuviera en ese cable, KA1 entraría solo, cortaría la subida y el relé se pondría a vibrar. Con el NA abierto, esa tensión no llega a la bobina. Al bajar pasa lo mismo por <b>A1A</b>: por eso H2 y la subida automática se unen a la tecla ▲ antes del <b>NC 11-12</b>, que se abre al bajar y deja A1A aislado. Pulsa <b>Solución antigua</b> y sube o baja la persiana para verlo.</p></div><div class="caja taller"><b class="t">EN EL TALLER</b><p>La persiana se para sola arriba y abajo: son sus <b>finales de carrera internos</b>. Fíjate en que el cable de A1A sigue con tensión arriba del todo, pero ya no pasa corriente. De noche, mientras pulsas ▲, <b>H2</b> también luce: la fase de la tecla vuelve por el cable de A1A hasta el borne 12 del crepuscular.</p></div></div></main>
+<div class="cajas"><div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja pqs"><b class="t">Para qué sirve</b><p>Para una persiana que <b>de día sube sola</b> y de noche se maneja con el pulsador. Sirve también para ver por qué hace falta un relé: sin él, al pulsar las dos teclas el motor recibiría a la vez la orden de subir y la de bajar.</p></div><div class="caja idea"><b class="t">IDEA CLAVE</b><p>El contacto <b>conmutado</b> del crepuscular reparte la fase: de noche su <b>14</b> da fase al pulsador y a H1; de día su <b>12</b> da fase a H2 y a la subida (A1A). De día el pulsador se queda sin tensión y no hace nada.</p></div><div class="caja ojo"><b class="t">¡OJO!</b><p>Pulsa las <b>dos teclas a la vez</b> de noche: la tecla ▼ solo activa la bobina de <b>KA1</b>; su <b>NA 21-24</b> da la bajada y su <b>NC 11-12</b> corta la subida. Así el motor nunca recibe las dos órdenes a la vez.</p></div><div class="caja porque"><b class="t">¿POR QUÉ?</b><p>¿Por qué la bajada pasa por el NA de KA1 y no va directa al motor? Porque el <b>condensador</b> del motor devuelve tensión por el borne que no se usa: mientras sube, en <b>A1B</b> aparece tensión. Si la bobina estuviera en ese cable, KA1 entraría solo, cortaría la subida y el relé se pondría a vibrar. Con el NA abierto, esa tensión no llega a la bobina. Al bajar pasa lo mismo por <b>A1A</b>: por eso H2 y la subida automática se unen a la tecla ▲ antes del <b>NC 11-12</b>, que se abre al bajar y deja A1A aislado. Pulsa <b>Solución antigua</b> y sube o baja la persiana para verlo.</p></div><div class="caja taller"><b class="t">EN EL TALLER</b><p>La persiana se para sola arriba y abajo: son sus <b>finales de carrera internos</b>. Fíjate en que el cable de A1A sigue con tensión arriba del todo, pero ya no pasa corriente. De noche, mientras pulsas ▲, <b>H2</b> también luce: la fase de la tecla vuelve por el cable de A1A hasta el borne 12 del crepuscular.</p></div></div><a class="nextbig" href="index.html#animaciones">Has llegado al final de la Práctica 2 · Volver a las animaciones →</a></main>
 <script>// ===== Motor de esquemas: nudos, tramos, contactos y cargas =====
 const U=46,NS='http://www.w3.org/2000/svg';
 let H=10,OX=1.5,G;
@@ -392,4 +401,11 @@ document.addEventListener('keydown',e=>{if((e.key==='v'||e.key==='V')&&!e.ctrlKe
 // retorno del condensador: en la solución antigua, mientras el motor sube, A1B tiene tensión y alimenta la bobina de KA1
 setInterval(()=>{const want=!!(O.m&&O.m.up.on),wa=!!(O.m&&O.m.dn.on);if(want!==ST.ret||wa!==ST.retA){ST.ret=want;ST.retA=wa;solve();}},350);
 setup(DEF);marcar();
-</script></body></html>
+</script><script>(function(){ // marca «vista»: esta animación y, en la tira del grupo, las que ya se han abierto
+  try {
+    var me = location.pathname.split('/').pop(); if (me) localStorage.setItem('visto:' + me, '1');
+    document.querySelectorAll('.tira .steps a').forEach(function(a){
+      if (localStorage.getItem('visto:' + a.getAttribute('href'))) { a.classList.add('seen'); a.title = (a.title ? a.title + ' · ' : '') + 'ya la has visto'; }
+    });
+  } catch(e) {}
+})();</script></body></html>
