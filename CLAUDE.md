@@ -41,6 +41,7 @@ subir.bat                  publica todo con doble clic
 - Un único archivo `.html` con todo dentro (solo Google Fonts de fuera), con modo claro y oscuro. Vuelven a `index.html#animaciones` (botón ←, Esc).
 - Debajo de la barra de arriba, la tira `.tira` del grupo: «‹ anterior · Práctica 1 · k de N · siguiente ›» y todos los pasos del grupo. Al final de la página, botón grande «Siguiente» (`.nextbig`); en la última del grupo, «Has llegado al final de… · Volver a las animaciones». **Si se añade o se quita una animación de un grupo, hay que actualizar la tira en todas las del grupo.**
 - En la tira, las animaciones ya abiertas llevan un ✓.
+- La **corriente** se muestra de forma **sutil**, como en Automatismos: puntos pequeños y claros que se mueven por dentro del cable (`.flow`: `stroke:#FFE28A; stroke-width:3; stroke-linecap:round; stroke-dasharray:0.5 15.5`, a 0,9 s por ciclo), solo por los caminos cerrados hasta un consumo y sin huecos. Nada de la línea amarilla a trazos. Vale para las animaciones hechas y para las que se hagan.
 - Las explicaciones van en cajones **debajo del dibujo**: «Qué está pasando» (cambia en cada momento) y, justo debajo, un cajón fijo **«Para qué sirve»** (`.pqs`, dos o tres frases). Después, IDEA CLAVE, ¡OJO!, EN EL TALLER…
 - En `plc-entradas.html` y `plc-salidas.html` los cajones los monta `setText()`: el de «Para qué sirve» está en la constante `PQS`.
 - Las del Tema 2 no llevan número: en la tira y en la portada se llaman «PNP y NPN», «Entradas» y «Salidas».

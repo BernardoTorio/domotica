@@ -42,10 +42,10 @@ main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
 .wire.vL{stroke:var(--vfase);stroke-width:6;filter:drop-shadow(0 0 3px var(--vfase-g))}
 .wire.vP{stroke:var(--vpos);stroke-width:6;filter:drop-shadow(0 0 3px var(--vpos-g))}
 .wire.pale{opacity:.4}
-.flow{display:none;stroke:var(--flow);stroke-width:3;fill:none;stroke-dasharray:5 11;animation:run .7s linear infinite;stroke-linejoin:round}
+.flow{display:none;stroke:#FFE28A;stroke-width:3;fill:none;stroke-linecap:round;stroke-dasharray:0.5 15.5;animation:run .9s linear infinite;stroke-linejoin:round}
 .flow.on{display:inline}
 @keyframes run{to{stroke-dashoffset:-16}}
-@media (prefers-reduced-motion:reduce){.flow{animation:none;stroke-dasharray:none;opacity:.6}}
+@media (prefers-reduced-motion:reduce){.flow{animation:none;opacity:.8}}
 .num{font-size:13px;fill:var(--ink)}.sm{font-size:11px}.nm{font-size:15px;font-weight:700;fill:var(--ink)}
 .rail{font-size:15px;font-weight:700;fill:var(--ink)}
 .pe{stroke:var(--pe);stroke-width:1.8;stroke-dasharray:4 3;fill:none}.pe-t{fill:var(--pe)}
