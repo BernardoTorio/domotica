@@ -1,0 +1,503 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var t=localStorage.getItem('tema');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='light';}})();</script><title>Temporizadores: el cronograma · Domótica 2MT</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet"><style>:root{--paper:#ffffff;--bg:#eef2ea;--ink:#141414;--muted:#4b5563;--fase:#7B3F00;--neutro:#1F5FD0;--pos:#D00000;--neg:#141414;--pe:#3A9A3A;
+--vfase:#C8641E;--vfase-g:rgba(200,100,30,.55);--vpos:#FF1F1F;--vpos-g:rgba(255,31,31,.5);
+--flow:#ffb800;--lamp:#ffd84d;--glow:rgba(255,216,77,.45);--coil:#9ed27a;--tc:#ff9a52;--accent:#4f7f2a;--head:#1F4E79;--hit:rgba(79,127,42,.13);
+--idea:#E2EFDA;--idea-b:#548235;--ojo:#FCE4D6;--ojo-b:#C00000;--taller:#EDE7F6;--taller-b:#6A4C93;--est:#FFF8DB;--est-b:#BF9000;--como:#DDEBF7;--como-b:#2E75B6}
+html[data-theme=dark]{--paper:#1e252d;--bg:#141a20;--ink:#e9edf1;--muted:#a9b4bf;--fase:#c9864a;--neutro:#6fa8ff;--pos:#ff6b6b;--neg:#e9edf1;--pe:#6fcf6f;
+--vfase:#F0974E;--vfase-g:rgba(240,151,78,.6);--vpos:#FF4040;
+--flow:#ffd23f;--hit:rgba(158,210,122,.16);--accent:#9ed27a;--head:#8cc4ff;
+--idea:#22311c;--idea-b:#9ed27a;--ojo:#3a2320;--ojo-b:#ff8a7a;--taller:#2b2540;--taller-b:#c3a8ff;--est:#3a3216;--est-b:#ffd23f;--como:#1c2c3d;--como-b:#7fb6ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',Verdana,sans-serif;font-size:17px;line-height:1.5}
+.barra{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--paper);border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:2}
+.ico{font-size:1.15rem;line-height:1;min-width:42px;height:38px;display:inline-flex;align-items:center;justify-content:center}
+.btn{font:inherit;background:transparent;color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:4px 10px;cursor:pointer;text-decoration:none}
+.btn:hover,.btn:focus-visible{background:var(--hit);outline:none}
+.migas{flex:1;min-width:0;overflow:hidden;white-space:nowrap;direction:rtl;text-align:left;font-size:.98rem}
+.migas>span{direction:ltr;unicode-bidi:isolate}
+.migas a{color:var(--head);text-decoration:none}.migas a:hover{text-decoration:underline}
+.migas b{color:var(--ink)}.migas .sep{color:var(--muted);margin:0 .35em}
+main{max-width:1100px;margin:0 auto;padding:14px 16px 30px}
+.cab{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 8px}
+.cab h1{font-size:1.25rem;margin:0;color:var(--head)}
+.tag{background:var(--accent);color:var(--paper);font-weight:700;font-size:.8rem;letter-spacing:.06em;border-radius:6px;padding:2px 9px}
+.lamina{background:var(--paper);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.08);overflow-x:auto}
+.lamina svg{display:block;width:100%;height:auto;min-width:520px;max-height:76vh;touch-action:manipulation}
+.ayuda{color:var(--muted);font-size:.95rem;margin:8px 4px 14px}
+.cajas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.caja{border-left:6px solid;border-radius:6px;padding:10px 14px}
+.caja b.t{display:block;margin-bottom:2px}
+.caja ul{margin:.2em 0;padding-left:1.2em}
+.idea{background:var(--idea);border-color:var(--idea-b)}.idea b.t{color:var(--idea-b)}
+.ojo{background:var(--ojo);border-color:var(--ojo-b)}.ojo b.t{color:var(--ojo-b)}
+.taller{background:var(--taller);border-color:var(--taller-b)}.taller b.t{color:var(--taller-b)}
+.est{background:var(--est);border-color:var(--est-b);grid-column:1/-1}.est b.t{color:var(--est-b)}
+.como{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.como b.t{color:var(--como-b)}
+.caja p{margin:.2em 0}.alerta{color:var(--ojo-b);font-weight:700}
+.vivo{color:var(--vfase);font-weight:700}.vivo12{color:var(--vpos);font-weight:700}.amar{color:#d99a00;font-weight:700}
+/* svg */
+.sym{stroke:var(--ink);stroke-width:2;fill:none;stroke-linecap:round}.thin{stroke-width:1.4}
+.box{stroke:var(--ink);stroke-width:2;fill:var(--paper)}
+.wire{stroke-width:3;fill:none;stroke-linejoin:round;stroke-linecap:round;transition:stroke-width .15s,opacity .15s}
+.wire.vL{stroke:var(--vfase);stroke-width:6;filter:drop-shadow(0 0 3px var(--vfase-g))}
+.wire.vP{stroke:var(--vpos);stroke-width:6;filter:drop-shadow(0 0 3px var(--vpos-g))}
+.wire.pale{opacity:.4}
+.flow{display:none;stroke:#FFE28A;stroke-width:3;fill:none;stroke-linecap:round;stroke-dasharray:0.5 15.5;animation:run .9s linear infinite;stroke-linejoin:round}
+.flow.on{display:inline}
+@keyframes run{to{stroke-dashoffset:-16}}
+@media (prefers-reduced-motion:reduce){.flow{animation:none;opacity:.8}}
+.num{font-size:13px;fill:var(--ink)}.sm{font-size:11px}.nm{font-size:15px;font-weight:700;fill:var(--ink)}
+.rail{font-size:15px;font-weight:700;fill:var(--ink)}
+.pe{stroke:var(--pe);stroke-width:1.8;stroke-dasharray:4 3;fill:none}.pe-t{fill:var(--pe)}
+.glow{fill:var(--glow);stroke:none;display:none}.glow.show{display:inline}
+.lampon{fill:var(--lamp)}.coilon{fill:var(--coil)}.tcon{fill:var(--tc)}
+.state{font-size:12px;fill:var(--muted)}.state.on{fill:var(--ojo-b);font-weight:700}.cold{fill:#2f7ad8}.hot{fill:#d9480f}
+.person{font-size:20px}.sm2{font-size:15px}
+.frame{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:7 5}
+.hit{fill:transparent;cursor:pointer;rx:8}
+.hit:hover,.hit:focus-visible{fill:var(--hit);outline:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
+
+/* índice */
+.tabs{display:flex;gap:8px;margin:6px 0 4px;flex-wrap:wrap}
+.tab{font:inherit;font-weight:700;background:var(--paper);color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:6px 16px;cursor:pointer}
+.tab[aria-selected=true]{background:var(--accent);color:var(--paper)}
+.panel[hidden]{display:none}
+.lista{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.lista a,.lista span.prox{display:block;background:var(--paper);border-left:6px solid var(--accent);border-radius:8px;padding:12px 16px;color:var(--ink);text-decoration:none}
+.lista a:hover,.lista a:focus-visible{background:var(--hit);outline:none}
+.lista a b{display:block;color:var(--head)}
+.lista span.prox{border-color:var(--muted);color:var(--muted);opacity:.7}.lista span.prox b{display:block}
+h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
+
+.slat{fill:var(--muted);opacity:.75}.thinb{stroke-width:1.2}
+
+/* ---- cronograma de temporizadores ---- */
+.sub{color:var(--muted);margin:0 0 12px;max-width:110ch}
+.zona{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:12px;align-items:start}
+@media (max-width:820px){.zona{grid-template-columns:1fr}}
+.lamina svg{min-width:560px}
+.panelc{background:var(--paper);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:9px}
+.panelc h3{margin:0;font-size:.95rem;color:var(--head)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+#pruebas{display:grid;grid-template-columns:1fr 1fr}#pruebas #bAuto{grid-column:1/-1}
+.full{grid-column:1/-1}
+.seg button,button.big{flex:1;font:inherit;font-weight:700;background:var(--paper);color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:6px 8px;cursor:pointer;min-width:0;touch-action:none;user-select:none;-webkit-user-select:none}
+.panelc button small{display:block;font-weight:400;font-size:.78rem;opacity:.85}
+button.big{padding:14px 10px;font-size:1.08rem;border-color:var(--pos)}
+button.big[aria-pressed=true]{background:var(--pos);color:#fff}
+button.big.latched{box-shadow:0 0 0 4px #F2B400}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--paper)}
+.tval{font-size:1.3rem;font-weight:700}.tval small{font-size:.8rem;font-weight:400;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px;margin:0}
+.tm{border-top:1px solid var(--muted);padding-top:8px}
+.tmname{font-weight:700}.tmname span{font-weight:400;color:var(--muted)}
+.cd{font-size:1.45rem;font-weight:700;font-variant-numeric:tabular-nums}
+.cd.run{color:#B07800}html[data-theme=dark] .cd.run{color:#FFC94D}
+.stt{font-weight:700;color:var(--muted);font-size:.95rem}.stt.on{color:var(--idea-b)}
+.ledl{display:inline-flex;align-items:center;font-weight:700;font-size:.92rem;margin-top:2px}
+.led{width:18px;height:18px;border-radius:50%;border:2px solid var(--ink);display:inline-block;vertical-align:middle;margin-right:6px;background:transparent}
+.led.on{background:var(--lamp);box-shadow:0 0 10px var(--lamp)}
+.zlab{font-size:12px;fill:var(--muted)}.r1{fill:#E00000;font-weight:700}.r0{fill:#1F5FD0;font-weight:700}
+html[data-theme=dark] .r0{fill:#6fa8ff}
+.lnk{stroke:#1F5FD0;stroke-width:3;fill:none;transition:stroke .1s}.lnk.on{stroke:#E00000}
+.nodo{fill:#1F5FD0}.nodo.on{fill:#E00000}
+html[data-theme=dark] .lnk{stroke:#6fa8ff}html[data-theme=dark] .lnk.on{stroke:#ff4d4d}
+html[data-theme=dark] .nodo{fill:#6fa8ff}html[data-theme=dark] .nodo.on{fill:#ff4d4d}
+.w12{stroke:var(--pos)}.w230{stroke:var(--fase)}
+.io,.blk{fill:#FCD98A;stroke:#111;stroke-width:2}
+.iot{font-size:20px;font-weight:700;fill:#111}
+.blab{font-size:13px;font-weight:700;fill:var(--ink)}
+.icon rect{stroke:#111;stroke-width:2}.icon path{stroke:#111;stroke-width:3;fill:none}
+.pin{font-size:12px;fill:var(--ink)}.stub{stroke:var(--ink);stroke-width:2}
+.par{font-size:13px;fill:#2E7D32;font-weight:700}html[data-theme=dark] .par{fill:#9ed27a}
+.ta{font-size:14px;font-weight:700;fill:#B07800}html[data-theme=dark] .ta{fill:#FFC94D}
+.mando{fill:var(--paper);stroke:var(--ink);stroke-width:2}
+.tecla{fill:#3DBB4E;stroke:var(--ink);stroke-width:2;transition:fill .1s}.tecla.on{fill:#1e7a2c;stroke-width:4}
+.tec{font-size:22px;fill:#fff;font-weight:700;pointer-events:none}
+.hitg{cursor:pointer;touch-action:none}.hitg:focus{outline:none}
+.hitbox{fill:transparent;stroke:transparent;stroke-width:2;stroke-dasharray:4 4}
+.hitg:hover .hitbox,.hitg:focus-visible .hitbox{stroke:var(--accent)}
+.hitg.latched .hitbox{fill:#FFF3C4;fill-opacity:.45;stroke:#F2B400;stroke-width:3;stroke-dasharray:none}
+.bulb{fill:var(--paper);stroke:var(--ink);stroke-width:2.5}.bulb.on{fill:var(--lamp)}
+.sock{fill:var(--paper);stroke:var(--ink);stroke-width:2.5}.sock.on{fill:var(--tc)}
+.hole,.hub{fill:var(--ink)}.cable{stroke:var(--ink);stroke-width:3;fill:none}
+.fanb{fill:var(--paper);stroke:var(--ink);stroke-width:2}.blades path{fill:var(--muted)}
+.blades{transform-origin:815px 305px;transform-box:view-box}
+.fan.on .blades{animation:spin .6s linear infinite}.fan.on .blades path{fill:#2E75B6}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.fan.on .blades{animation:none}}
+.chart{background:var(--paper);border-radius:10px;padding:10px 12px;margin:12px 0 4px}
+.chart h2{margin:0 0 6px}
+.howread{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:.92rem;color:var(--muted);margin:0 0 8px}.howread b{color:var(--ink)}
+.chartwrap{border:1px solid var(--muted);border-radius:8px;overflow:hidden}
+.chartwrap canvas{display:block;width:100%;height:330px}
+@media (max-width:560px){.chartwrap canvas{height:300px}}
+/* tira del grupo: anterior · k de N · siguiente, y botón grande al final */
+.tira{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 12px}
+.tira a{text-decoration:none;color:var(--ink);border:2px solid var(--accent);border-radius:8px;font-weight:700;background:var(--paper);min-height:44px;display:flex;align-items:center;justify-content:center;padding:0 12px}
+.tira a:hover,.tira a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--hit)}
+.tira .where{flex:1;text-align:center;font-weight:700;color:var(--muted);font-size:.95rem}
+.tira .steps{flex-basis:100%;display:flex;gap:6px}
+.tira .steps a{flex:1;min-width:0;padding:0 2px;font-size:.95rem}
+.tira .steps a.cur{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.tira a.off{visibility:hidden}
+.tira .steps a.seen::after{content:"✓";margin-left:3px;font-size:.78em;color:var(--accent)}
+.tira .steps a.cur.seen::after{color:var(--paper)}
+.nextbig{display:flex;align-items:center;justify-content:center;margin:18px 0 0;padding:16px;border-radius:12px;background:var(--accent);color:var(--paper);font-weight:700;font-size:1.1rem;text-decoration:none;text-align:center}
+.nextbig:hover,.nextbig:focus-visible{outline:none;box-shadow:0 0 0 4px var(--hit)}
+.pqs{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.pqs b.t{color:var(--como-b)}
+</style></head><body>
+<header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Tema 2</a><span class="sep">›</span><b aria-current="page">Temporizadores: el cronograma</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
+<main><nav class="tira" aria-label="Animaciones del Tema 2"><a class="arr" href="plc-salidas.html" aria-label="Anterior: Cablear las salidas">‹ Salidas</a><span class="where">Tema 2 · 4 de 4</span><a class="arr" href="index.html#animaciones" aria-label="Volver a las animaciones">Fin ›</a><div class="steps"><a href="pnp-npn.html" title="Sensores PNP y NPN">PNP y NPN</a><a href="plc-entradas.html" title="Cablear las entradas">Entradas</a><a href="plc-salidas.html" title="Cablear las salidas">Salidas</a><a href="plc-cronograma.html" class="cur" aria-current="page" title="Temporizadores: el cronograma">Retardos</a></div></nav>
+<div class="cab"><h1>Retardo a la conexión y a la desconexión: el cronograma</h1><span class="tag">TEMA 2</span></div>
+<p class="sub">El pulsador <b>S1 ▲</b> (entrada <b>I2</b>) llega <b>a la vez</b> a dos temporizadores del LOGO!: <b>B001, retardo a la conexión</b>, que manda la bombilla <b>E1</b> (Q1), y <b>B002, retardo a la desconexión</b>, que manda el enchufe <b>TC1</b> con el extractor (Q2). Mantén pulsado S1 un rato, suéltalo y mira el cronograma: se dibuja solo. Después prueba una pulsación corta.</p>
+<div class="zona">
+<div class="lamina"><svg id="esq" viewBox="0 0 900 400" role="img" aria-labelledby="svgt">
+<title id="svgt">Programa del LOGO! en FUP: la entrada I2 (pulsador S1) va a la patilla Trg de B001, retardo a la conexión, que manda Q1 (bombilla E1), y a la de B002, retardo a la desconexión, que manda Q2 (enchufe TC1 con el extractor)</title>
+<!-- marco del programa -->
+<rect class="frame" x="172" y="22" width="470" height="366" rx="10"/>
+<text class="zlab" x="182" y="40">Programa del LOGO! (FUP) · en la simulación: <tspan class="r1">rojo = 1</tspan>, <tspan class="r0">azul = 0</tspan></text>
+<text class="zlab" x="20" y="40">En el panel</text>
+<text class="zlab" x="662" y="40">En el panel</text>
+
+<!-- cable del pulsador a la entrada (12 V) -->
+<path id="wIn" class="wire w12" d="M128 205 H200"/>
+<!-- líneas del programa -->
+<path id="lI2" class="lnk" d="M250 205 H300 M300 115 V305 M300 115 H340 M300 305 H340"/>
+<circle id="nI2" class="nodo" cx="300" cy="205" r="5"/>
+<path id="lQ1" class="lnk" d="M490 115 H560"/>
+<path id="lQ2" class="lnk" d="M490 305 H560"/>
+<!-- cables de las salidas (230 V) -->
+<path id="wQ1" class="wire w230" d="M610 115 H700"/>
+<path id="wQ2" class="wire w230" d="M610 305 H690"/>
+
+<!-- pulsador S1 -->
+<g id="gS1" class="hitg" tabindex="0" role="button" aria-label="Pulsador S1: mantener pulsado">
+  <rect class="hitbox" x="10" y="140" width="128" height="140" rx="10"/>
+  <rect class="mando" x="30" y="160" width="98" height="90" rx="12"/>
+  <circle id="kS1" class="tecla" cx="79" cy="205" r="26"/>
+  <text class="tec" x="79" y="213" text-anchor="middle">▲</text>
+  <text class="nm" x="79" y="152" text-anchor="middle">S1</text>
+  <text class="state" x="79" y="270" text-anchor="middle" id="tS1">mantén pulsado</text>
+</g>
+
+<!-- I2 -->
+<text class="blab" x="225" y="172" text-anchor="middle">I2</text>
+<rect class="io" x="200" y="180" width="50" height="50" rx="3"/>
+<text class="iot" x="225" y="212" text-anchor="middle">I</text>
+
+<!-- B001 retardo a la conexión -->
+<text class="blab" x="415" y="52" text-anchor="middle">B001 · a la conexión</text>
+<rect class="blk" x="340" y="60" width="150" height="110" rx="3"/>
+<g class="icon"><rect x="390" y="85" width="50" height="50" fill="none"/><path d="M390 122 H416 V98 H440"/></g>
+<text class="pin" x="336" y="109" text-anchor="end">Trg</text>
+<line class="stub" x1="322" y1="145" x2="340" y2="145"/><text class="pin" x="318" y="149" text-anchor="end">T</text>
+<text class="par" x="415" y="190" text-anchor="middle" id="pT1">T = 05:00s</text>
+<text class="ta" x="415" y="210" text-anchor="middle" id="ta1"></text>
+
+<!-- B002 retardo a la desconexión -->
+<text class="blab" x="415" y="242" text-anchor="middle">B002 · a la desconexión</text>
+<rect class="blk" x="340" y="250" width="150" height="110" rx="3"/>
+<g class="icon"><rect x="390" y="275" width="50" height="50" fill="none"/><path d="M390 288 H416 V312 H440"/></g>
+<text class="pin" x="336" y="299" text-anchor="end">Trg</text>
+<line class="stub" x1="322" y1="320" x2="340" y2="320"/><text class="pin" x="318" y="324" text-anchor="end">R</text>
+<line class="stub" x1="322" y1="342" x2="340" y2="342"/><text class="pin" x="318" y="346" text-anchor="end">T</text>
+<text class="par" x="415" y="380" text-anchor="middle" id="pT2">T = 05:00s</text>
+<text class="ta" x="560" y="358" text-anchor="middle" id="ta2"></text>
+
+<!-- Q1 y Q2 -->
+<text class="blab" x="585" y="82" text-anchor="middle">Q1</text>
+<rect class="io" x="560" y="90" width="50" height="50" rx="3"/>
+<text class="iot" x="585" y="122" text-anchor="middle">Q</text>
+<text class="blab" x="585" y="272" text-anchor="middle">Q2</text>
+<rect class="io" x="560" y="280" width="50" height="50" rx="3"/>
+<text class="iot" x="585" y="312" text-anchor="middle">Q</text>
+
+<!-- bombilla E1 -->
+<circle id="glowE" class="glow" cx="740" cy="115" r="46"/>
+<circle id="bulb" class="bulb" cx="740" cy="115" r="28"/>
+<path class="sym" d="M722 97 L758 133 M758 97 L722 133"/>
+<text class="nm" x="740" y="170" text-anchor="middle">E1 bombilla</text>
+
+<!-- enchufe TC1 con extractor -->
+<rect id="sock" class="sock" x="690" y="278" width="54" height="54" rx="10"/>
+<circle class="hole" cx="708" cy="305" r="4"/><circle class="hole" cx="726" cy="305" r="4"/>
+<path class="cable" d="M744 305 H780"/>
+<g id="fan" class="fan"><circle class="fanb" cx="815" cy="305" r="34"/>
+  <g id="blades" class="blades"><path d="M815 305 C808 285 812 278 820 276 C826 284 822 296 815 305 Z"/><path d="M815 305 C835 298 842 302 844 310 C836 316 824 312 815 305 Z"/><path d="M815 305 C810 325 803 332 795 330 C793 320 802 312 815 305 Z"/></g>
+  <circle cx="815" cy="305" r="5" class="hub"/></g>
+<text class="nm" x="760" y="365" text-anchor="middle">TC1 enchufe · extractor</text>
+</svg></div>
+
+<div class="panelc">
+ <h3>Pulsador S1 ▲ · entrada I2</h3>
+ <button id="bS1" class="big" type="button" aria-pressed="false">Mantén pulsado<small>tecla M · doble clic: fijado</small></button>
+ <h3>Otras pruebas</h3>
+ <div class="seg" id="pruebas"><button id="bAuto" type="button" aria-pressed="false">Pulsos cortos<small>1 s sí, 1 s no · C</small></button><button id="bSlow" type="button" aria-pressed="false">Cámara lenta<small>tecla L</small></button><button id="bFreeze" type="button" aria-pressed="false">Congelar<small>tecla F</small></button></div>
+ <h3><label for="T">Parámetro T de los dos bloques</label></h3>
+ <div class="tval">T = <span id="Tv">5</span> s <small id="Tl">(en LOGO!Soft, 05:00s)</small></div>
+ <input id="T" type="range" min="2" max="10" step="1" value="5" aria-label="Tiempo T de los temporizadores, en segundos">
+ <div class="tm"><div class="tmname">B001 <span>· a la conexión</span></div><div class="cd" id="cd1">Ta = 0,0 s</div><div class="stt" id="st1">Q1 = 0</div><span class="ledl"><span class="led" id="dE1"></span>E1</span></div>
+ <div class="tm"><div class="tmname">B002 <span>· a la desconexión</span></div><div class="cd" id="cd2">Ta = 0,0 s</div><div class="stt" id="st2">Q2 = 0</div><span class="ledl"><span class="led" id="dTC"></span>TC1</span></div>
+</div>
+</div>
+
+<section class="chart" aria-label="Cronograma en directo">
+ <h2>El cronograma, en directo</h2>
+ <div class="howread"><span>El tiempo va de <b>izquierda a derecha</b>; lo de la derecha es <b>ahora</b>.</span><span>Cada fila es una señal: <b>arriba = 1</b>, <b>abajo = 0</b>.</span><span><b>T</b> = el tiempo del bloque · <b>&lt; T</b> = no le dio tiempo.</span></div>
+ <div class="chartwrap"><canvas id="cv" aria-label="Cronograma de la entrada I2 y de las salidas Q1 y Q2"></canvas></div>
+</section>
+
+<p class="ayuda">Toca el <b>pulsador</b> en el dibujo o usa su botón: está pulsado mientras aprietas. <b>Doble clic</b> lo deja <b>fijado</b> (recuadro amarillo); un clic más lo suelta. Teclas: <b>M</b> pulsador, <b>C</b> pulsos cortos, <b>L</b> cámara lenta, <b>F</b> congelar, <b>Esc</b> volver al índice.</p>
+<div class="cajas">
+<div class="caja est"><b class="t">Qué está pasando</b><div id="estado" aria-live="polite"></div></div><div class="caja pqs"><b class="t">Para qué sirve</b><p>Para entender los <b>temporizadores</b> del LOGO! y aprender a leer y dibujar un <b>cronograma</b>. El de conexión tarda en encender y el de desconexión tarda en apagar: en el cronograma se ve qué cambio va retrasado. Lo usarás en la Práctica 4, en la persiana y en la luz y el extractor del baño.</p></div>
+<div class="caja como"><b class="t">Cómo se lee el cronograma</b><p>Es un dibujo de cómo cambian las señales con el tiempo. Cada fila es una señal: <b>arriba es 1</b> y <b>abajo es 0</b>. Las <b>líneas discontinuas</b> marcan cada vez que cambia I2: así ves qué salida cambia <b>a la vez</b> que I2 y cuál va <b>retrasada</b>. La flecha de debajo de Q1 y Q2 mide el tiempo que ha contado el bloque.</p></div>
+<div class="caja idea"><b class="t">B001 · A LA CONEXIÓN · tarda en encender</b><p>Q se pone a 1 <b>T segundos después</b> de que Trg pase a 1. Vuelve a 0 <b>al momento</b> cuando Trg vuelve a 0.</p><p class="alerta">¡OJO! Si Trg está a 1 menos de T, Q no llega a encenderse nunca. La próxima vez empieza a contar desde cero.</p><ul><li>Extractor que solo arranca si estás un rato en el baño (Práctica 4, ejercicio 4.7).</li><li>Tiempo de recorrido de la persiana: pasado T, se resetean los relés autoenclavadores (4.5 y 4.8).</li><li>Falsas alarmas: una salpicadura en el sensor de inundación no corta el agua; un charco de más de 10 s, sí.</li></ul></div>
+<div class="caja idea"><b class="t">B002 · A LA DESCONEXIÓN · tarda en apagar</b><p>Q se pone a 1 <b>al momento</b> de que Trg pase a 1. Vuelve a 0 <b>T segundos después</b> de que Trg vuelva a 0.</p><p class="alerta">¡OJO! El tiempo empieza al SOLTAR, no al pulsar. Si Trg vuelve a 1 antes de T, empieza de cero: con pulsaciones cortas seguidas, nunca llega a apagarse.</p><ul><li>Luz del baño o del portal que se apaga sola un rato después de que el detector deje de verte (4.7).</li><li>Extractor que sigue un rato después de apagar la luz (4.7).</li><li>La patilla <b>R</b> apaga Q al momento y pone la cuenta a cero (en el 4.7, la tecla ▼).</li></ul></div>
+<div class="caja taller"><b class="t">EN EL TALLER</b><p>En LOGO!Soft el tiempo se cambia con <b>doble clic en el bloque</b>: 05:00s son 5 segundos. En la simulación, debajo de cada temporizador se ve <b>Ta</b>, el tiempo que lleva contado. Pon tiempos cortos para no tener que esperar.</p></div>
+<div class="caja ojo full"><b class="t">PISTA PARA EL TEST</b><p>Mira la entrada Trg y busca <b>qué cambio de la salida va retrasado</b>. Si Q tarda en <b>pasar a 1</b> → a la <b>conexión</b>. Si Q tarda en <b>volver a 0</b> → a la <b>desconexión</b>. En el bloque de LOGO!Soft lo dice el dibujo: el escalón que <b>sube</b> tarde es el de conexión; el que <b>baja</b> tarde, el de desconexión.</p></div>
+</div>
+<a class="nextbig" href="index.html#animaciones">Has llegado al final del Tema 2 · Volver a las animaciones →</a></main>
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var st = { s1:false, trg:false, tOn:0, q1:false, q2:false, tOff:0, offTiming:false,
+             T:5, speed:1, frozen:false, auto:false, autoClock:0, simT:0 };
+  var ev = 'inicio';
+  var samples = [], edges = [], ivOn = [], ivOff = [];
+  var curOn = null, curOff = null;
+
+  /* ---------- simulación: el ciclo del LOGO! ---------- */
+  function step(dt){
+    if (st.frozen) return;
+    dt *= st.speed; st.simT += dt;
+    if (st.auto){ st.autoClock += dt; st.s1 = (st.autoClock % 2) < 1; }
+    var c = st.s1;                               // I2 = Trg de los dos bloques
+    if (c && !st.trg){                           // Trg pasa a 1
+      edges.push(st.simT);
+      if (st.offTiming){ ev = 'retrig'; if (curOff){ curOff.end = st.simT; curOff.done = false; curOff = null; } }
+      else ev = 'rise';
+      curOn = { start: st.simT, end: null, done: false }; ivOn.push(curOn);
+      st.offTiming = false; st.tOff = 0;
+    }
+    if (!c && st.trg){                           // Trg vuelve a 0
+      edges.push(st.simT);
+      if (!st.q1){ ev = 'short'; if (curOn){ curOn.end = st.simT; curOn.done = false; curOn = null; } }
+      else ev = 'fall';
+      st.q1 = false; st.tOn = 0;
+      if (st.q2){ st.offTiming = true; st.tOff = 0; curOff = { start: st.simT, end: null, done: false }; ivOff.push(curOff); }
+    }
+    st.trg = c;
+    if (c){
+      st.q2 = true;
+      st.tOn += dt;
+      if (!st.q1 && st.tOn >= st.T){ st.q1 = true; ev = 'acted'; if (curOn){ curOn.end = st.simT; curOn.done = true; curOn = null; } }
+    } else if (st.offTiming){
+      st.tOff += dt;
+      if (st.tOff >= st.T){ st.q2 = false; st.offTiming = false; ev = 'released'; if (curOff){ curOff.end = st.simT; curOff.done = true; curOff = null; } }
+    }
+    samples.push({ t: st.simT, c: st.trg, a: st.q1, b: st.q2 });
+    var keep = st.simT - win() - 2;
+    while (samples.length > 2 && samples[1].t < keep) samples.shift();
+    while (edges.length && edges[0] < keep) edges.shift();
+    while (ivOn.length && ivOn[0].end !== null && ivOn[0].end < keep) ivOn.shift();
+    while (ivOff.length && ivOff[0].end !== null && ivOff[0].end < keep) ivOff.shift();
+  }
+  function win(){ return Math.max(16, st.T * 2.6 + 4); }
+
+  /* ---------- textos ---------- */
+  function fmt(s){ return s.toFixed(1).replace('.', ',') + ' s'; }
+  function logo(s){ var v = Math.min(99.99, Math.max(0, s)); var a = Math.floor(v), b = Math.round((v - a) * 100); if (b === 100){ a++; b = 0; } return (a < 10 ? '0' : '') + a + ':' + (b < 10 ? '0' : '') + b + 's'; }
+  var lastMsg = '';
+  function msg(){
+    var T = st.T, r1 = Math.max(0, Math.ceil(T - st.tOn - 1e-6)), r2 = Math.max(0, Math.ceil(T - st.tOff - 1e-6));
+    if (st.auto) return '<p><b>Pulsos cortos: 1 s pulsado, 1 s suelto, una y otra vez</b> (T = ' + T + ' s).</p>' +
+      '<p>• <b>B001 (conexión) nunca llega a encender E1</b>: necesita ' + T + ' s <b>seguidos</b> con Trg = 1 y cada pulso dura solo 1 s. Al soltar, la cuenta vuelve a cero.</p>' +
+      '<p>• <b>B002 (desconexión) nunca llega a apagar TC1</b>: cada pulso pone su cuenta a cero antes de que se acabe.</p>';
+    if (st.trg && !st.q1){
+      var pre = ev === 'retrig' ? '<b>Has vuelto a pulsar antes de que B002 acabara.</b> Su cuenta se ha puesto a cero: empezará otra vez cuando sueltes. ' : '<b>I2 = 1: los dos bloques tienen Trg = 1.</b> ';
+      return '<p>' + pre + 'B002 (desconexión) cambia <b>al momento</b>: Q2 = 1 y el enchufe TC1 tiene tensión (el extractor gira).</p><p>B001 (conexión) <b>está contando</b>: faltan <b>' + r1 + ' s</b>. Q1 sigue a 0. Si sueltas antes, E1 no llegará a encenderse.</p>';
+    }
+    if (st.trg && st.q1) return '<p><b>Han pasado ' + T + ' s con I2 = 1</b>: B001 pone Q1 = 1 y se enciende la bombilla E1. Ahora las dos salidas están a 1.</p><p><b>Suelta el pulsador</b> y mira cuál vuelve antes a 0.</p>';
+    if (st.offTiming){
+      var p = ev === 'short' ? '<b>Has soltado antes de ' + T + ' s.</b> B001 (conexión) <b>no ha llegado a encender</b> E1: en el cronograma, la flecha de Q1 pone &lt; T. ' :
+                               '<b>Has soltado: I2 = 0.</b> B001 (conexión) pone Q1 = 0 <b>al momento</b>: E1 se apaga. ';
+      return '<p>' + p + '</p><p>B002 (desconexión) <b>sigue con Q2 = 1 y cuenta</b>: faltan <b>' + r2 + ' s</b> para que el enchufe TC1 se quede sin tensión.</p>';
+    }
+    if (ev === 'released') return '<p><b>Han pasado ' + T + ' s desde que soltaste</b>: B002 pone Q2 = 0 y el extractor se para. Todo a 0 otra vez.</p><p>Mira el cronograma: el de <b>conexión</b> retrasa la <b>subida</b> de la salida (de 0 a 1); el de <b>desconexión</b> retrasa la <b>bajada</b> (de 1 a 0).</p>';
+    return '<p><b>Todo a 0.</b> I2 = 0, Q1 = 0 y Q2 = 0: la bombilla está apagada y el enchufe, sin tensión.</p><p>Mantén pulsado <b>S1</b> más de ' + T + ' s y suéltalo. Después prueba una pulsación corta (menos de ' + T + ' s).</p>';
+  }
+
+  /* ---------- dibujo ---------- */
+  function render(){
+    var c = st.trg, q1 = st.q1, q2 = st.q2;
+    $('kS1').classList.toggle('on', st.s1);
+    $('tS1').textContent = st.s1 ? 'pulsado' : 'mantén pulsado';
+    var w = $('wIn'); w.classList.toggle('vP', c); w.classList.toggle('pale', !c);
+    $('lI2').classList.toggle('on', c); $('nI2').classList.toggle('on', c);
+    $('lQ1').classList.toggle('on', q1); $('lQ2').classList.toggle('on', q2);
+    var a = $('wQ1'); a.classList.toggle('vL', q1); a.classList.toggle('pale', !q1);
+    var b = $('wQ2'); b.classList.toggle('vL', q2); b.classList.toggle('pale', !q2);
+    $('bulb').classList.toggle('on', q1); $('glowE').classList.toggle('show', q1);
+    $('sock').classList.toggle('on', q2); $('fan').classList.toggle('on', q2);
+    var timing1 = c && !q1, timing2 = st.offTiming;
+    $('ta1').textContent = timing1 ? 'Ta = ' + logo(st.tOn) : '';
+    $('ta2').textContent = timing2 ? 'Ta = ' + logo(st.tOff) : '';
+    var cd1 = $('cd1'), cd2 = $('cd2');
+    cd1.textContent = 'Ta = ' + fmt(timing1 ? st.tOn : (q1 ? st.T : 0)); cd1.className = 'cd' + (timing1 ? ' run' : '');
+    cd2.textContent = 'Ta = ' + fmt(timing2 ? st.tOff : 0); cd2.className = 'cd' + (timing2 ? ' run' : '');
+    $('st1').textContent = q1 ? 'Q1 = 1 · E1 encendida' : (timing1 ? 'Q1 = 0 · contando para encender…' : 'Q1 = 0'); $('st1').className = 'stt' + (q1 ? ' on' : '');
+    $('st2').textContent = q2 ? (timing2 ? 'Q2 = 1 · contando para apagar…' : 'Q2 = 1 · TC1 con tensión') : 'Q2 = 0'; $('st2').className = 'stt' + (q2 ? ' on' : '');
+    $('dE1').classList.toggle('on', q1); $('dTC').classList.toggle('on', q2);
+    var bt = $('bS1'); bt.setAttribute('aria-pressed', st.s1);
+    var m = msg(); if (m !== lastMsg){ $('estado').innerHTML = m; lastMsg = m; }
+  }
+
+  /* ---------- cronograma ---------- */
+  var cv = $('cv'), ctx = cv.getContext('2d');
+  function sizeCanvas(){
+    var r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+    cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+  }
+  window.addEventListener('resize', sizeCanvas);
+  var FONT = '"Atkinson Hyperlegible",Verdana,Arial,sans-serif';
+  function arrowLine(x1, x2, y, col){
+    ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 1.6; ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x1, y - 7); ctx.lineTo(x1, y + 7); ctx.moveTo(x2, y - 7); ctx.lineTo(x2, y + 7); ctx.stroke();
+    if (x2 - x1 > 14){
+      ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x1 + 7, y - 4); ctx.lineTo(x1 + 7, y + 4); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(x2, y); ctx.lineTo(x2 - 7, y - 4); ctx.lineTo(x2 - 7, y + 4); ctx.closePath(); ctx.fill();
+    }
+  }
+  function drawChart(){
+    var W = cv.clientWidth, H = cv.clientHeight;
+    ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
+    var narrow = W < 560;
+    var x0 = narrow ? 96 : 150, x1 = W - 14, span = win(), pps = (x1 - x0) / span, now = st.simT;
+    var X = function(t){ return x1 - (now - t) * pps; };
+    var rows = [
+      { title: narrow ? 'I2 · pulsador S1 ▲' : 'I2 · pulsador S1 ▲ (Trg de B001 y B002)', hi: narrow ? '1' : '1 · pulsado', lo: narrow ? '0' : '0 · suelto', key: 'c', col: '#D00000', h: 96 },
+      { title: narrow ? 'Q1 · E1 · a la conexión' : 'Q1 · bombilla E1 · B001, a la conexión', hi: narrow ? '1' : '1 · encendida', lo: narrow ? '0' : '0 · apagada', key: 'a', col: '#7B3F00', iv: ivOn, h: 118 },
+      { title: narrow ? 'Q2 · TC1 · a la desconexión' : 'Q2 · enchufe TC1 · B002, a la desconexión', hi: narrow ? '1' : '1 · con tensión', lo: narrow ? '0' : '0 · sin tensión', key: 'b', col: '#7B3F00', iv: ivOff, h: 118 }
+    ];
+    var sumH = rows.reduce(function(a, r){ return a + r.h; }, 0), kH = (H - 6) / sumH, accH = 0;
+    rows.forEach(function(rw){
+      var top = 4 + accH * kH, hiY = top + 34, loY = top + 64; accH += rw.h;
+      rw.hiY = hiY; rw.loY = loY;
+      ctx.fillStyle = '#111'; ctx.font = '700 ' + (narrow ? 12 : 14) + 'px ' + FONT; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText(rw.title, 8, top + 12);
+      ctx.font = (narrow ? 12 : 13) + 'px ' + FONT; ctx.textAlign = 'right'; ctx.fillStyle = '#333';
+      ctx.fillText(rw.hi, x0 - 10, hiY); ctx.fillText(rw.lo, x0 - 10, loY);
+      ctx.strokeStyle = '#bbb'; ctx.lineWidth = 1; ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(x0, hiY); ctx.lineTo(x1, hiY); ctx.moveTo(x0, loY); ctx.lineTo(x1, loY); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x0 - 4, hiY - 4); ctx.lineTo(x0 - 4, loY + 4); ctx.stroke();
+    });
+    ctx.save(); ctx.beginPath(); ctx.rect(x0, 0, x1 - x0 + 2, H); ctx.clip();
+    // líneas discontinuas en cada cambio de I2
+    ctx.strokeStyle = '#555'; ctx.lineWidth = 1.2; ctx.setLineDash([5, 5]);
+    edges.forEach(function(t){ var x = X(t); if (x < x0 - 2) return; ctx.beginPath(); ctx.moveTo(x, rows[0].hiY - 6); ctx.lineTo(x, H - 4); ctx.stroke(); });
+    ctx.setLineDash([]);
+    rows.forEach(function(rw){
+      ctx.strokeStyle = rw.col; ctx.lineWidth = 4; ctx.lineJoin = 'miter';
+      ctx.beginPath(); var first = true, prev = null;
+      for (var k = 0; k < samples.length; k++){
+        var s = samples[k], y = s[rw.key] ? rw.hiY : rw.loY, x = Math.max(x0, X(s.t));
+        if (first){ ctx.moveTo(x, y); first = false; }
+        else if (prev !== y){ ctx.lineTo(x, prev); ctx.lineTo(x, y); }
+        prev = y;
+      }
+      if (!first) ctx.lineTo(x1, prev);
+      ctx.stroke();
+      if (rw.iv){
+        rw.iv.forEach(function(iv){
+          var a = X(iv.start), e = X(iv.end === null ? now : iv.end);
+          if (e < x0) return; a = Math.max(a, x0);
+          var y = rw.loY + 16, open = iv.end === null;
+          arrowLine(a, e, y, open ? '#B07800' : '#111');
+          var lbl = open ? '…' : (iv.done ? 'T' : '< T');
+          ctx.fillStyle = open ? '#B07800' : '#111'; ctx.font = '700 14px ' + FONT; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+          if (e - a > 18) ctx.fillText(lbl, (a + e) / 2, y + 3);
+        });
+      }
+    });
+    ctx.restore();
+    ctx.strokeStyle = '#F2B400'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x1, 6); ctx.lineTo(x1, H - 4); ctx.stroke();
+    if (st.frozen){ ctx.fillStyle = 'rgba(31,78,121,.9)'; ctx.font = '700 14px ' + FONT; ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText('⏸ congelado', x1 - 6, 6); }
+    else if (st.speed < 1){ ctx.fillStyle = '#1F4E79'; ctx.font = '700 13px ' + FONT; ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText('cámara lenta', x1 - 6, 6); }
+  }
+
+  /* ---------- parámetro T ---------- */
+  function setT(v){ st.T = v; $('Tv').textContent = v; $('Tl').textContent = '(en LOGO!Soft, ' + logo(v) + ')';
+    $('pT1').textContent = 'T = ' + logo(v); $('pT2').textContent = 'T = ' + logo(v); }
+  $('T').addEventListener('input', function(){ setT(+this.value); });
+  setT(5);
+
+  /* ---------- mandos: pulsador (mantener; doble clic = fijado) ---------- */
+  function press(down){ if (st.frozen) return; if (st.auto) setAuto(false); st.s1 = down; }
+  var latched = false, lastDown = 0, skipUp = false;
+  function markLatched(){ $('bS1').classList.toggle('latched', latched); $('gS1').classList.toggle('latched', latched); }
+  function hold(el){
+    el.addEventListener('pointerdown', function(e){
+      e.preventDefault(); try{ el.setPointerCapture(e.pointerId); }catch(_){}
+      var now = Date.now();
+      if (latched){ latched = false; skipUp = true; press(false); markLatched(); return; }
+      if (now - lastDown < 380){ latched = true; skipUp = true; lastDown = 0; press(true); markLatched(); return; }
+      lastDown = now; press(true);
+    });
+    ['pointerup','pointercancel','lostpointercapture'].forEach(function(n){ el.addEventListener(n, function(){
+      if (skipUp){ skipUp = false; return; } if (latched) return; press(false);
+    }); });
+    el.addEventListener('keydown', function(e){ if ((e.key === ' ' || e.key === 'Enter') && !e.repeat){ e.preventDefault(); press(true); } });
+    el.addEventListener('keyup', function(e){ if ((e.key === ' ' || e.key === 'Enter') && !latched) press(false); });
+  }
+  hold($('bS1')); hold($('gS1'));
+  function setAuto(on){
+    st.auto = on; st.autoClock = 0; if (!on) st.s1 = false;
+    if (on){ latched = false; markLatched(); }
+    $('bAuto').setAttribute('aria-pressed', on);
+  }
+  function toggleSlow(){ st.speed = st.speed < 1 ? 1 : 0.5; $('bSlow').setAttribute('aria-pressed', st.speed < 1); }
+  function toggleFreeze(){ st.frozen = !st.frozen; $('bFreeze').setAttribute('aria-pressed', st.frozen);
+    $('bFreeze').firstChild.nodeValue = st.frozen ? 'Seguir' : 'Congelar'; }
+  $('bAuto').addEventListener('click', function(){ if (!st.frozen) setAuto(!st.auto); });
+  $('bSlow').addEventListener('click', toggleSlow);
+  $('bFreeze').addEventListener('click', toggleFreeze);
+  document.addEventListener('keydown', function(e){
+    var tag = e.target.tagName;
+    if ((e.key === 'Escape' || e.key === 'Backspace') && tag !== 'INPUT' && tag !== 'SELECT' && tag !== 'TEXTAREA'){ e.preventDefault(); location.href = 'index.html#animaciones'; return; }
+    if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (tag === 'BUTTON' || tag === 'INPUT' || (e.target.getAttribute && e.target.getAttribute('role') === 'button')) return;
+    var k = e.key.toLowerCase();
+    if (k === 'm') press(true);
+    if (k === 'c' && !st.frozen) setAuto(!st.auto);
+    if (k === 'l') toggleSlow();
+    if (k === 'f') toggleFreeze();
+  });
+  document.addEventListener('keyup', function(e){ if (e.key.toLowerCase() === 'm' && !latched) press(false); });
+
+  /* ---------- bucle ---------- */
+  var lastTs = null;
+  function loop(ts){
+    if (lastTs === null) lastTs = ts;
+    var dt = Math.min(0.1, (ts - lastTs) / 1000); lastTs = ts;
+    step(dt); render(); drawChart();
+    requestAnimationFrame(loop);
+  }
+  sizeCanvas();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeCanvas);
+  requestAnimationFrame(loop);
+  window.__st = st;
+})();
+(function(){const b=document.getElementById('tema'),r=document.documentElement;
+const ico=()=>{const d=r.dataset.theme==='dark';b.textContent=d?'☀️':'🌙';b.setAttribute('aria-label',d?'Cambiar a modo claro':'Cambiar a modo oscuro');b.title=b.getAttribute('aria-label');};ico();
+b.addEventListener('click',()=>{const d=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('tema',d)}catch(e){}ico();});})();
+</script><script>(function(){ // marca «vista»: esta animación y, en la tira del grupo, las que ya se han abierto
+  try {
+    var me = location.pathname.split('/').pop(); if (me) localStorage.setItem('visto:' + me, '1');
+    document.querySelectorAll('.tira .steps a').forEach(function(a){
+      if (localStorage.getItem('visto:' + a.getAttribute('href'))) { a.classList.add('seen'); a.title = (a.title ? a.title + ' · ' : '') + 'ya la has visto'; }
+    });
+  } catch(e) {}
+})();</script></body></html>
