@@ -78,6 +78,21 @@ Mismo motor que los tests de Automatismos (`DATA`, `IMGS`, `show`, `paint`, `ans
 - Relé auxiliar: común arriba (11, 21) y NC/NA abajo (12-14, 22-24).
 - «Borne» = **tornillo** del aparato (así lo entienden mejor).
 
+## Los Word originales: `C:\dev\originales`
+Los PDF de esta web salen de un Word. Los Word no se suben a GitHub, pero **no se pierden**: están en `C:\dev\originales` (en el PC del profesor, fuera de git), con todas sus versiones. Es la misma carpeta para las tres webs (automatismos, domotica, maquinas).
+```
+C:\dev\originales\
+  automatismos\  domotica\  maquinas\
+    temas\  practicas\  ejercicios\  tests\  examenes\  programacion\  otros\
+      tema2-automata-programable.docx                       ← la última versión
+      versiones\tema2-automata-programable__2026-11-05_2245.docx      ← todas, con fecha y hora
+  _sin_clasificar\   _registro\ (índice, log, pdf_sin_word.txt)   reglas.csv   LEEME.txt
+```
+- **El Word se llama igual que el PDF que se publica** (`temas\tema2-automata-programable.docx` → `temas/tema2-automata-programable.pdf`) y lleva la asignatura en el nombre (`…_Automatismos`, `2MT-…`, `…_Maquinas_2MB`), para que se coloque solo.
+- **Para cambiar un PDF publicado se parte de su Word de `C:\dev\originales`** (la última versión o, si hace falta, una de `versiones\`). Nunca se rehace un Word a partir del PDF sin mirar antes ahí; si no está (lo dice `_registro\pdf_sin_word.txt`), se avisa al profesor antes de reconstruirlo.
+- **Todo Word nuevo o cambiado se guarda en su sitio de `C:\dev\originales`** en cuanto está hecho. Antes de escribir encima de la última versión, si en `versiones\` no está ya `nombre__AAAA-MM-DD_HHMM.docx` con la fecha de esa última, se copia allí con ese nombre. Si la sesión no tiene la carpeta, se pide acceso; si no se puede, el Word se deja en esta carpeta o en «Claude outputs» y la tarea de la noche lo recoge. Si un Word se llama distinto que su PDF, se añade su línea en `C:\dev\originales\reglas.csv`.
+- Una tarea de Windows («Archivo de Word de clase», cada día a las 23:00 o al encender) guarda en `versiones\` los Word nuevos o cambiados de las tres webs (también «Claude outputs»), de Descargas y del propio archivo, y pone arriba la última. No mueve ni borra nada. Para que pase ya: `C:\dev\originales\archivar_ahora.bat`.
+
 ## Cómo se trabaja y cómo se publica
 - Los cambios de aspecto y de motor son de **forma**. Si un cambio toca lo que se explica o lo que se pregunta, se le pregunta antes al profesor.
 - Cada cambio se prueba en escritorio y en móvil (400 px), en claro y en oscuro, y después en la web publicada.
