@@ -18,9 +18,10 @@ p2-1.html                  Práctica 2: solución animada del 2.1 (persiana), co
 pnp-npn.html               Tema 2: sensores PNP y NPN
 plc-entradas.html          Tema 2: cablear las entradas del autómata
 plc-salidas.html           Tema 2: cablear las salidas del autómata
+plc-cronograma.html        Tema 2: temporizadores del LOGO! (retardo a la conexión y a la desconexión) con el cronograma en directo; adaptada de cronograma_temporizadores.html de Automatismos
 test_bloque1.html          Test Bloque 1 (Tema 1 y Prácticas 1 y 2): 89 preguntas, 9 figuras
 temas/                     apuntes en PDF (tema1-sensores-actuadores.pdf, tema2-automata-programable.pdf)
-practicas/                 enunciados en PDF (2MT-P1.pdf, 2MT-P2.pdf, 2MT-P3.pdf, plantilla-logo-doble.pdf)
+practicas/                 enunciados en PDF (2MT-P1.pdf, 2MT-P2.pdf, 2MT-P3.pdf, plantilla-logo-doble.pdf, 2MT-P4.pdf)
 subir.bat                  publica todo con doble clic
 .gitignore                 *.zip, *.docx y «Claude outputs/»: no se suben nunca
 ```
@@ -44,7 +45,7 @@ subir.bat                  publica todo con doble clic
 - La **corriente** se muestra de forma **sutil**, como en Automatismos: puntos pequeños y claros que se mueven por dentro del cable (`.flow`: `stroke:#FFE28A; stroke-width:3; stroke-linecap:round; stroke-dasharray:0.5 15.5`, a 0,9 s por ciclo), solo por los caminos cerrados hasta un consumo y sin huecos. Nada de la línea amarilla a trazos. Vale para las animaciones hechas y para las que se hagan.
 - Las explicaciones van en cajones **debajo del dibujo**: «Qué está pasando» (cambia en cada momento) y, justo debajo, un cajón fijo **«Para qué sirve»** (`.pqs`, dos o tres frases). Después, IDEA CLAVE, ¡OJO!, EN EL TALLER…
 - En `plc-entradas.html` y `plc-salidas.html` los cajones los monta `setText()`: el de «Para qué sirve» está en la constante `PQS`.
-- Las del Tema 2 no llevan número: en la tira y en la portada se llaman «PNP y NPN», «Entradas» y «Salidas».
+- Las del Tema 2 no llevan número: en la tira y en la portada se llaman «PNP y NPN», «Entradas», «Salidas» y «Retardos» (el cronograma de los temporizadores; la P4 lleva un QR a `plc-cronograma.html`).
 
 ## Tests
 Mismo motor que los tests de Automatismos (`DATA`, `IMGS`, `show`, `paint`, `answer`, `result`). Si se mejora el motor en un sitio, se lleva a todos.
