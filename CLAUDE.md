@@ -20,6 +20,7 @@ plc-entradas.html          Tema 2: cablear las entradas del autómata
 plc-salidas.html           Tema 2: cablear las salidas del autómata
 plc-cronograma.html        Tema 2: temporizadores del LOGO! (retardo a la conexión y a la desconexión) con el cronograma en directo; adaptada de cronograma_temporizadores.html de Automatismos
 test_bloque1.html          Test Bloque 1 (Tema 1 y Prácticas 1 y 2): 89 preguntas, 9 figuras
+test_bloque2.html          Test Bloque 2 (Tema 2 y Práctica 4): 100 preguntas (40 del tema y 60 de la práctica, con sus E/S), 16 figuras; sin letras de medida (no hay esquema de cableado: es el entregable 1 de la P4)
 temas/                     apuntes en PDF (tema1-sensores-actuadores.pdf, tema2-automata-programable.pdf)
 practicas/                 enunciados en PDF (2MT-P1.pdf, 2MT-P2.pdf, 2MT-P3.pdf, plantilla-logo-doble.pdf, 2MT-P4.pdf)
 subir.bat                  publica todo con doble clic
