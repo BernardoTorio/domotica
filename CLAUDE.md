@@ -18,7 +18,7 @@ p2-1.html                  Práctica 2: solución animada del 2.1 (persiana), co
 pnp-npn.html               Tema 2: sensores PNP y NPN
 plc-entradas.html          Tema 2: cablear las entradas del autómata
 plc-salidas.html           Tema 2: cablear las salidas del autómata
-plc-cronograma.html        Tema 2: temporizadores del LOGO! (retardo a la conexión y a la desconexión) con el cronograma en directo; adaptada de cronograma_temporizadores.html de Automatismos
+plc-cronograma.html        Tema 2: temporizadores del LOGO! (retardo a la conexión y a la desconexión) con el cronograma en directo; adaptada de cronograma_temporizadores.html de Automatismos; debajo, cuatro ejemplos de uso (programa en FUP, cronograma y para qué sirve)
 test_bloque1.html          Test Bloque 1 (Tema 1 y Prácticas 1 y 2): 89 preguntas, 9 figuras
 test_bloque2.html          Test Bloque 2 (Tema 2 y Práctica 4): 100 preguntas (40 del tema y 60 de la práctica, con sus E/S), 16 figuras; sin letras de medida (no hay esquema de cableado: es el entregable 1 de la P4)
 temas/                     apuntes en PDF (tema1-sensores-actuadores.pdf, tema2-automata-programable.pdf)
@@ -46,6 +46,8 @@ subir.bat                  publica todo con doble clic
 - La **corriente** se muestra de forma **sutil**, como en Automatismos: puntos pequeños y claros que se mueven por dentro del cable (`.flow`: `stroke:#FFE28A; stroke-width:3; stroke-linecap:round; stroke-dasharray:0.5 15.5`, a 0,9 s por ciclo), solo por los caminos cerrados hasta un consumo y sin huecos. Nada de la línea amarilla a trazos. Vale para las animaciones hechas y para las que se hagan.
 - Las explicaciones van en cajones **debajo del dibujo**: «Qué está pasando» (cambia en cada momento) y, justo debajo, un cajón fijo **«Para qué sirve»** (`.pqs`, dos o tres frases). Después, IDEA CLAVE, ¡OJO!, EN EL TALLER…
 - En `plc-entradas.html` y `plc-salidas.html` los cajones los monta `setText()`: el de «Para qué sirve» está en la constante `PQS`.
+- En las animaciones de temporizadores, **el tiempo T va de 1 a 5 s** (por defecto, 3 s): con tiempos más largos se hace eterno esperar. «Pulsos cortos» son de medio segundo.
+- `plc-cronograma.html` lleva debajo la sección **«Para qué se usan: cuatro ejemplos»** (`.ejs`, con su propio guion al final del archivo): 1 Tarda en encender (retardo a la conexión), 2 Sigue un rato más (a la desconexión), 3 Se para solo (relé autoenclavador + retardo a la conexión que le hace reset: la persiana del 4.5 y el 4.8) y 4 Filtro de señales dudosas (a la desconexión, con una señal que va y viene). Cada ejemplo lleva, de izquierda a derecha, **el trozo de programa en FUP**, **el cronograma** (uno de ejemplo ya dibujado, «Ver cómo funciona» y en directo; solo dos filas, la entrada y la salida) y **«Para qué sirve»**; debajo, «Qué está pasando». Es la misma idea que `usos_temporizadores.html` de Automatismos. **No lleva el extractor del 4.7** (conexión seguida de desconexión): su cronograma es lo que se entrega.
 - Las del Tema 2 no llevan número: en la tira y en la portada se llaman «PNP y NPN», «Entradas», «Salidas» y «Retardos» (el cronograma de los temporizadores; la P4 lleva un QR a `plc-cronograma.html`).
 
 ## Tests
