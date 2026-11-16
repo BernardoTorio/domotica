@@ -39,6 +39,8 @@ subir.bat                  publica todo con doble clic
 - Las soluciones animadas de las prácticas aparecen en dos sitios: en Prácticas y en Animaciones.
 - Animaciones: un grupo por práctica o tema (Práctica 1, Práctica 2, Tema 2), en el orden en que se dan. Cada animación nueva se añade con una tarjeta (número, título y una línea) en su grupo y, si es del tema actual, en la `ruta` de la lista `T`.
 - Tests: una tarjeta por test; el test vuelve a `index.html#tests`.
+- **Letra delante del número (T, P, E)**, igual en las tres webs: cada animación dice a qué se refiere. **T** si explica un apartado del tema (en Automatismos, `T5.5`), **P** si es la solución de un ejercicio de una práctica (`P1.1` … `P1.5`, `P2.1`) y **E** si es un ejercicio suelto, como los de los exámenes (`E1`, `E2`). Las del Tema 2 no llevan número: su tarjeta dice «T2» y en la tira van con su nombre. Va en las tarjetas, en «Ahora en clase» (`ruta` y `chips`), en la tira, en la última miga, en el título y en el botón «Siguiente». Los tests (B1, B2) no llevan letra. Una animación nueva se pone ya con su letra.
+  La tira la rehace `tira_domotica.py` (proyecto «Materiales para instituto», `claude/herramientas/`), que ya lleva las etiquetas con P.
 
 ## Animaciones
 - Un único archivo `.html` con todo dentro (solo Google Fonts de fuera), con modo claro y oscuro. Vuelven a `index.html#animaciones` (botón ←, Esc).
