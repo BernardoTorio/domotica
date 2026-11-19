@@ -23,7 +23,7 @@ plc-usos.html              Tema 2: «Usos de retardos»; cinco usos, cada uno co
 test_bloque1.html          Test Bloque 1 (Tema 1 y Prácticas 1 y 2): 89 preguntas, 9 figuras
 test_bloque2.html          Test Bloque 2 (Tema 2 y Práctica 4): 100 preguntas (40 del tema y 60 de la práctica, con sus E/S), 16 figuras; sin letras de medida (no hay esquema de cableado: es el entregable 1 de la P4)
 temas/                     apuntes en PDF (tema1-sensores-actuadores.pdf, tema2-automata-programable.pdf)
-practicas/                 enunciados en PDF (2MT-P1.pdf, 2MT-P2.pdf, 2MT-P3.pdf, plantilla-logo-doble.pdf, 2MT-P4.pdf)
+practicas/                 enunciados en PDF (2MT-P1.pdf, 2MT-P2.pdf, 2MT-P3.pdf, plantilla-logo-doble.pdf, 2MT-P4.pdf, 2MT-P5.pdf)
 subir.bat                  publica todo con doble clic
 .gitignore                 *.zip, *.docx y «Claude outputs/»: no se suben nunca
 ```
@@ -37,7 +37,7 @@ subir.bat                  publica todo con doble clic
 - **Marca «✓ vista»**: las animaciones que ya se han abierto en ese navegador salen marcadas (clave `visto:<archivo>` en `localStorage`). La pone la portada al tocar una tarjeta y, además, cada animación al abrirse (también desde un QR). No se marca en los tests.
 - Temas y Prácticas: un recuadro por PDF con enlace `download`. Si el PDF todavía no está en el servidor, un `fetch HEAD` lo marca en gris como «próximamente».
 - Las soluciones animadas de las prácticas aparecen en dos sitios: en Prácticas y en Animaciones.
-- **Las animaciones del tema que se usan en una práctica salen también en su grupo** (en Prácticas y en Animaciones), como en Automatismos: Práctica 3 → PNP y NPN, Entradas y Salidas; Práctica 4 → Retardos y Usos de retardos. Esas dos prácticas no tienen soluciones animadas: sus grupos se llaman «animaciones del tema que te sirven». Al añadir una animación de un tema, mirar si alguna práctica la usa y ponerla también en su grupo.
+- **Las animaciones del tema que se usan en una práctica salen también en su grupo** (en Prácticas y en Animaciones), como en Automatismos: Práctica 3 → PNP y NPN, Entradas y Salidas; Práctica 4 → Retardos y Usos de retardos; Práctica 5 (repaso del examen de programación) → P2.1, Retardos y Usos de retardos. Esas tres prácticas no tienen soluciones animadas: sus grupos se llaman «animaciones del tema que te sirven» (la P5, «animaciones que te sirven», porque lleva también la P2.1). Al añadir una animación de un tema, mirar si alguna práctica la usa y ponerla también en su grupo.
 - Animaciones: un grupo por práctica o tema (Práctica 1, Práctica 2, Tema 2), en el orden en que se dan. Cada animación nueva se añade con una tarjeta (número, título y una línea) en su grupo y, si es del tema actual, en la `ruta` de la lista `T`.
 - Tests: una tarjeta por test; el test vuelve a `index.html#tests`.
 - **Letra delante del número (T, P, E)**, igual en las tres webs: cada animación dice a qué se refiere. **T** si explica un apartado del tema (en Automatismos, `T5.5`), **P** si es la solución de un ejercicio de una práctica (`P1.1` … `P1.5`, `P2.1`) y **E** si es un ejercicio suelto, como los de los exámenes (`E1`, `E2`). Las del Tema 2 no llevan número: su tarjeta dice «T2» y en la tira van con su nombre. Va en las tarjetas, en «Ahora en clase» (`ruta` y `chips`), en la tira, en la última miga, en el título y en el botón «Siguiente». Los tests (B1, B2) no llevan letra. Una animación nueva se pone ya con su letra.
