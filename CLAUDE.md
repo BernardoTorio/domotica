@@ -24,6 +24,7 @@ test_bloque1.html          Test Bloque 1 (Tema 1 y Prácticas 1 y 2): 89 pregunt
 test_bloque2.html          Test Bloque 2 (Tema 2 y Práctica 4): 100 preguntas (40 del tema y 60 de la práctica, con sus E/S), 16 figuras; sin letras de medida (no hay esquema de cableado: es el entregable 1 de la P4)
 temas/                     apuntes en PDF (tema1-sensores-actuadores.pdf, tema2-automata-programable.pdf)
 practicas/                 enunciados en PDF (2MT-P1.pdf, 2MT-P2.pdf, 2MT-P3.pdf, plantilla-logo-doble.pdf, 2MT-P4.pdf, 2MT-P5.pdf)
+.github/, .lycheeignore    revisión de enlaces al subir (ver «Comprobaciones automáticas»)
 subir.bat                  publica todo con doble clic
 .gitignore                 *.zip, *.docx y «Claude outputs/»: no se suben nunca
 ```
@@ -85,6 +86,11 @@ Mismo motor que los tests de Automatismos (`DATA`, `IMGS`, `show`, `paint`, `ans
 - Todo se dibuja en reposo. Consumos (bombillas, bobinas, motores) abajo del todo y a la misma altura.
 - Relé auxiliar: común arriba (11, 21) y NC/NA abajo (12-14, 22-24).
 - «Borne» = **tornillo** del aparato (así lo entienden mejor).
+
+## Comprobaciones automáticas (desde el 23/11/2026)
+- **Antes de publicar**, Claude pasa `comprobar_web.py` (proyecto «Materiales para instituto», `claude/herramientas/`; skill «comprobar-web-de-clase»): abre todas las páginas con Chrome en escritorio y en móvil (400 px), en claro y en oscuro, y da **errores** (fallos de JavaScript, enlaces rotos —también los que la portada crea con JavaScript—, páginas que se salen por la derecha, la tira mal, un archivo que estaba y ya no está) y **avisos** (falta el botón de volver, la miga, el modo claro/oscuro o Esc). Con `--antes-git origin/main` dice además **qué páginas se ven distintas** que las publicadas: tienen que ser solo las que se han tocado.
+- **Al subir** (`.github/workflows/enlaces.yml`), GitHub revisa con lychee los enlaces de los `.html` de la raíz. Si alguno apunta a un archivo que no existe, el commit sale con una ✗ roja en GitHub y llega un correo; la web se publica igual. Un PDF enlazado que todavía no está subido («próximamente») se apunta en `.lycheeignore` (una línea) y se quita al subirlo.
+- **Cada noche**, el repositorio privado `BernardoTorio/comprobaciones` repite la comprobación completa de las tres webs y abre allí una incidencia si hay errores o páginas que han cambiado de aspecto desde la noche anterior.
 
 ## Los Word originales: `C:\dev\originales`
 Los PDF de esta web salen de un Word. Los Word no se suben a GitHub, pero **no se pierden**: están en `C:\dev\originales` (en el PC del profesor, fuera de git), con todas sus versiones. Es la misma carpeta para las tres webs (automatismos, domotica, maquinas).
