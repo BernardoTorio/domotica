@@ -10,7 +10,8 @@ html[data-theme=dark]{--paper:#1e252d;--bg:#141a20;--ink:#e9edf1;--muted:#a9b4bf
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',Verdana,sans-serif;font-size:17px;line-height:1.5}
 .barra{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--paper);border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:2}
-.ico{font-size:1.15rem;line-height:1;min-width:42px;height:38px;display:inline-flex;align-items:center;justify-content:center}
+.ico{font-size:1.15rem;line-height:1;min-width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center}
+.back{flex:none;height:44px;display:inline-flex;align-items:center;white-space:nowrap;font-weight:700}
 .btn{font:inherit;background:transparent;color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:4px 10px;cursor:pointer;text-decoration:none}
 .btn:hover,.btn:focus-visible{background:var(--hit);outline:none}
 .migas{flex:1;min-width:0;overflow:hidden;white-space:nowrap;direction:rtl;text-align:left;font-size:.98rem}
@@ -183,7 +184,7 @@ main{max-width:1400px}
 .nextbig:hover,.nextbig:focus-visible{outline:none;box-shadow:0 0 0 4px var(--hit)}
 .pqs{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.pqs b.t{color:var(--como-b)}
 </style></head><body>
-<header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Tema 2</a><span class="sep">›</span><b aria-current="page">Usos de retardos</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
+<header class="barra"><a class="btn back" href="index.html#animaciones" title="Volver al índice (tecla Esc)">← Volver al índice</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Tema 2</a><span class="sep">›</span><b aria-current="page">Usos de retardos</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
 <main><nav class="tira" aria-label="Animaciones del Tema 2"><a class="arr" href="plc-cronograma.html" aria-label="Anterior: Temporizadores: el cronograma">‹&nbsp;Retardos</a><span class="where">Tema 2 · 5 de 5</span><a class="arr" href="index.html#animaciones" aria-label="Volver a las animaciones">Fin&nbsp;›</a><div class="steps"><a href="pnp-npn.html" title="Sensores PNP y NPN">PNP y NPN</a><a href="plc-entradas.html" title="Cablear las entradas">Entradas</a><a href="plc-salidas.html" title="Cablear las salidas">Salidas</a><a href="plc-cronograma.html" title="Temporizadores: el cronograma">Retardos</a><a href="plc-usos.html" class="cur" aria-current="page" title="Usos de retardos">Usos de retardos</a></div></nav>
 <div class="cab"><h1>Usos de retardos</h1><span class="tag">TEMA 2</span></div>
 <p class="sub">En el LOGO! solo hay dos retardos: <b>a la conexión</b> y <b>a la desconexión</b>. Con ellos se hacen estas cinco cosas. En cada caso tienes <b>el trozo de programa</b> que hace falta, su <b>cronograma</b> y <b>para qué sirve</b>. Mira el ejemplo y pruébalo tú: toca la entrada en el dibujo.</p>
@@ -586,7 +587,7 @@ b.addEventListener('click',()=>{const d=r.dataset.theme==='dark'?'light':'dark';
 })();
 </script><script>(function(){ // marca «vista»: esta animación y, en la tira del grupo, las que ya se han abierto
   try {
-    var me = location.pathname.split('/').pop(); if (me) localStorage.setItem('visto:' + me, '1');
+    var me = location.pathname.split('/').pop(); if (me && !/\.html$/.test(me)) me += '.html'; if (me) localStorage.setItem('visto:' + me, '1');
     document.querySelectorAll('.tira .steps a').forEach(function(a){
       if (localStorage.getItem('visto:' + a.getAttribute('href'))) { a.classList.add('seen'); a.title = (a.title ? a.title + ' · ' : '') + 'ya la has visto'; }
     });

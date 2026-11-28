@@ -10,7 +10,8 @@ html[data-theme=dark]{--paper:#1e252d;--bg:#141a20;--ink:#e9edf1;--muted:#a9b4bf
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',Verdana,sans-serif;font-size:17px;line-height:1.5}
 .barra{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--paper);border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:2}
-.ico{font-size:1.15rem;line-height:1;min-width:42px;height:38px;display:inline-flex;align-items:center;justify-content:center}
+.ico{font-size:1.15rem;line-height:1;min-width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center}
+.back{flex:none;height:44px;display:inline-flex;align-items:center;white-space:nowrap;font-weight:700}
 .btn{font:inherit;background:transparent;color:var(--ink);border:2px solid var(--accent);border-radius:8px;padding:4px 10px;cursor:pointer;text-decoration:none}
 .btn:hover,.btn:focus-visible{background:var(--hit);outline:none}
 .migas{flex:1;min-width:0;overflow:hidden;white-space:nowrap;direction:rtl;text-align:left;font-size:.98rem}
@@ -85,7 +86,7 @@ h2{color:var(--head);font-size:1.1rem;margin:22px 0 10px}
 .nextbig:hover,.nextbig:focus-visible{outline:none;box-shadow:0 0 0 4px var(--hit)}
 .pqs{background:var(--como);border-color:var(--como-b);grid-column:1/-1}.pqs b.t{color:var(--como-b)}
 </style></head><body>
-<header class="barra"><a class="btn ico" href="index.html#animaciones" aria-label="Volver al índice" title="Volver al índice">←</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Práctica 1</a><span class="sep">›</span><b aria-current="page">P1.2 Ventilador con señalización</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
+<header class="barra"><a class="btn back" href="index.html#animaciones" title="Volver al índice (tecla Esc)">← Volver al índice</a><nav class="migas" aria-label="Estás en"><span><a href="index.html">Domótica</a><span class="sep">›</span><a href="index.html#animaciones">Animaciones</a><span class="sep">›</span><a href="index.html#animaciones">Práctica 1</a><span class="sep">›</span><b aria-current="page">P1.2 Ventilador con señalización</b></span></nav><button id="tema" class="btn ico" type="button"></button></header>
 <main><nav class="tira" aria-label="Animaciones de la Práctica 1"><a class="arr" href="p1-1.html" aria-label="Anterior: P1.1 Termostato para calefacción">‹&nbsp;P1.1</a><span class="where">Práctica 1 · 2 de 5</span><a class="arr" href="p1-3.html" aria-label="Siguiente: P1.3 Calefacción con relé">P1.3&nbsp;›</a><div class="steps"><a href="p1-1.html" title="Termostato para calefacción">P1.1</a><a href="p1-2.html" class="cur" aria-current="page" title="Ventilador con señalización">P1.2</a><a href="p1-3.html" title="Calefacción con relé">P1.3</a><a href="p1-4.html" title="Detector de presencia">P1.4</a><a href="p1-5.html" title="Caldeo con presencia y relé">P1.5</a></div></nav><div class="cab"><h1>P1.2 · Ventilador con señalización</h1><span class="tag">SOLUCIÓN</span></div>
 <div class="lamina"><svg id="esq" role="img" aria-label="Esquema multifilar del Ejercicio 1.2 · Ventilador con señalización"></svg></div>
 <p class="ayuda">Toca <b>Q1</b>, <b>S1</b> y el recuadro <b>t°</b> del termostato. Esc vuelve al índice.</p>
@@ -249,7 +250,7 @@ function DETECTOR(a,b,x,yc,nm){const s=PIRBOX(x,yc);T(x+.08,yc+.33,'L');T(x+.08,
 function setup(def){Object.assign(ST,def.state);H=def.H;OX=1.5;
   const svg=document.getElementById('esq');svg.setAttribute('viewBox',`0 ${-.45*U} ${(def.W+OX)*U} ${(H+.75)*U}`);G=mk('g',{},svg);
   def.draw();window.EXPLAIN=def.explain;solve();}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')location.href='index.html#animaciones';});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'||e.key==='Backspace'){const t=e.target.tagName;if(t!=='INPUT'&&t!=='TEXTAREA'&&t!=='SELECT'){e.preventDefault();location.href='index.html#animaciones';}}});
 // ---------- práctica 2: pulsador doble (11-14-24), motor de persiana, válvulas ----------
 function PD(x,ytop,nm){const yj=ytop-.25;L([[x,ytop],[x,yj]]);T(x+.07,ytop-.1,'11');mk('circle',{cx:X(x),cy:Y(yj),r:3.4,fill:'var(--ink)'});L([[x-.6,yj],[x+.6,yj]]);const s=[];
   for(const [xx,nn,ar] of [[x-.6,'14','▲'],[x+.6,'24','▼']]){L([[xx,yj],[xx,yj-.25]]);L([[xx,yj-.65],[xx,yj-.95]]);const b=L([[xx,yj-.65],[xx-.3,yj-.22]]);
@@ -282,7 +283,7 @@ setup({H:9.3,W:6.0,state:{q1:true,s1:true,frio:false},
   else r=ST.frio?'Hace frío: el contacto 11-14 está abierto. Ventilador y lámpara <b>apagados</b>; el cable llega con tensión solo hasta el termostato.':'Hace calor: el termostato cierra <b>11-14</b>. El ventilador <b>gira</b> y H1 se <b>enciende</b> a la vez.';
   return `<p>${r}</p><p>Ventilador: ${si(O.tc.on)} · H1: ${si(O.h1.on)}</p>`;}});</script><script>(function(){ // marca «vista»: esta animación y, en la tira del grupo, las que ya se han abierto
   try {
-    var me = location.pathname.split('/').pop(); if (me) localStorage.setItem('visto:' + me, '1');
+    var me = location.pathname.split('/').pop(); if (me && !/\.html$/.test(me)) me += '.html'; if (me) localStorage.setItem('visto:' + me, '1');
     document.querySelectorAll('.tira .steps a').forEach(function(a){
       if (localStorage.getItem('visto:' + a.getAttribute('href'))) { a.classList.add('seen'); a.title = (a.title ? a.title + ' · ' : '') + 'ya la has visto'; }
     });

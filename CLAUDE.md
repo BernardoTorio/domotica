@@ -45,7 +45,7 @@ subir.bat                  publica todo con doble clic
   La tira la rehace `tira_domotica.py` (proyecto «Materiales para instituto», `claude/herramientas/`), que ya lleva las etiquetas con P.
 
 ## Animaciones
-- Un único archivo `.html` con todo dentro (solo Google Fonts de fuera), con modo claro y oscuro. Vuelven a `index.html#animaciones` (botón ←, Esc).
+- Un único archivo `.html` con todo dentro (solo Google Fonts de fuera), con modo claro y oscuro. Vuelven a `index.html#animaciones`: botón «← Volver al índice» (title «Volver al índice (tecla Esc)», 44 px de alto, como el botón de tema), Esc y Retroceso (salvo con el foco en un INPUT, TEXTAREA o SELECT).
 - Debajo de la barra de arriba, la tira `.tira` del grupo: «‹ anterior · Práctica 1 · k de N · siguiente ›» y todos los pasos del grupo. Al final de la página, botón grande «Siguiente» (`.nextbig`); en la última del grupo, «Has llegado al final de… · Volver a las animaciones». **Si se añade o se quita una animación de un grupo, hay que actualizar la tira en todas las del grupo.**
 - En la tira, las animaciones ya abiertas llevan un ✓.
 - La **corriente** se muestra de forma **sutil**, como en Automatismos: puntos pequeños y claros que se mueven por dentro del cable (`.flow`: `stroke:#FFE28A; stroke-width:3; stroke-linecap:round; stroke-dasharray:0.5 15.5`, a 0,9 s por ciclo), solo por los caminos cerrados hasta un consumo y sin huecos. Nada de la línea amarilla a trazos. Vale para las animaciones hechas y para las que se hagan.
